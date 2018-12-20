@@ -1,0 +1,112 @@
+{template 'header'}
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/jquery-weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/style.css">
+
+
+<link href="https://cdn.bootcss.com/Buttons/2.0.0/css/buttons.css" rel="stylesheet">
+<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
+
+<input type="hidden" value="2" id ="page" name="page">
+
+{if empty($mitem['m_tel'])}
+{template 'none_express'}
+{else}
+
+<div id="list">
+
+{loop $done_list $done_list}
+
+      <div class="weui-cells weui-cells_checkbox">
+	        <label class="weui-cell weui-check__label" for="s11">
+	          
+	          <div class="weui-cell__bd">
+	            <p>取件码:{$done_list['recoder_code']}</p>
+	          </div>
+				<div class="weui-cell__ft">{$done_list['recoder_shelves']}-{$done_list['recoder_goods_num']}</div>
+	        </label>
+	        <div class="weui-cell">
+            <div class="weui-cell__hd"><img src="{MODULE_URL}/template/mobile/images/icon_notice_time.png" alt="" style="width:25px;margin-right:5px;display:block"></div>
+            <div class="weui-cell__bd">
+              <p>通知时间</p>
+            </div>
+             <div class="weui-cell__ft">{php echo date("Y-m-d H:i",$done_list['recoder_create'])}</div>
+          </div>
+
+          <div class="weui-cell">
+            <div class="weui-cell__hd"><img src="{MODULE_URL}/template/mobile/images/icon_user_recive.png" alt="" style="width:25px;margin-right:5px;display:block"></div>
+            <div class="weui-cell__bd">
+              <p>收件时间</p>
+            </div>
+             <div class="weui-cell__ft">{php echo date("Y-m-d H:i",$done_list['recoder_updatetime'])}</div>
+          </div>
+
+          {if !empty($done_list['recoder_barcode'])}
+          <div class="weui-cell">
+              <div class="weui-cell__hd"><img src="{MODULE_URL}/template/mobile/images/icon_express.png" alt="" style="width:25px;margin-right:5px;display:block"></div>
+            <div class="weui-cell__bd">
+              <p>快递单号</p>
+            </div>
+            <div class="weui-cell__ft">{$done_list['recoder_barcode']}</div>
+          </div>
+         {/if}
+       
+      </div>         
+{/loop}
+  </div>
+  {if $load_done==1}
+     <div class="weui-loadmore weui-loadmore_line"  style="margin-bottom: 60px;" id="none_data">
+     <span class="weui-loadmore__tips">暂无数据</span>
+    </div>
+    {else}
+
+    <div class="weui-loadmore" style="margin-bottom: 60px;" id="loadmore"> 
+       <i class="fa fa-spinner fa-pulse"></i> 
+       <span class="weui-loadmore__tips">正在加载</span> 
+    </div>   
+    {/if} 
+
+
+ {/if} 
+
+<div style="margin-bottom: 55px;display: block;"></div>
+{template 'user_footer'}
+       
+
+<script src="{MODULE_URL}/template/mobile/js/jquery.min.js"></script>
+<script src="{MODULE_URL}/template/mobile/js/jquery-weui.min.js"></script>
+
+   <script>
+      var loading = false;
+      $(document.body).infinite().on("infinite", function() {
+        if(loading) return;
+        loading = true;
+       var page = parseInt($("#page").val())
+       // console.log(page)
+          $.post("{php echo $this->createMobileUrl('my_done')}", {"act":"load_more","page":page}, 
+            function(data) 
+            {
+              
+               setTimeout(function() {
+                $("#list").append(data.res_str);
+                if (data.done==1)
+                { 
+                  $("#loadmore").hide();
+                  $("#none_data").show();
+                  $(document.body).destroyInfinite()
+                  $.toast("已无更多数据","text");
+                }
+                loading = false;
+                page=page+1
+                $("#page").val(page)
+              }, 500);
+              
+            }, "json"); 
+
+        
+      });
+  </script>
+
+		
+
+</html>

@@ -1,0 +1,136 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+	<li {if $op =='display'}class="active"{/if}><a href="{php echo $this->createWebUrl('express_setting',array('op' =>'display'))}">快递列表</a></li>
+	<li {if $op =='add' }class="active"{/if}><a href="{php echo $this->createWebUrl('express_setting',array('op' =>'add'))}">快递新增</a></li>
+	{if $act =='edit' }<li class="active"><a href="{php echo $this->createWebUrl('express_setting',array('act' =>'edit','typename'=>'smallclass'))}">编辑</a></li>{/if}
+</ul>  
+
+{if $act == 'list' }
+<div class="alert alert-info">
+	<strong>设置说明：</strong>
+	<ol>
+	
+		<li>短信模板设置</li>
+	</ol>
+</div>
+{/if}
+{if $op == 'add' || $op == 'edit'}
+<div class="alert alert-info">
+    <strong>设置说明：</strong>
+    <ol>
+        <li>暂时无用</li>  
+        
+    </ol>
+</div>
+<div class="main">
+    <form action="" method="post" class="form-horizontal form" id="form1">
+        <input type="hidden" name="parentid" value="{$parent['id']}" />
+        <div class="panel panel-default">
+            <div class="panel-heading">快递详细设置</div>
+            <div class="panel-body">
+               
+            
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">快递名称</label>
+                    <div class="col-sm-8 col-xs-12">
+                        <input type="text" name="express_name" class="form-control" value="{$item['express_name']}" />
+                    </div>
+                </div>
+				
+				 
+				
+				
+				
+                <!--<div class="form-group">-->
+                    <!--<label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">文章触发关键字</label>-->
+                    <!--<div class="col-sm-8 col-xs-12">-->
+                        <!--<input type="text" class="form-control" placeholder="" name="keyword" value="{$keywords}">-->
+                        <!--<div class="help-block">添加关键字以后,系统将生成一条图文规则</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+              
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            <div class="col-sm-12">
+                <input name="submit" type="submit" value="提交" class="btn btn-primary col-lg-1">
+                <input type="hidden" name="token" value="{$_W['token']}" />
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    <!--
+    require(['jquery', 'util'], function($, u){
+        $("#form1").submit(function(){
+            if($("input[name='cname']").val() == '') {
+                u.message('请输入部门名称', '', 'error');
+                return false;
+            }
+        });
+    });
+    //-->
+</script>
+{/if}
+{if $op == 'display'}
+<div class="alert alert-info">
+    <strong>设置说明：</strong>
+    <ol>
+        <li>暂时无用</li>  
+        
+    </ol>
+</div>
+<div class="main">
+    <div class="dept_setting">
+        <form action="" method="post" onsubmit="return formcheck(this)">
+            <div class="panel panel-default">
+                <div class="panel-body table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+							
+                            <th style="width:60%;">名称</th>
+							
+							<th style="width:10%;">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                      
+                        {loop $list $list}
+                        <tr>
+						
+						<td>{$list['express_name']}</td>
+						
+						<td>
+							<a href="{php echo $this->createWebUrl('express_setting', array('op' => 'del','id' => $list['id']))}" onclick="return confirm('确认删除此快递吗？');return false;" title="删除" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top"><i class="fa fa-times"></i></a>
+						</td>
+							
+                            
+						
+                        </tr>
+                        {/loop}
+                        
+                    
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+           
+        </form>
+    </div>
+</div>
+<script>
+    require(['bootstrap'],function($){
+        $('.btn').hover(function(){
+            $(this).tooltip('show');
+        },function(){
+            $(this).tooltip('hide');
+        });
+    });
+</script>
+{/if}
+{template 'common/footer'}

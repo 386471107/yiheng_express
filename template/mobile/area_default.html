@@ -1,0 +1,143 @@
+{template 'header'}
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/jquery-weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/style.css">
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<body>
+
+<style>
+         
+      .subscript{
+        top:0px;
+        color: #FFF;
+        height: 30px;
+        width: 100px;
+        position: absolute;
+        right: -25px;
+        text-align: center;
+        line-height: 30px;
+        font-family: "黑体";
+        background-color: #ECAD2C;
+        -moz-transform:rotate(45deg);
+        -webkit-transform:rotate(45deg);
+        -o-transform:rotate(45deg);
+        -ms-transform:rotate(45deg);
+        transform:rotate(45deg);
+      }
+      .tips_mg
+      {
+        margin:5px;
+      }
+      .tips_title
+      {
+        background: #FFA73D;
+        color:#EAEAEA;
+      }
+       .tips_box
+       {
+        border: 1px solid #EAEAEA
+       }
+
+
+    </style>
+
+{loop $shop_list $shop_list}
+   
+      <a onclick="set({$shop_list['area_code']})" >
+      <div class="weui-cell" style="border-bottom: 1px solid #ECECEC;overflow: hidden;" >
+        <div class="weui-panel__bd" ">
+          <div class="weui-media-box weui-media-box_appmsg">
+            <div class="weui-media-box__hd">
+              <img class="weui-media-box__thumb" src="{$shop_list['area_logo']}">
+            </div>
+            <div class="weui-media-box__bd" >
+              <h4 class="weui-media-box__title">{$shop_list['area_name']}</h4>
+               <p class="weui-media-box__desc" >{$shop_list['area_tel']}&nbsp;&nbsp;|&nbsp;&nbsp;{$shop_list['area_person']} </p>
+             
+              <p class="weui-media-box__desc" style="margin:8px 0;"><!-- <i class="fa fa-map-marker fa-lg" style="padding: 0 10px 0  0;color: #EAEAEA"></i> -->{$shop_list['area_location']}</p>
+              </div>
+        </div>
+        </div>
+            {if $shop_list['area_code'] != $m_item['m_defaut_area']}
+        <div class="subscript" id="sub_{$shop_list['area_code']}"  hidden="hidden"  >
+          &nbsp;&nbsp;默认
+        </div>
+      {else}
+        <div class="subscript" id="sub_{$shop_list['area_code']}" >
+          &nbsp;&nbsp;默认
+        </div>
+        <input type="hidden" id="disdiv" value="{$shop_list['area_code']}">
+      {/if}
+
+      </div>
+         </a>
+   
+
+   <div class="weui-cell weui-flex " style="text-align: center;" >
+      
+      <div class="weui-flex__item tips_mg" ><p class="tips_title">短信余量</p><p class="tips_box">{if !empty($shop_list['sms_surplus'])}{$shop_list['sms_surplus']}{else}0{/if}</p></div>
+		<div class="weui-flex__item tips_mg" ><p class=" bg-success">微信绑定</p><p class="tips_box">{if $shop_list['area_member_total'] !=0}{$shop_list['area_member_wx']}({php echo (int)(($shop_list['area_member_wx'] /$shop_list['area_member_total'])*100);}%){else}0{/if}</p></div>
+      <div class="weui-flex__item tips_mg" ><p class=" bg-warning">微信未绑</p><p class="tips_box">{if $shop_list['area_member_total'] !=0} {php echo ($shop_list['area_member_total'] -$shop_list['area_member_wx']);}({php echo (int)((($shop_list['area_member_total'] -$shop_list['area_member_wx']) /$shop_list['area_member_total'])*100);}%){else}0{/if}</p></div>
+      </div> 
+   
+
+      </div>
+    
+    
+    
+  </div>
+  {/loop}
+ 
+
+ <div style="margin-bottom: 55px;display: block;"></div>
+{template 'footer'}
+<script src="{MODULE_URL}/template/mobile/js/jquery.min.js"></script>
+<script src="{MODULE_URL}/template/mobile/js/jquery-weui.min.js"></script>
+ 
+
+<script type="text/javascript">
+
+  function set(id)
+    {
+        $.actions({
+          title: "加入我的店铺",
+          onClose: function() {
+            console.log("close");
+          },
+          actions: [
+            {
+              text: "加入并默认",
+              className: "color-danger",
+              onClick: function() {
+                $.post("{php echo $this->createMobileUrl('my_area')}", {"act":'join',"id":id}, 
+                        function(data) 
+                        {
+                       
+                          if (data.sign=='success')
+                          {
+                            $.toast(data.tips, 500,"success");
+                            disnum = $("#disdiv").val()
+                            $("#sub_"+disnum).hide(1000);
+                            $("#sub_"+id).show(1000);
+                            $("#disdiv").val(id)
+                            
+                          }
+
+                          
+                            
+                          
+                        }, "json");
+                
+              }
+            },
+           
+          ]
+        });
+       
+    }
+
+    
+
+  </script>
+</body>
+</html>

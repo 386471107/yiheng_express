@@ -1,0 +1,466 @@
+{template 'common/header'}
+
+<ul class="nav nav-tabs">
+    <li {if $op == 'sms'}class="active"{/if}><a href="{php echo $this->createWebUrl('base_setting', array('op' => 'sms'))}">短信设置</a></li>
+   
+    <li {if $op == 'noticetpl'} class="active"  {/if}><a href="{php echo $this->createWebUrl('base_setting', array('op'=>'noticetpl'))}">通知设置</a></li>
+
+<!--  <li {if $op == 'noticetpl'}   {/if}><a href="{php echo $this->createWebUrl('base_setting', array('op'=>'renew'))}">模版更新</a></li> -->
+
+
+
+</ul>
+
+ {if $op == 'sms'}
+ 
+<div class="alert alert-info">
+    <strong>设置说明：</strong>
+    <ol>
+        <li>好数据短信平台地址：http://www.haoservice.com/docs/17</li>  
+        
+    </ol>
+</div>
+<div class="main">
+    <form action="" method="post" class="form-horizontal form" id="form1">
+        <input type="hidden" name="parentid" value="{$parent['id']}" />
+        <div class="panel panel-default">
+            <div class="panel-heading">短信设置</div>
+            <div class="panel-body">
+               <div class="form-group">
+                    <label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">所属快递点</label>
+                <div class="col-sm-8 col-xs-12">
+                        <select name="area_code" id ="area_code" class='form-control' onchange="chagecode()">
+                            <option value="0"> --全部快递点--</option>
+                            {loop $area_list $area_list}
+                            <option value="{$area_list['area_code']}" {if $item['m_defaut_area'] == $area_list['area_code']} selected{/if}>{$area_list['area_name']}</option>
+                            {/loop}
+                        </select>
+                        <div class="help-block">快递点选择，确定快递点信息</div>
+                    </div>
+                
+                </div>
+            
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">短信Key</label>
+                    <div class="col-sm-8 col-xs-12">
+                        <input type="text" name="sms_key" id="sms_key" class="form-control"  placeholder="例：7fedb8b1b5294eef836866b67dab038b" value="{$list[0]['sms_key']}" />
+                         <span></span>
+                        
+                    </div>
+                </div>
+				 <div class="form-group">
+                    <label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">快件提醒ID</label>
+                    <div class="col-sm-8 col-xs-12">
+                        <input type="text" name="sms_id[3]" id="notice_id" class="form-control" placeholder="例：2541" value="{$dislist[3]['sms_message_id']}" />
+                        <span></span>
+                    </div>
+
+                </div>
+				
+				
+				 <div class="form-group">
+                    <label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">快件提醒内容</label>
+                    <div class="col-sm-8 col-xs-12">
+                        <input type="text" name="sms_content[3]" id="notice_content"  placeholder="例：【一恒网络快递助手】您有快递已送至服务站，请尽快取件，验证码为#code#。" class="form-control" value="{$dislist[3]['sms_message']}" />
+                          <span></span>
+                    </div>
+
+                </div>
+
+
+                <!--  <div class="form-group">
+                    <label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">快件提醒每日最大量</label>
+                    <div class="col-sm-8 col-xs-12">
+                        <input type="number" name="sms_day_max[3]" id="sms_day_max" placeholder="" class="form-control" value="{$dislist[3]['sms_d_max']}" />
+                          <span></span>
+                    </div>
+
+                </div> -->
+				
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">注册短信ID</label>
+                    <div class="col-sm-8 col-xs-12">
+                        <input type="text" name="sms_id[1]" id ="reg_id" class="form-control" value="{$dislist[1]['sms_message_id']}" />
+                    </div>
+                </div>
+				 <div class="form-group">
+                    <label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">注册短信内容</label>
+                    <div class="col-sm-8 col-xs-12">
+                        <input type="text" name="sms_content[1]"  id ="reg_contenet"class="form-control" value="{$dislist[1]['sms_message']}" />
+                    </div>
+                </div>
+
+
+				
+				 <div class="form-group">
+                    <label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">更换手机短信ID</label>
+                    <div class="col-sm-8 col-xs-12">
+                        <input type="text" name="sms_id[2]" id="change_id" class="form-control" value="{$dislist[2]['sms_message_id']}" />
+                    </div>
+                </div>
+				 <div class="form-group">
+                    <label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">更换手机短信内容</label>
+                    <div class="col-sm-8 col-xs-12">
+                        <input type="text" name="sms_content[2]"  id="change_content"  class="form-control" value="{$dislist[2]['sms_message']}" />
+                    </div>
+                </div>
+				<!--  <div class="form-group">
+                    <label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">未绑定使用短信通知</label>
+                    <div class="col-sm-8 col-xs-12">
+                      <input name="sms_sned" type="radio" value="0" {if $dislist[3]['sms_do']==0 }checked {/if} ><span  class="label label-danger" style="margin:5px;">不开启</span>
+					   <input name="sms_sned" type="radio" value="1" {if $dislist[3]['sms_do']==1 }checked {/if} ><span  class="label label-info" style="margin:5px;">开启</span>
+					   
+                    </div>
+                </div>
+				 -->
+				<!-- <div class="form-group"> -->
+                    <!-- <label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">短信提醒次数</label> -->
+                    <!-- <div class="col-sm-8 col-xs-12"> -->
+                        <!-- <input type="number" name="express_name" class="form-control" value="3" /> -->
+                    <!-- </div> -->
+                <!-- </div> -->
+			
+				 
+         
+			<div class="form-group">
+				<div class="col-sm-12">
+					<input name="sms_submit" type="submit" value="提交" class="btn btn-primary col-lg-1">
+					<input type="hidden" name="token" value="{$_W['token']}" />
+				</div>
+			</div>
+            </div>
+        </div>
+
+
+
+       
+    </form>
+	
+	
+	
+	
+</div>
+{/if}
+
+
+ {if $op == 'noticetpl'}
+<div class="alert alert-info">
+    <strong>本例提供参数，你可以在文本内填入以下参数进行内容送</strong>
+    <p>例：你的快递于#in_time#到达#area_name#，快递单号为#barcode#，取件码为#rnd_code#，请及时取件.谢谢！！！</p>
+    <ol>
+        <li>#area_name#     所属快递点名称</li>
+        <li>#rnd_code#      随机码</li> 
+        <li>#in_time#       入库时间</li> 
+        <li>#barcode#       快递条形码</li>     
+        
+    </ol>
+</div>
+
+<div class="main">
+      <form action="" method="post" class="form-horizontal form" id="form2">
+        <input type="hidden" name="parentid" value="{$parent['id']}" />
+        <div class="panel panel-default">
+            <div class="panel-heading">通知设置</div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">所属快递点</label>
+                <div class="col-sm-8 col-xs-12">
+                        <select name="area_code" id ="tpl_area_code" class='form-control' onchange="tpl_changecode()">
+                            <option value="0"> --全部快递点--</option>
+                            {loop $area_list $area_list}
+                            <option value="{$area_list['area_code']}" {if $item['m_defaut_area'] == $area_list['area_code']} selected{/if}>{$area_list['area_name']}</option>
+                            {/loop}
+                        </select>
+                        <div class="help-block">快递点选择，确定快递点信息</div>
+                    </div>
+                
+                </div>
+                
+                <!--  <div class="form-group">
+                    <label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">模版短编号</label>
+                    <div class="col-sm-6 col-xs-12">
+                        <input type="text" name="tpl_short_id" id="tpl_short_id" class="form-control" placeholder="TM0000001" value="{$itemtpl['tpl_short_id']}" />
+                          <div class="help-block">模板库中模板的编号，有“TM**”和“OPENTMTM**”等形式</div>
+                    </div>
+                     <div class="col-sm-2 col-xs-12">
+                       <button type="button" class="btn btn-default" onclick="get_tpl()">获取模版编号</button>
+                    </div>
+ 
+                </div> 
+
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">模版编号</label>
+                    <div class="col-sm-8 col-xs-12">
+                        <input type="text" name="tpl_id" id="tpl_id" class="form-control" placeholder="xB7QcKi7jII4lw2TPGnBotkizpb5QNhBvYosKQeCPjk" value="{$itemtpl['tpl_id']}" />
+                    </div>
+                </div> -->
+
+
+                  <div class="form-group">
+                    <label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">模块</label>
+                <div class="col-sm-8 col-xs-12">
+                        <select name="tpl_list" id ="tpl_list" class='form-control' onchange="tpl_change_id()">
+                            <option value="0"> --全部模块--</option>
+                            {loop $tpl_list $tpl_list}
+                            <option value="{$tpl_list['id']}" >{$tpl_list['tpl_alert_title']}</option>
+                            {/loop}
+                        </select>
+                        <div class="help-block">通知模块选择，仅对OPEN***开头的模块有效，其它会出错</div>
+                    </div>
+                
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">模版ID</label>
+                    <div class="col-sm-8 col-xs-12">
+                        <input type="text" name="tpl_id" id="tpl_id" class="form-control" value="{$tpl_list['tpl_id']}" readonly="true" />
+                    </div>
+                </div>
+
+                 <div class="form-group">
+                    <label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">标题</label>
+                    <div class="col-sm-8 col-xs-12">
+                        <input type="text" name="tpl_title" id="tpl_title" class="form-control" value="{$itemtpl['tpl_title']}" placeholder="请输入标题" />
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">描述1</label>
+                    <div class="col-sm-8 col-xs-12">
+                        <input type="text" name="tpl_kw1" id="tpl_kw1" class="form-control" value="{$itemtpl['tpl_kw1']}" />
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">描述2</label>
+                    <div class="col-sm-8 col-xs-12">
+                        <input type="text" name="tpl_kw2" id="tpl_kw2" class="form-control" value="{$itemtpl['tpl_kw2']}" />
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">描述3</label>
+                    <div class="col-sm-8 col-xs-12">
+                        <input type="text" name="tpl_kw3" id="tpl_kw3" class="form-control" value="{$itemtpl['tpl_kw3']}" />
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">描述4</label>
+                    <div class="col-sm-8 col-xs-12">
+                        <input type="text" name="tpl_kw4" id="tpl_kw4" class="form-control" value="{$itemtpl['tpl_kw4']}" />
+                    </div>
+                </div> 
+                 <div class="form-group">
+                    <label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">描述5</label>
+                    <div class="col-sm-8 col-xs-12">
+                        <input type="text" name="tpl_kw5" id="tpl_kw5" class="form-control" value="{$itemtpl['tpl_kw5']}" />
+                    </div>
+                </div> 
+                 <div class="form-group">
+                    <label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">备注</label>
+                    <div class="col-sm-8 col-xs-12">
+                        <input type="text" name="tpl_remark" id="tpl_remark" class="form-control" value="{$itemtpl['tpl_remark']}" placeholder="请输入备注" />
+                    </div>
+                </div>
+                <input type="hidden" name="tpl_size" id="tpl_size" value="{$itemtpl['tpl_size']}">
+                
+                
+         
+            <div class="form-group">
+               
+                <div class="col-sm-12">
+                    <!-- <input name="view" type="submit" value="预览" class="btn btn-primary col-lg-2" style="margin-right: 55px;"> -->
+
+                    <input name="noticetpl" type="submit" value="更改" class="btn btn-success col-lg-2">
+                    <input type="hidden" name="token" value="{$_W['token']}" />
+                </div>
+            </div>
+            </div>
+        </div>
+       
+    </form>
+
+   </div> 
+
+   <!-- <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">开始演示模态框</button> -->
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">模态框（Modal）标题</h4>
+            </div>
+            <div class="modal-body">在这里添加一些文本</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+               
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div> 
+
+<script>
+
+$('#myModal').on('show.bs.modal', function () {
+   alert('嘿，模态框...');
+})
+</script>
+
+   {/if}
+
+
+
+
+
+
+<script type="text/javascript">
+    
+    function chagecode()
+    {
+        
+        var area_code = $('#area_code option:selected').val();
+        
+        $('#m_defaut_area').val(area_code);
+        $.post("{php echo $this->createWebUrl('base_setting')}", { "act":"change",'area_code':area_code},  
+            function(data){
+            
+            if (data.success==1)
+                {
+
+                    $('#sms_key').val(data[0]['sms_key']);
+                    $('#sms_day_max').val(data[0]['sms_day_max']);
+                    $('#notice_id').val(data[2]['sms_message_id']);
+                    $('#notice_content').val(data[2]['sms_message']);
+                    $('#change_id').val(data[1]['sms_message_id']);
+                    $('#change_content').val(data[1]['sms_message']);
+                    $('#reg_id').val(data[0]['sms_message_id']);
+                    $('#reg_content').val(data[0]['sms_message']);
+                }
+                else
+                {
+                    $('#sms_surplus').val(0);
+                    
+                    // $("input[name='sms_status']:eq(1)").attr("checked",'checked');
+                }
+                
+            }, "json");
+        
+    }
+
+
+
+     function tpl_change_id()
+    {
+        
+       
+        var tpl_list_id = $('#tpl_list option:selected').val();
+       
+        // $('#m_defaut_area').val(area_code);
+        $.post("{php echo $this->createWebUrl('base_setting')}", { "act":"change_tpl",'tpl_list_id':tpl_list_id},  
+            function(data){
+            
+            if (data.success==1)
+                {
+                    // alert(data.tpl_title)
+
+
+                     // $('#tpl_alert_title').val('');
+                   $('#tpl_size').val(data.tpl_size); 
+                   $('#tpl_id').val(data.tpl_id)
+                   $('#tpl_title').val('');
+                   $('#tpl_title').attr('placeholder',data.tpl_title);
+                   $('#tpl_remark').val('');
+                   $('#tpl_remark').attr('placeholder',data.tpl_remark);
+
+                    $('#tpl_kw1').val('');
+                    $('#tpl_kw2').val('');
+                    $('#tpl_kw3').val('');
+                    $('#tpl_kw4').val('');
+                    $('#tpl_kw5').val('');
+
+                    $('#tpl_kw1').attr('placeholder',data.tpl_kw1);
+                    $('#tpl_kw2').attr('placeholder',data.tpl_kw2);
+                    $('#tpl_kw3').attr('placeholder',data.tpl_kw3);
+                    $('#tpl_kw4').attr('placeholder',data.tpl_kw4);
+                    $('#tpl_kw5').attr('placeholder',data.tpl_kw5);
+
+                }
+                else
+                {
+                    $('#sms_surplus').val(0);
+                    
+                    // $("input[name='sms_status']:eq(1)").attr("checked",'checked');
+                }
+                
+            }, "json");
+        
+    }
+
+
+
+
+
+      function tpl_changecode()
+    {
+
+        var area_code = $('#tpl_area_code option:selected').val();
+        
+        $('#m_defaut_area').val(area_code);
+        $.post("{php echo $this->createWebUrl('base_setting')}", { "act":"tpl_change",'area_code':area_code},  
+            function(data){
+            
+            if (data.success==1)
+                {
+                    $('#tpl_title').val(data.tpl_title);
+                    $('#tpl_remark').val(data.tpl_remark);
+                    $('#tpl_kw1').val(data.tpl_kw1);
+                    $('#tpl_kw2').val(data.tpl_kw2);
+                    $('#tpl_kw3').val(data.tpl_kw3);
+                    $('#tpl_kw4').val(data.tpl_kw4);
+                    $('#tpl_kw5').val(data.tpl_kw5);
+                    $('#tpl_id').val(data.tpl_id);
+                }
+                else
+                {
+                    $('#sms_surplus').val(0);
+                    
+                    // $("input[name='sms_status']:eq(1)").attr("checked",'checked');
+                }
+                
+            }, "json");
+        
+    }
+
+ function get_tpl()
+    {
+
+        var short_id = $('#tpl_short_id').val();
+        
+       
+        $.post("{php echo $this->createWebUrl('base_setting')}", { "act":"get_tpl",'tpl_s_id':short_id},  
+            function(data){
+            
+            if (data.success==1)
+                {
+                    $('#tpl_alert_title').val(data.tpl_alert_title);
+                    $('#tpl_title').val(data.tpl_title);
+                    $('#tpl_remark').val(data.tpl_remark);
+                    $('#tpl_kw1').attr('placeholder',data.kw1);
+                    $('#tpl_kw2').attr('placeholder',data.kw2);
+                    $('#tpl_kw3').attr('placeholder',data.kw3);
+                    $('#tpl_kw4').attr('placeholder',data.kw4);
+                    $('#tpl_kw5').attr('placeholder',data.kw5);
+
+
+                }
+                else
+                {
+                   
+                    // $("input[name='sms_status']:eq(1)").attr("checked",'checked');
+                }
+                
+            }, "json");
+        
+    }
+
+
+    
+    
+</script>

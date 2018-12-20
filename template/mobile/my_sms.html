@@ -1,0 +1,83 @@
+{template 'header'}
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/jquery-weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/style.css">
+
+
+<link href="https://cdn.bootcss.com/Buttons/2.0.0/css/buttons.css" rel="stylesheet">
+<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
+
+
+
+{if empty($sms_list)}
+{template 'none_express'}
+{else}
+<div class="weui-form-preview">
+  
+    <div class="cells">
+         <div class="weui-cell" style="background: #FF8702;color: #FFF">
+          <div class="weui-cell__bd">
+             <p>{$shop['area_name']}</p>
+          </div>
+            <div class="weui-cell__ft"  style="color: #FFF">可分配：{$sms_list['manage']['total']}&nbsp;条</div>
+        </div>
+        {loop $sms_list['staff'] $sms_list}
+        <div class="weui-cell">
+          <div class="weui-cell__bd">
+           <p>{$sms_list['m_nickname']}</p>
+          </div>
+            <div class="weui-cell__ft" ><input type="number" name="surplus_{$sms_list['sms_id']}" value="{$sms_list['sms_surplus']}" style="border: none;text-align: right;padding-right:15px; padding-bottom: 5px; "></div>
+        </div>
+        {/loop}
+        {if $done!=1}
+          <div class="weui-loadmore weui-loadmore_line"  style="margin-bottom: 60px;" id="none_data">
+           <span class="weui-loadmore__tips">暂无人员数据</span>
+          </div>
+        {else}
+          <div class="weui-form-preview__ft">
+            <a class="weui-form-preview__btn weui-form-preview__btn_default" href="javascript:">确认更改</a>
+          </div>
+
+        
+
+        {/if}
+  </div>
+
+ 
+ 
+</div>
+{/if}
+<div style="margin-bottom: 55px;display: block;"></div>
+{template 'footer'}
+       
+
+<script src="{MODULE_URL}/template/mobile/js/jquery.min.js"></script>
+<script src="{MODULE_URL}/template/mobile/js/jquery-weui.min.js"></script>
+  
+
+ <script type="text/javascript">
+     function done(id)
+  {
+    $.post("{php echo $this->createMobileUrl('my_wait')}", {"act":'done',"id":id}, 
+                        function(data) 
+                        {
+                          if (data.success==1 )
+                          {
+                            
+                            $.toast("收件成功", "success");
+                            $("#code_"+data.rid).remove();
+                          }
+                          
+                          else
+                          {
+                             $.toast("收件失败", "cancel");
+                          }
+                          
+                        }, "json");
+  } 
+
+ </script> 
+
+		
+
+</html>

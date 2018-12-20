@@ -1,0 +1,1109 @@
+{template 'pc/pc_header'}
+
+<body>
+    <div id="wrapper">
+   
+       {template 'pc/pc_main_left'}
+        <div id="page-wrapper" class="gray-bg" >
+        {template 'pc/pc_main_top'}
+        {template 'pc/pc_page_nav'}
+            <div class="wrapper wrapper-content">
+                
+                <!-- 有店铺编号时才需显示，总管理员显示汇总 -->
+                <div class="row">
+                    <div class="col-lg-12">
+                <div class="ibox collapsed">
+                    <div class="ibox-title">
+                        <h5>当日数据汇总</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                                <i class="fa fa-calendar"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-user">
+                                <li><a href="#">当日数据汇总</a>
+                                </li>
+                                <li><a href="#">当月数据汇总</a>
+                                </li>
+                            </ul>
+                            <!-- <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a> -->
+                        </div>
+                    </div>
+                    <div class="ibox-content" style="display: none;">
+
+                        <p>这是一个说明</p>
+                       <p>这是一个说明1</p>
+                        
+                        
+                    </div>
+                </div>
+            </div>
+                <!-- <div class="col-lg-12">
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading">
+                                           当前店铺名：XXXXXXXXX
+                                        </div>
+                                        <div class="panel-body">
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>
+                                        </div> 
+                                    </div>
+                  </div>-->
+                </div>
+                 <!-- 有店铺编号时才需显示，总管理员显示汇总 -->
+        <div class="row">
+                    <div class="col-lg-3">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <span class="label label-success pull-right">当日数据</span>
+                                <h5>收件</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <h1 class="no-margins">{$s_in}</h1>
+                                <div class="stat-percent font-bold text-success">&nbsp;<i class="fa fa-"></i></div>
+                                <small>&nbsp;</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <span class="label label-info pull-right">当日数据</span>
+                                <h5>出件</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <h1 class="no-margins">{$s_out}</h1>
+                                <div class="stat-percent font-bold text-info">&nbsp;<i class="fa fa-"></i></div>
+                                <small>&nbsp;</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <span class="label label-primary pull-right">当日数据</span>
+                                <h5>微信发送</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <h1 class="no-margins">{$s_wx_notice}</h1>
+                                <div class="stat-percent font-bold text-navy">{if ($s_wx_notice+$s_message) >0}{php echo round($s_wx_notice/($s_wx_notice+$s_message)*100,2)}{else}0{/if}% <i class="fa "></i></div>
+                                <small>微信发送占比</small>
+                            </div>
+                        </div>
+                    </div>   
+                    <div class="col-lg-3">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <span class="label label-danger pull-right">当日数据</span>
+                                <h5>短信发送</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <h1 class="no-margins">{$s_message}</h1>
+                                <div class="stat-percent font-bold text-danger">{$s_message_price}元</div>
+                                <small>总费用</small>
+                            </div>
+                        </div>
+            </div>
+        </div>
+
+         <div class="row">
+                <div class="col-lg-4">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>店铺剩余短信量</h5>
+                        </div>
+                        {php $b=101}
+                        {php if ($shop_info['area_last_message']<$shop_info['area_alert_message']) $b= ($shop_info['area_last_message']/$shop_info['area_alert_message'])*100}
+                        <div class="ibox-content">
+                            
+                            <h5>当前数量：<label ">{$shop_info['area_last_message']}</label><label>&nbsp;&nbsp;<i class="fa fa-bell text-warning" aria-hidden="true">&nbsp;{$shop_info['area_alert_message']}{if ($b<100)}({php echo round($b,2)}%){/if}</i></label></h5>
+                            
+                            
+                            <div class="progress  progress-striped ">
+                                {if ($b>100)}
+                                <div style="width: 100%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="100" role="progressbar" class="progress-bar progress-bar-success"></div>
+                                {else}
+                                <div style="width: {php echo round($b,2)}%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="{php echo round($b,2)}" role="progressbar" class="progress-bar progress-bar-warning"></div>
+                                {/if}
+                            </div>
+
+                            
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>店长剩余短信量</h5>
+                        </div>
+                        <div class="ibox-content"> 
+                            {php $a =$manage_msn_total/200*100 }
+                            <h5>当前数量：<label ">{$manage_msn_total}</label><label>&nbsp;&nbsp;<i class="fa fa-bell text-danger" aria-hidden="true">&nbsp;200 {if $a<100}({$a}%){/if}</i></label></h5>
+
+                            <div class="progress  progress-striped ">
+                                <div style="width: {$a}%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="{$a}" role="progressbar" class="progress-bar progress-bar-danger">
+                                   
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>当日微信余量</h5>
+                         
+                        </div>
+                        <div class="ibox-content">
+                            
+                            <h5>当前数量：<label ">
+                             {php $a =  ($shop_info['area_wx_notice_total']-$shop_info['area_wx_notice_used'])/$shop_info['area_wx_notice_total']*100}   
+                            {$shop_info['area_wx_notice_used']}/{$shop_info['area_wx_notice_total']}</label><label >&nbsp;({php echo $a}%)</label></h5>
+
+                            <div class="progress  progress-striped ">
+                                <div style="width: {php echo $a}%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="{php echo $a}" role="progressbar" class="progress-bar progress-bar-warning">
+                              
+                                </div>
+                            </div>
+
+                            
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+
+        <div class="row">
+                    <div class="col-lg-12">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>各时间段收发件</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="flot-chart">
+                                         <div id="container2" style="height: 100%;" ></div>
+                                    </div>
+                                </div>
+                                 <div class="col-lg-6">
+                                    <div class="flot-chart">
+                                      <div id="container1" style="height: 100%"></div>
+                                       
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <ul class="stat-list">
+                                        <li>
+                                            <h2 class="no-margins">{$sum_in}</h2>
+                                            <small>当日总收件数</small>
+                                            <!-- <div class="stat-percent">48% <i class="fa fa-level-up text-navy"></i></div> -->
+                                            <div class="progress progress-mini">
+                                                <div style="width: 50%;" class="progress-bar"></div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <h2 class="no-margins ">{$sum_out}</h2>
+                                            <small>当日总出件数</small>
+                                        <!--  <div class="stat-percent">60% <i class="fa fa-level-down text-navy"></i></div> -->
+                                            <div class="progress progress-mini">
+                                                <div style="width: 50%;" class="progress-bar"></div>
+                                            </div> 
+                                        </li>
+                                        <li>
+                                            <h2 class="no-margins ">0</h2>
+                                            <small>当前滞留件数</small>
+                                           <!--  <div class="stat-percent">22% <i class="fa fa-bolt text-navy"></i></div> -->
+                                            <div class="progress progress-mini">
+                                                <div style="width: 50%;" class="progress-bar"></div>
+                                            </div>
+                                        </li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                                </div>
+
+                            </div>
+                        </div>
+            </div>
+
+
+           <!--  <div class="row">
+                    <div class="col-lg-12">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>各时间段收发件</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="row">
+                                <div class="col-lg-9">
+                                    <div class="flot-chart">
+                                         <div id="container2" style="height: 100%"></div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <ul class="stat-list">
+                                        <li>
+                                            <h2 class="no-margins">2,346</h2>
+                                            <small>当月总收件数</small>
+                                            <div class="stat-percent">48% <i class="fa fa-level-up text-navy"></i></div>
+                                            <div class="progress progress-mini">
+                                                <div style="width: 48%;" class="progress-bar"></div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <h2 class="no-margins ">4,422</h2>
+                                            <small>当月总出件数</small>
+                                            <div class="stat-percent">60% <i class="fa fa-level-down text-navy"></i></div>
+                                            <div class="progress progress-mini">
+                                                <div style="width: 60%;" class="progress-bar"></div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <h2 class="no-margins ">9,180</h2>
+                                            <small>当前滞留件数</small>
+                                            <div class="stat-percent">22% <i class="fa fa-bolt text-navy"></i></div>
+                                            <div class="progress progress-mini">
+                                                <div style="width: 22%;" class="progress-bar"></div>
+                                            </div>
+                                        </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                </div>
+
+                            </div>
+                        </div>
+            </div> -->
+
+        
+
+                <div class="row">
+                  
+
+                    <div class="col-lg-12">
+
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5>最近微信发送</h5>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <table class="table table-hover no-margins">
+                                            <thead>
+                                            <tr>
+                                                <th>发送时间</th>
+                                                <th>姓名</th>
+                                                <th>状态</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            {loop $wx_send_list $wx_send_list}  
+                                                <tr>
+                                                    <td><i class="fa fa-clock-o"></i> {php echo date("m-d H:i",$wx_send_list['send_time'])}</td>
+                                                    <td>{$wx_send_list['nickname']}</td>
+                                                   
+                                                    <td>{if $wx_send_list['send_status'] =="true"}<small >成功</small>{else}<small class="text-danger">失败</small>{/if}</td>
+                                                </tr>
+                                            {/loop}
+                                            
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5>最近短信发送</h5>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <table class="table table-hover no-margins">
+                                            <thead>
+                                            <tr>
+                                                <th>发送时间</th>
+                                                <th>号码</th>
+                                                <th>类型</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                             {loop $msn_send_list $msn_send_list} 
+                                                <tr>
+                                                    <td><i class="fa fa-clock-o"></i> {php echo date("m-d H:i",$msn_send_list['send_time'])}</td>
+                                                     <td><small>{$msn_send_list['send_to_tel']}</small></td>
+                                                    <td><small>{if $msn_send_list['send_type']==1}注册短信{/if}{if $msn_send_list['send_type']==3}取件短信{/if}{if $msn_send_list['send_type']==2}重绑短信{/if}</small></td>
+                                                   
+                                                </tr>
+                                             {/loop}
+                                            
+                                            
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5>最近代收寄记录</h5>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <table class="table table-hover no-margins">
+                                            <thead>
+                                            <tr>
+                                                <th>发送时间</th>
+                                                <th>快递公司</th>
+                                                <th>发往城市</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            
+                                            <tr>
+                                                <td><i class="fa fa-clock-o"></i> 11:20pm</td>
+                                                <td>顺风</td>
+                                                <td><small>浙江省宁波市</small></td>
+                                            </tr>
+                                            
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        
+                        
+                    </div>
+
+
+                </div>
+
+
+
+
+
+<div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox">
+                        <div class="ibox-title">
+                    <h5>店员数据统计<small></small></h5>
+                    </div>
+                        <div class="ibox-content">
+
+                            
+<div class="row">
+                <div class="col-md-3">
+                    <div class="ibox">
+                        <div class="ibox-content product-box">
+
+                            <div class="product-imitation">
+                                 <img alt="image" class="img-circle" src="http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83epemMBsePiaU1vZ2YffaPuUjicWngrSCmnkU1yt6VLLKsxK4wUIoAruvLK9VdTs0J6XlichQamKWNIrg/132">
+                            </div>
+                            <div class="product-desc">
+                                <span class="product-price">
+                                    $10
+                                </span>
+                                <p class="text-muted">名字</p>
+
+                                <div class="small m-t-xs">
+                                   <p>当日收件：11</p>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                  <div class="col-md-3">
+                    <div class="ibox">
+                        <div class="ibox-content product-box">
+
+                            <div class="product-imitation">
+                                 <img alt="image" class="img-circle" src="http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83epemMBsePiaU1vZ2YffaPuUjicWngrSCmnkU1yt6VLLKsxK4wUIoAruvLK9VdTs0J6XlichQamKWNIrg/132">
+                            </div>
+                            <div class="product-desc">
+                                <span class="product-price">
+                                    $10
+                                </span>
+                                <p class="text-muted">名字</p>
+
+                                <div class="small m-t-xs">
+                                   <p>当日收件：11</p>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+            
+            
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                </div>
+        <div class="footer">
+            <div class="pull-right">
+                10GB of <strong>250GB</strong> Free.
+            </div>
+            <div>
+                <strong>Copyright</strong> Example Company &copy; 2014-2017
+            </div>
+        </div>
+        </div>
+        <div id="right-sidebar">
+            <div class="sidebar-container">
+
+                <ul class="nav nav-tabs navs-3">
+
+                    <li class="active"><a data-toggle="tab" href="#tab-1">
+                        Notes
+                    </a></li>
+                    <li><a data-toggle="tab" href="#tab-2">
+                        Projects
+                    </a></li>
+                    <li class=""><a data-toggle="tab" href="#tab-3">
+                        <i class="fa fa-gear"></i>
+                    </a></li>
+                </ul>
+
+                <div class="tab-content">
+
+
+                    <div id="tab-1" class="tab-pane active">
+
+                        <div class="sidebar-title">
+                            <h3> <i class="fa fa-comments-o"></i> Latest Notes</h3>
+                            <small><i class="fa fa-tim"></i> You have 10 new message.</small>
+                        </div>
+
+                        <div>
+
+                            <div class="sidebar-message">
+                                <a href="#">
+                                    <div class="pull-left text-center">
+                                        <img alt="image" class="img-circle message-avatar" src="img/a1.jpg">
+
+                                        <div class="m-t-xs">
+                                            <i class="fa fa-star text-warning"></i>
+                                            <i class="fa fa-star text-warning"></i>
+                                        </div>
+                                    </div>
+                                    <div class="media-body">
+
+                                        There are many variations of passages of Lorem Ipsum available.
+                                        <br>
+                                        <small class="text-muted">Today 4:21 pm</small>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="sidebar-message">
+                                <a href="#">
+                                    <div class="pull-left text-center">
+                                        <img alt="image" class="img-circle message-avatar" src="img/a2.jpg">
+                                    </div>
+                                    <div class="media-body">
+                                        The point of using Lorem Ipsum is that it has a more-or-less normal.
+                                        <br>
+                                        <small class="text-muted">Yesterday 2:45 pm</small>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="sidebar-message">
+                                <a href="#">
+                                    <div class="pull-left text-center">
+                                        <img alt="image" class="img-circle message-avatar" src="img/a3.jpg">
+
+                                        <div class="m-t-xs">
+                                            <i class="fa fa-star text-warning"></i>
+                                            <i class="fa fa-star text-warning"></i>
+                                            <i class="fa fa-star text-warning"></i>
+                                        </div>
+                                    </div>
+                                    <div class="media-body">
+                                        Mevolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+                                        <br>
+                                        <small class="text-muted">Yesterday 1:10 pm</small>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="sidebar-message">
+                                <a href="#">
+                                    <div class="pull-left text-center">
+                                        <img alt="image" class="img-circle message-avatar" src="img/a4.jpg">
+                                    </div>
+
+                                    <div class="media-body">
+                                        Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the
+                                        <br>
+                                        <small class="text-muted">Monday 8:37 pm</small>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="sidebar-message">
+                                <a href="#">
+                                    <div class="pull-left text-center">
+                                        <img alt="image" class="img-circle message-avatar" src="img/a8.jpg">
+                                    </div>
+                                    <div class="media-body">
+
+                                        All the Lorem Ipsum generators on the Internet tend to repeat.
+                                        <br>
+                                        <small class="text-muted">Today 4:21 pm</small>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="sidebar-message">
+                                <a href="#">
+                                    <div class="pull-left text-center">
+                                        <img alt="image" class="img-circle message-avatar" src="img/a7.jpg">
+                                    </div>
+                                    <div class="media-body">
+                                        Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
+                                        <br>
+                                        <small class="text-muted">Yesterday 2:45 pm</small>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="sidebar-message">
+                                <a href="#">
+                                    <div class="pull-left text-center">
+                                        <img alt="image" class="img-circle message-avatar" src="img/a3.jpg">
+
+                                        <div class="m-t-xs">
+                                            <i class="fa fa-star text-warning"></i>
+                                            <i class="fa fa-star text-warning"></i>
+                                            <i class="fa fa-star text-warning"></i>
+                                        </div>
+                                    </div>
+                                    <div class="media-body">
+                                        The standard chunk of Lorem Ipsum used since the 1500s is reproduced below.
+                                        <br>
+                                        <small class="text-muted">Yesterday 1:10 pm</small>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="sidebar-message">
+                                <a href="#">
+                                    <div class="pull-left text-center">
+                                        <img alt="image" class="img-circle message-avatar" src="img/a4.jpg">
+                                    </div>
+                                    <div class="media-body">
+                                        Uncover many web sites still in their infancy. Various versions have.
+                                        <br>
+                                        <small class="text-muted">Monday 8:37 pm</small>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div id="tab-2" class="tab-pane">
+
+                        <div class="sidebar-title">
+                            <h3> <i class="fa fa-cube"></i> Latest projects</h3>
+                            <small><i class="fa fa-tim"></i> You have 14 projects. 10 not completed.</small>
+                        </div>
+
+                        <ul class="sidebar-list">
+                            <li>
+                                <a href="#">
+                                    <div class="small pull-right m-t-xs">9 hours ago</div>
+                                    <h4>Business valuation</h4>
+                                    It is a long established fact that a reader will be distracted.
+
+                                    <div class="small">Completion with: 22%</div>
+                                    <div class="progress progress-mini">
+                                        <div style="width: 22%;" class="progress-bar progress-bar-warning"></div>
+                                    </div>
+                                    <div class="small text-muted m-t-xs">Project end: 4:00 pm - 12.06.2014</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <div class="small pull-right m-t-xs">9 hours ago</div>
+                                    <h4>Contract with Company </h4>
+                                    Many desktop publishing packages and web page editors.
+
+                                    <div class="small">Completion with: 48%</div>
+                                    <div class="progress progress-mini">
+                                        <div style="width: 48%;" class="progress-bar"></div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <div class="small pull-right m-t-xs">9 hours ago</div>
+                                    <h4>Meeting</h4>
+                                    By the readable content of a page when looking at its layout.
+
+                                    <div class="small">Completion with: 14%</div>
+                                    <div class="progress progress-mini">
+                                        <div style="width: 14%;" class="progress-bar progress-bar-info"></div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span class="label label-primary pull-right">NEW</span>
+                                    <h4>The generated</h4>
+                                    <!--<div class="small pull-right m-t-xs">9 hours ago</div>-->
+                                    There are many variations of passages of Lorem Ipsum available.
+                                    <div class="small">Completion with: 22%</div>
+                                    <div class="small text-muted m-t-xs">Project end: 4:00 pm - 12.06.2014</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <div class="small pull-right m-t-xs">9 hours ago</div>
+                                    <h4>Business valuation</h4>
+                                    It is a long established fact that a reader will be distracted.
+
+                                    <div class="small">Completion with: 22%</div>
+                                    <div class="progress progress-mini">
+                                        <div style="width: 22%;" class="progress-bar progress-bar-warning"></div>
+                                    </div>
+                                    <div class="small text-muted m-t-xs">Project end: 4:00 pm - 12.06.2014</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <div class="small pull-right m-t-xs">9 hours ago</div>
+                                    <h4>Contract with Company </h4>
+                                    Many desktop publishing packages and web page editors.
+
+                                    <div class="small">Completion with: 48%</div>
+                                    <div class="progress progress-mini">
+                                        <div style="width: 48%;" class="progress-bar"></div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <div class="small pull-right m-t-xs">9 hours ago</div>
+                                    <h4>Meeting</h4>
+                                    By the readable content of a page when looking at its layout.
+
+                                    <div class="small">Completion with: 14%</div>
+                                    <div class="progress progress-mini">
+                                        <div style="width: 14%;" class="progress-bar progress-bar-info"></div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span class="label label-primary pull-right">NEW</span>
+                                    <h4>The generated</h4>
+                                    <!--<div class="small pull-right m-t-xs">9 hours ago</div>-->
+                                    There are many variations of passages of Lorem Ipsum available.
+                                    <div class="small">Completion with: 22%</div>
+                                    <div class="small text-muted m-t-xs">Project end: 4:00 pm - 12.06.2014</div>
+                                </a>
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                    <div id="tab-3" class="tab-pane">
+
+                        <div class="sidebar-title">
+                            <h3><i class="fa fa-gears"></i> Settings</h3>
+                            <small><i class="fa fa-tim"></i> You have 14 projects. 10 not completed.</small>
+                        </div>
+
+                        <div class="setings-item">
+                    <span>
+                        Show notifications
+                    </span>
+                            <div class="switch">
+                                <div class="onoffswitch">
+                                    <input type="checkbox" name="collapsemenu" class="onoffswitch-checkbox" id="example">
+                                    <label class="onoffswitch-label" for="example">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="setings-item">
+                    <span>
+                        Disable Chat
+                    </span>
+                            <div class="switch">
+                                <div class="onoffswitch">
+                                    <input type="checkbox" name="collapsemenu" checked class="onoffswitch-checkbox" id="example2">
+                                    <label class="onoffswitch-label" for="example2">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="setings-item">
+                    <span>
+                        Enable history
+                    </span>
+                            <div class="switch">
+                                <div class="onoffswitch">
+                                    <input type="checkbox" name="collapsemenu" class="onoffswitch-checkbox" id="example3">
+                                    <label class="onoffswitch-label" for="example3">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="setings-item">
+                    <span>
+                        Show charts
+                    </span>
+                            <div class="switch">
+                                <div class="onoffswitch">
+                                    <input type="checkbox" name="collapsemenu" class="onoffswitch-checkbox" id="example4">
+                                    <label class="onoffswitch-label" for="example4">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="setings-item">
+                    <span>
+                        Offline users
+                    </span>
+                            <div class="switch">
+                                <div class="onoffswitch">
+                                    <input type="checkbox" checked name="collapsemenu" class="onoffswitch-checkbox" id="example5">
+                                    <label class="onoffswitch-label" for="example5">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="setings-item">
+                    <span>
+                        Global search
+                    </span>
+                            <div class="switch">
+                                <div class="onoffswitch">
+                                    <input type="checkbox" checked name="collapsemenu" class="onoffswitch-checkbox" id="example6">
+                                    <label class="onoffswitch-label" for="example6">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="setings-item">
+                    <span>
+                        Update everyday
+                    </span>
+                            <div class="switch">
+                                <div class="onoffswitch">
+                                    <input type="checkbox" name="collapsemenu" class="onoffswitch-checkbox" id="example7">
+                                    <label class="onoffswitch-label" for="example7">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sidebar-content">
+                            <h4>Settings</h4>
+                            <div class="small">
+                                I belive that. Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                                And typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+                                Over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+
+
+        </div>
+    </div>
+
+<script type="text/javascript" src="{MODULE_URL}/template/pc/js/echarts.min.js"></script>
+<script type="text/javascript" src="{MODULE_URL}/template/pc/js/echarts-gl.min.js"></script>
+<script type="text/javascript" src="{MODULE_URL}/template/pc/js/ecStat.min.js"></script>
+<script type="text/javascript" src="{MODULE_URL}/template/pc/js/dataTool.min.js"></script>
+<script type="text/javascript" src="{MODULE_URL}/template/pc/js/china.js"></script>
+<script type="text/javascript" src="{MODULE_URL}/template/pc/js/world.js"></script>
+<script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
+<script type="text/javascript" src="{MODULE_URL}/template/pc/js/bmap.min.js"></script>
+<script type="text/javascript" src="{MODULE_URL}/template/pc/js/simplex.js"></script>
+      <script type="text/javascript">
+	
+	  
+			
+var dom = document.getElementById("container4");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
+option = {
+    title : {
+        text: '当日发送图表',
+        subtext: '',
+        x:'center'
+    },
+    tooltip : {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
+    },
+    legend: {
+        orient: 'vertical',
+        left: 'left',
+        data: ['微信','短信']
+    },
+    series : [
+        {
+            name: '发送方式',
+            type: 'pie',
+            radius : '55%',
+            center: ['50%', '60%'],
+            data:[
+                {value:335, name:'微信'},
+                {value:310, name:'短信'}
+            ],
+            itemStyle: {
+                emphasis: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        }
+    ]
+};
+;
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+       </script>
+
+
+
+<script type="text/javascript">
+var dom = document.getElementById("container2");
+
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
+option = {
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data:['快件入库','快件出库']
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: {php echo $json_s_date}
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+        {
+            name:'快件入库',
+            type:'line',
+            smooth: true,
+            data:{php echo $json_hour_in_data}
+        },
+        {
+            name:'快件出库',
+            type:'line',
+            
+            smooth: true,
+            data:{php echo $json_hour_out_data}
+        },
+        
+       
+    ]
+};
+
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+</script>
+
+<script type="text/javascript">
+var dom = document.getElementById("container3");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
+option = {
+   
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data:['快件入库','快件出库']
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: {php echo $json_s_date}
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+        {
+            name:'快件入库',
+            type:'line',
+            
+            smooth: true,
+            data:{php echo $json_hour_in_data}
+        },
+        {
+            name:'快件出库',
+            type:'line',
+            
+            smooth: true,
+            data:{php echo $json_hour_out_data}
+        },
+        
+       
+    ]
+};
+
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+       </script>
+<script type="text/javascript">
+var dom = document.getElementById("container1");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
+option = {
+    title : {
+        text: '快递公司占比列表',
+        subtext: '',
+        x:'center'
+    },
+    tooltip : {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
+    },
+    legend: {
+        orient: 'vertical',
+        left: 'left',
+        data: {php echo $json_company_name;}
+    },
+    series : [
+        {
+            name: '访问来源',
+            type: 'pie',
+            radius : '55%',
+            center: ['50%', '60%'],
+            data:{php echo $json_company_data;},
+            itemStyle: {
+                emphasis: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        }
+    ]
+};
+;
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+       </script>
+
+    
+
+    <!-- Mainly scripts -->
+    <script src="{MODULE_URL}/template/pc/js/jquery-3.1.1.min.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/bootstrap.min.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Peity -->
+    <script src="{MODULE_URL}/template/pc/js/plugins/peity/jquery.peity.min.js"></script>
+   
+
+    <!-- Custom and plugin javascript -->
+    <script src="{MODULE_URL}/template/pc/js/inspinia.js"></script>
+   
+
+    <!-- jQuery UI -->
+    <script src="{MODULE_URL}/template/pc/js/plugins/jquery-ui/jquery-ui.min.js"></script>
+
+   
+  
+    
+</body>
+</html>

@@ -1,0 +1,70 @@
+
+{template 'header'}
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/jquery-weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/style.css">
+
+<body>
+{if empty($my_staff_list)}
+  {template 'none_express'} 
+{else}
+  <div class="weui-panel" >
+       {loop $my_staff_list  $my_staff_list}
+        <div class="weui-panel__bd" >
+          <div class="weui-media-box weui-media-box_text">
+           <div class="weui-cell">
+            <div class="weui-cell__hd" style="margin: 0"><img src="{$my_staff_list['m_avatar']}" alt="" style="width:45px;margin-right:5px;display:block;border-radius: 50%"></div>
+            <div class="weui-cell__bd">
+              <p>{$my_staff_list['m_nickname']}</p>
+            </div>
+            <!-- onclick="{$my_staff_list['id']} -->
+            <div class="weui-cell__ft"> <input class="weui-switch" type="checkbox" {if $my_staff_list['m_level']==3}checked="checked{/if}"  onchange="chage_check({$my_staff_list['id']},{$my_staff_list['m_level']})"></div>
+          </div>
+            <ul class="weui-media-box__info">
+              <li class="weui-media-box__info__meta">姓名：</li>
+              <li class="weui-media-box__info__meta">{$my_staff_list['m_realname']}</li>
+              <li class="weui-media-box__info__meta weui-media-box__info__meta_extra">电话：</li>
+              <li class="weui-media-box__info__meta">{$my_staff_list['m_tel']}</li>
+            </ul>
+          </div>
+        </div>
+    {/loop}
+
+      </div>
+
+       {/if}
+      <script src="{MODULE_URL}/template/mobile/js/jquery.min.js"></script>
+<script src="{MODULE_URL}/template/mobile/js/jquery-weui.min.js"></script>
+  
+    
+<script type="text/javascript">
+  function chage_check(id ,is_flag)
+  {
+
+
+   $.post("{php echo $this->createMobileUrl('my_staff_list')}", {"act":"change_stats",'is_flag':is_flag,'id':id}, 
+                    function(data) 
+                    {
+                      if(data.success==1)
+                      {
+                         $.toast("授权操作成功","success");
+                      }
+                       if(data.success==0)
+                      {
+                         $.toast("取消授权成功","success");
+                      }
+                        if(data.success=='cancel')
+                      {
+                         $.toast("操作失败！","cancel");
+                      }
+                      
+
+                    }, "json");
+  
+  }
+</script>
+     
+{template 'footer'}
+</body>
+</html>
+

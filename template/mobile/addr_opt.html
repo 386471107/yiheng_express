@@ -1,0 +1,202 @@
+{template 'header'}
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/jquery-weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/index.css">
+<body>
+  {template 'header'}
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/jquery-weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/index.css">
+<body>
+  
+<div class="weui-panel weui-panel_access">
+
+ <div class="weui-cells ">
+    <div class="weui-panel__bd ">
+      <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg open-popup" data-target="#full">
+        <div class="weui-media-box__hd">
+          <img class="weui-media-box__thumb" src="{MODULE_URL}/template/mobile/images/icon_recive_txt.png">
+        </div>
+        <div class="weui-media-box__bd " >
+          <h4 class="weui-media-box__title">点击选择收件人</h4>
+          <p class="weui-media-box__desc">暂无默认收件人</p>
+        </div>
+        <div class=" weui-cell__ft">>></div>
+      </a>
+      <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg open-popup" data-target="#full">
+        <div class="weui-media-box__hd">
+          <img class="weui-media-box__thumb" src="{MODULE_URL}/template/mobile/images/icon_send_txt.png">
+        </div>
+        <div class="weui-media-box__bd">
+          <h4 class="weui-media-box__title">点击选择寄件人</h4>
+          <p class="weui-media-box__desc">暂无默认寄件人</p>
+        </div>
+        <div class=" weui-cell__ft">>></div>
+      </a>
+    </div>
+ </div> 
+
+      <div class="weui-cells">
+          <a class="weui-cell weui-cell_access" href="javascript:;">
+            <div class="weui-cell__bd">
+              <p>物品信息</p>
+            </div>
+            <div class="weui-cell__ft">请选择物品信息</div>
+          </a>
+        </div>
+    <div class="weui-cells">
+        <div class="weui-flex">
+        <div class="weui-flex__item">
+          <a class="weui-cell weui-cell_access" href="javascript:;">
+            <div class="weui-cell__bd">
+              <p>重量</p>
+            </div>
+            <div class="weui-cell__ft">0.00kg</div>
+          </a>
+        </div>
+        <div class="weui-flex__item">
+           <a class="weui-cell weui-cell_access" href="javascript:;">
+            <div class="weui-cell__bd">
+              <p>保价</p>
+            </div>
+            <div class="weui-cell__ft">0.00元</div>
+          </a>
+        </div>
+      </div>
+   </div>   
+  <div class="weui-cells weui-cells_form">
+      <div class="weui-cell">
+        <div class="weui-cell__bd">
+          <textarea class="weui-textarea" placeholder="可以给快递小哥留个话，比如：贵重物品，请小心投递" rows="2"></textarea>
+          <!-- <div class="weui-textarea-counter"><span></span></div> -->
+        </div>
+      </div>
+    </div>
+  
+    <div class="weui-cell weui-cell__ft">取件时间：08:00 - 20:00</div>
+</div>
+
+
+<div class="weui-tabbar footer" style="position: fixed;" >
+<input type="submit"  class="weui-btn weui-btn_primary " value="寄件" >
+</div>
+
+   
+<div id="full" class='weui-popup__container' style="z-index: 2000">
+      <div class="weui-popup__overlay"></div>
+      <div class="weui-popup__modal">
+        <div class="toolbar">
+          <div class="toolbar-inner">
+            <a href="javascript:;" class="picker-button close-popup">关闭</a>
+            <h1 class="title">请选择寄件人</h1>
+          </div>
+        </div>
+   
+   
+        <div style="padding-bottom:68px;">
+        <div class="site-operation weui-cells_checkbox">
+          <div class="weui-cell b-top ">
+          <label class="weui-cell__hd weui-check__label" for="s13">
+            <input type="radio" class="weui-check" name="checkbox1" id="s13" checked="checked">
+          <i class="weui-icon-checked"></i>
+          </label>
+          <div class="weui-cell__bd" for="s13">
+              <div class="name">小官<span>常用地址</span></div>
+              <div class="site">广东省深圳市宝安区留仙一路高新奇二期1号楼3层伴游人</div>
+              <div class="phone">13728936116</div>
+          </div>
+          <div class="weui-cell__ft compile"><i></i></div>
+        </div>
+        <div class="weui-cell b-top">
+          <label class="weui-cell__hd weui-check__label" for="s14">
+            <input type="radio" class="weui-check" name="checkbox1" id="s14">
+          <i class="weui-icon-checked"></i>
+          </label>
+          <div class="weui-cell__bd">
+              <div class="name">小明</div>
+              <div class="site">广东省深圳市宝安区坪洲地铁站B出口</div>
+              <div class="phone">13728936116</div>
+          </div>
+          <div class="weui-cell__ft compile"><i></i></div>
+        </div>
+        <div class="weui-cell b-top">
+          <label class="weui-cell__hd weui-check__label" for="s15">
+            <input type="radio" class="weui-check" name="checkbox1" id="s15">
+          <i class="weui-icon-checked"></i>
+          </label>
+          <div class="weui-cell__bd">
+              <div class="name">小红</div>
+              <div class="site">广东省深圳市宝安区留仙一路高新奇二期1号楼3B09</div>
+              <div class="phone">13728936116</div>
+          </div>
+          <div class="weui-cell__ft compile"><i></i></div>
+        </div>
+        </div>
+                       
+    </div>
+
+    <div class="weui-flex weui-fixed-btm p10">
+    <a href="新添地址.html" class="weui-btn weui-btn_primary">新添地址</a>
+  </div>
+
+
+        
+      </div>
+    </div>
+
+
+
+
+</body>
+    <script src="{MODULE_URL}template/mobile/js/jquery-2.1.4.js"></script>
+<script src="../lib/fastclick.js"></script>
+<script>
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+<script src="{MODULE_URL}template/mobile/js/jquery-weui.js"></script>
+
+    <script>
+      $(document).on("open", ".weui-popup-modal", function() {
+        console.log("open popup");
+      }).on("close", ".weui-popup-modal", function() {
+        console.log("close popup");
+      });
+    </script>
+  
+
+
+
+
+
+</html>
+
+
+
+
+</body>
+    <script src="{MODULE_URL}template/mobile/js/jquery-2.1.4.js"></script>
+<script src="../lib/fastclick.js"></script>
+<script>
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+<script src="{MODULE_URL}template/mobile/js/jquery-weui.js"></script>
+
+    <script>
+      $(document).on("open", ".weui-popup-modal", function() {
+        console.log("open popup");
+      }).on("close", ".weui-popup-modal", function() {
+        console.log("close popup");
+      });
+    </script>
+  
+
+
+
+
+
+</html>
+

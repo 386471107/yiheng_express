@@ -1,0 +1,29 @@
+2018.9.24
+新增ims_yiheng_express_delivery 表
+
+2018.9.26
+新增ims_yiheng_express_pages 表，主要是控制访问需求
+2018.9.29
+新增ims_yiheng_express_web_user 表，后台店铺控制，
+未完成:				新增店铺时应同时设置此表
+
+
+2018.9.29
+ims_yiheng_express_member
+修改m_fansid，m_uid不能为空，新增时有问题，需要跟进解决
+
+
+2018.10.5
+修改ims_yiheng_express_sms_info
+新增sms_notice字段，更改后通知用户
+
+
+2018.10.11 
+修改ims_yiheng_express_statistics
+新增s_total_notice字段，更改后通知用户
+
+修改ims_yiheng_express_recode
+新增recoder_create_year,recoder_create_month,recoder_create_day,recoder_create_hour字段，更改后方便统计
+新增recoder_update_year,recoder_update_month,recoder_update_day,recoder_update_hour字段，更改后方便统计
+
+新增ims_yiheng_express_web_user表，后台用户权限控制

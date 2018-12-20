@@ -1,0 +1,230 @@
+ {template 'pc/pc_header'}
+<body>
+
+    <div id="wrapper">
+
+    {template 'pc/pc_main_left'}
+
+        <div id="page-wrapper" class="gray-bg">
+        {template 'pc/pc_main_top'}
+        {template 'pc/pc_page_nav'}
+           
+        <div class="wrapper wrapper-content animated fadeInRight">
+         
+            <div class="row">
+              
+                <div class="col-lg-9">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-content">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>电话 </th>
+                                        <th>姓名 </th>
+                                        <th>小区</th>
+                                        <th>详细地址</th>
+                                        <th>用户来源店铺</th>
+                                        <th>手机</th>
+                                        <th>状态</th>
+
+                                    </thead>
+                                    <tbody>
+                                     {loop $mlist $mlist}
+                                     
+                                    <tr>
+                                       <td><a onclick="show_info({$mlist['id']},{$mlist['m_tel']})"> <small>{$mlist['m_tel']}</small></a></td>
+                                        <td><small>{$mlist['tl_uname']}</small></td>
+                                        <td><small>{$mlist['tl_area']}</small></td>
+                                          <td><small>{$mlist['tl_addr']}</small></td>
+                                            <td><small>{$mlist['shop_in']}</small></td>
+                                        <td>{if $mlist['tl_exsit'] ==1}<small class="label label-success pull-left">关注</small>{else}<small class="label label-warning pull-left">未关注</small>{/if}</td>
+                                         
+                                      <td >
+                                            <a href="{php echo $this->createWebUrl('pc_member_edit',array('act' =>'edit','id' =>$mlist['bind_m_uid']))}"><button class=" btn btn-primary btn-xs ">编辑</button></a>
+
+                                             <!-- <a href="{php echo $this->createWebUrl('pc_member_list',array('act' =>'cancel','id' =>$mlist['id']))}" onclick="return confirm('确认不显示该用户吗？');return false;" class="btn btn-danger btn-xs" >置底</a> -->
+
+                                           
+                                         </td>
+                                    </tr>
+                                    {/loop}
+
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+                            
+
+                        </div>
+                        {$pager}
+                    </div>
+
+                     
+                    
+
+                </div>
+                
+                
+                
+                
+                <div class="col-lg-3 animated fadeInRight">
+            <div class="mail-box-header">
+                <div class="pull-right tooltip-demo">
+                    <a  class="btn btn-danger btn-sm"  onclick="save_info()"><i class="fa fa-save"></i> 保存</a>
+                </div>
+                <h2>
+                    用户编辑
+                </h2>
+                <h5 id="cur_tel" class="text-success">
+                    用户电话
+                </h5>
+            </div>
+                <div class="mail-box">
+                <div class="mail-body">
+                   <form method="POST" name="form1" id ="form1">
+                                    <div class="panel-body">
+                                        <input type="hidden" name="uid" id= "uid" value="{$item['sms_uid']}">
+                                        <fieldset class="form-horizontal">
+                                            
+                                            <div class="row">
+                                                <label class="col-lg-12 text-primary text-left">姓名:</label>
+                                                <div class="form-group">
+                                                    <div class="col-lg-12">
+                                                         <input class="form-control" id="uname" name="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <label class="col-lg-12 text-primary text-left">小区:</label>
+                                                <div class="form-group">
+                                                    <div class="col-lg-12">
+                                                         <input class="form-control"  id="uarea" >
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        
+                                            <div class="row">
+                                                <label class="col-lg-12 text-primary text-left">详细地址:</label>
+                                                <div class="form-group">
+                                                    <div class="col-lg-12">
+                                                         <input class="form-control" id="udetail"   >
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                               <input type="hidden" class="form-control" id="sid" >
+                                        
+                                        
+
+
+                                        </fieldset>
+                                        <div class="hr-line-dashed"></div>
+                                        <div id="result"></div>
+                                    </form>
+                   
+                    <div class="clearfix"></div>
+
+
+
+                </div>
+            </div>
+                
+                
+                
+                
+
+            </div>
+        </div>
+        
+        
+      
+    {template 'pc/pc_footer'}
+      
+
+        </div>
+        </div>
+
+ 
+
+    <!-- Mainly scripts -->
+    <script src="{MODULE_URL}/template/pc/js/jquery-3.1.1.min.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/bootstrap.min.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Peity -->
+    <script src="{MODULE_URL}/template/pc/js/plugins/peity/jquery.peity.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="{MODULE_URL}/template/pc/js/inspinia.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/plugins/pace/pace.min.js"></script>
+
+    <!-- iCheck -->
+    <script src="{MODULE_URL}/template/pc/js/plugins/iCheck/icheck.min.js"></script>
+
+    <!-- Peity -->
+    <script src="{MODULE_URL}/template/pc/js/demo/peity-demo.js"></script>
+    <script>
+        
+        function show_info(id,tel)
+        {
+          $("#cur_tel").html(tel)
+          $.post("{php echo $this->createWebUrl('pc_member_list')}", { "act":"fill_info","cur_id":id},  
+            function(data){
+            
+            if (data.success==1)
+                {
+                    $("#uname").val(data.tl_uname);
+                    $("#uarea").val(data.tl_area);
+                    $("#udetail").val(data.tl_addr);
+                     $("#sid").val(id);
+
+                }
+            }, "json");
+               
+        }
+
+
+         function save_info()
+        {
+           id= $("#sid").val();
+           uname= $("#uname").val();
+           uarea= $("#uarea").val();
+           udetail= $("#udetail").val();
+
+          $.post("{php echo $this->createWebUrl('pc_member_list')}", { "act":"save_info","cur_id":id,"uname":uname,"uarea":uarea,"udetail":udetail,},  
+            function(data){
+            
+            if (data.success==1)
+                {
+                    $("#result").html("更新成功！")
+                }
+                else
+                {
+                    $("#result").html("更新不成功！")
+                }
+            }, "json");
+               
+        }
+     
+     
+
+     
+     
+    
+    
+    </script>
+    <script>
+        $(document).ready(function(){
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+        });
+    </script>
+
+</body>
+
+</html>

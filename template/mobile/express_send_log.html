@@ -1,0 +1,49 @@
+{template 'header'}
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/jquery-weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/style.css">
+
+
+<link href="https://cdn.bootcss.com/Buttons/2.0.0/css/buttons.css" rel="stylesheet">
+<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
+
+
+
+
+      <div class="weui-cells weui-cells_checkbox">
+	      {loop $list_log $list_log}
+	        <div class="weui-cell">
+            <div class="weui-cell__hd"><img src="{MODULE_URL}/template/mobile/images/icon_tel.png" alt="" style="width:25px;margin-right:5px;display:block"></div>
+            <div class="weui-cell__bd">
+              <p>{$list_log['send_to_tel']}</p>
+            </div>
+			
+			{if strstr($list_log['send_err'],'成功') || strstr($list_log['send_respose'],'OK')}
+             <div class="weui-cell__ft weui-btn weui-btn_mini weui-btn_primary " style="color:#FFF">{php echo date("m-d H:i",$list_log['send_time'])}&nbsp;<i class="fa fa-check-circle"></i></div>
+			 {else}
+			 <div class="weui-cell__ft weui-btn weui-btn_mini weui-btn_warn" style="color:#FFF">{php echo date("m-d H:i",$list_log['send_time'])}&nbsp;<i class="fa fa-times-circle"></i> </div>
+			{/if}
+		 </div>
+		{/loop}
+        
+      </div>
+
+
+
+
+ 
+
+ 
+
+
+
+<div style="margin-bottom: 55px;display: block;"></div>
+{template 'footer'}
+       
+
+<script src="{MODULE_URL}/template/mobile/js/jquery.min.js"></script>
+<script src="{MODULE_URL}/template/mobile/js/jquery-weui.min.js"></script>
+
+		
+
+</html>

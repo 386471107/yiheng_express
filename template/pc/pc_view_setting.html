@@ -1,0 +1,247 @@
+ {template 'pc/pc_header'}
+ 
+ 
+
+ 
+<body>
+ 
+<div id="wrapper">
+
+    {template 'pc/pc_main_left'}
+
+    <div id="page-wrapper" class="gray-bg">
+        {template 'pc/pc_main_top'}
+        {template 'pc/pc_page_nav'}
+
+        <div class="wrapper wrapper-content animated fadeInRight ecommerce">
+                
+         
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox">
+                        <div class="ibox-title">
+                    <h5>后台页面<small>Custom background colors.</small></h5>
+                    </div>
+                    <!-- help-block m-b-none -->
+                        <div class="ibox-content">
+                           
+                             <div class="row">
+                                <div class="form-group col-lg-8">
+                                    <select name="ver_list" id="ver_list" class="form-control col-lg-8" onchange="change_code()">
+                                    <option value="0"> --全部快递点--</option>
+
+                                    {loop $version $version}
+                                     <option value="{$version['group_id']}" {if $version['group_id'] ==$ver_id}selected="selected" {/if}>{$version['group_name']}</option>
+                                    {/loop}
+                                    </select>
+                
+
+                                      <small class="text-warning help-block m-b-none">权限同步设置&nbsp;&nbsp;用户权限组更新后此项需同步！</small>
+                                    
+                                </div>
+
+                                 <div class="form-group col-lg-4">
+                                    <button class="btn btn-default " type="button"><i class="fa fa-cloud-download"></i>&nbsp;&nbsp;更新权限</button>
+
+                                </div>
+
+                                
+                            </div>
+    
+                            {loop $version_list $key=>$version_list}
+
+                             <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            {$version_name_list[$version_list]}
+                                        </div>
+                                        <div class="panel-body">
+
+                                            <div class=" checkbox checkbox-info checkbox-inline">
+
+                                                {loop $list[$key] $showlist}
+                                                 <div class="col-lg-4" >    
+                                                <input type="checkbox" id="showlist{$showlist['pages_id']}" {if $showlist['checked']}checked{/if} onchange="change_view({$showlist['pages_id']})">
+                                                    <label for="showlist{$showlist['pages_id']}"> 
+                                                        {$showlist['page_name']}-{$showlist['page_page']}{if !empty($showlist['page_param'])}<code>{$showlist['page_param']}</code>{/if}
+                                                    </label>
+                                                  </div>  
+                                                {/loop}
+                                                
+                                            </div>
+
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                                
+                            </div>
+
+                            {/loop}
+
+
+                         <!--     <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            收件管理
+                                        </div>
+                                        <div class="panel-body">
+
+                                            <div class=" checkbox checkbox-info checkbox-inline">
+
+                                                {loop $list['collection'] $collectionlist}
+                                                 <div class="col-lg-4">    
+                                                <input type="checkbox" id="collectionlist{$collectionlist['pages_id']}" {if $collectionlist['checked']}checked{/if} >
+                                                    <label for="collectionlist{$collectionlist['pages_id']}"> 
+                                                        {$collectionlist['page_name']}-{$collectionlist['page_page']}{if !empty($collectionlist['page_param'])}<code>{$collectionlist['page_param']}</code>{/if}
+                                                    </label>
+                                                  </div>  
+                                                {/loop}
+                                                
+                                            </div>
+
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                                
+                            </div> -->
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox">
+                        <div class="ibox-title">
+                    <h5>后台页面<small>Custom background colors.</small></h5>
+                    </div>
+                        <div class="ibox-content">
+
+                            <div class="row">
+                                
+                                <div class="col-lg-12">
+                                    <div class="panel panel-danger">
+                                        <div class="panel-heading">
+                                             Danger Panel with Footer
+                                        </div>
+                                        <div class="panel-body">
+                                            
+                                              <div class="col-lg-2">     
+                                                <input type="checkbox" id="inlineCheckbox2" value="option1" checked="">
+                                                <label for="inlineCheckbox2"> Inline Two </label>
+                                            </div>
+                                            
+                                        </div>
+                                        <!-- <div class="panel-footer">
+                                            Panel Footer
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="footer">
+            <div class="pull-right">
+                10GB of <strong>250GB</strong> Free.
+            </div>
+            <div>
+                <strong>Copyright</strong> Example Company &copy; 2014-2017
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+ <!-- Mainly scripts -->
+    <script src="{MODULE_URL}/template/pc/js/jquery-3.1.1.min.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/bootstrap.min.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Peity -->
+    <script src="{MODULE_URL}/template/pc/js/plugins/peity/jquery.peity.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="{MODULE_URL}/template/pc/js/inspinia.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/plugins/pace/pace.min.js"></script>
+
+    <!-- iCheck -->
+    <script src="{MODULE_URL}/template/pc/js/plugins/iCheck/icheck.min.js"></script>
+
+    <!-- Peity -->
+    <script src="{MODULE_URL}/template/pc/js/demo/peity-demo.js"></script>
+
+    <script>
+
+        $(document).ready(function(){
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+        });
+    </script>
+
+
+    <script type="text/javascript">
+        
+        function change_view(page_id)
+        {
+
+        var ver = $('#ver_list option:selected').val();
+        var isChecked = $('#cb').attr('checked'); 
+        // $('#ver_list').val(area_code);
+        $.post("{php echo $this->createWebUrl('pc_view_setting')}", { "act":"change",'ver':ver,'page_id':page_id},  
+            function(data){
+            
+            if (data.success==1)
+                {
+
+                    //直接更新，完成提示
+                    //console.log("权限设置成功")
+                   
+                }
+                else
+                {
+                   
+                    
+                    // $("input[name='sms_status']:eq(1)").attr("checked",'checked');
+                }
+                
+            }, "json");
+           
+        }
+
+
+    </script>
+
+    <script type="text/javascript">
+        function change_code()
+        {
+            var ver = $('#ver_list option:selected').val();
+            URL = ("{php echo $this->createWebUrl('pc_view_setting')}"+"&ver="+ver)
+            location.href=URL
+        }
+    </script>
+
+</body>
+
+</html>
+

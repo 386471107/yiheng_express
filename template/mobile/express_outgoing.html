@@ -1,0 +1,314 @@
+{template 'header'}
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/jquery-weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/style.css">
+
+
+<link href="https://cdn.bootcss.com/Buttons/2.0.0/css/buttons.css" rel="stylesheet">
+
+<style type="text/css">
+
+
+</style>
+
+
+
+<div class="weui-search-bar" >
+  <form class="weui-search-bar__form" action="" method="POST" id="form1">
+    <div class="weui-search-bar__box">
+      <i class="weui-icon-search"></i>
+      <input type="search" class="weui-search-bar__input" type="text" placeholder="请输入快递单号查询" id="bcode">
+      <a href="javascript:" class="weui-icon-clear"></a>
+    </div>
+    <label class="weui-search-bar__label" >
+      <i class="weui-icon-search"></i>
+      <span>搜索</span>
+    </label>
+  </form>
+  <a href="javascript:" class="weui-search-bar__cancel-btn"  onClick="search_barcode()">搜索</a>
+</div>
+<div id="list">
+ <input type="hidden" value="2" id ="page" name="page">
+
+
+
+      <div class="weui-cells weui-cells_checkbox" id="code_{$stocklist['id']}">
+       <label class="weui-cell weui-check__label" >
+		<div class="weui-cell__bd" >
+		  <p>取件码:<span id="recoder_code"></span></p>
+		</div>
+        <div class="weui-cell__ft"><span id="shelves"></span></div>
+          </label>
+          <div class="weui-cell">
+            <div class="weui-cell__hd"><img src="{MODULE_URL}/template/mobile/images/icon_express.png" alt="" style="width:25px;margin-right:5px;display:block"></div>
+            <div class="weui-cell__bd">
+              <p>快递公司</p>
+            </div>
+             <div class="weui-cell__ft"><span id="recoder_express_name"></span></div>
+          </div>
+		 
+		   <div class="weui-cell">
+            <div class="weui-cell__hd"><img src="{MODULE_URL}/template/mobile/images/icon_time.png" alt="" style="width:25px;margin-right:5px;display:block"></div>
+            <div class="weui-cell__bd">
+              <p>入库时间</p>
+            </div>
+             <div class="weui-cell__ft"><span id="recoder_create"></span></div>
+          </div> 
+		  <div class="weui-cell">
+            <div class="weui-cell__hd"><img src="{MODULE_URL}/template/mobile/images/icon_time.png" alt="" style="width:25px;margin-right:5px;display:block"></div>
+            <div class="weui-cell__bd">
+              <p>发送时间</p>
+            </div>
+             <div class="weui-cell__ft"><span id="recoder_senttime"></span></div>
+          </div>
+          <div class="weui-cell">
+              <div class="weui-cell__hd"><img src="{MODULE_URL}/template/mobile/images/icon_tel.png" alt="" style="width:25px;margin-right:5px;display:block"></div>
+            <div class="weui-cell__bd">
+              <p>联系电话</p>
+            </div>
+            <div class="weui-cell__ft"><span id="recoder_tel"></span></div>
+          </div>
+          <div class="weui-cell">
+              <div class="weui-cell__hd"><img src="{MODULE_URL}/template/mobile/images/icon_express.png" alt="" style="width:25px;margin-right:5px;display:block"></div>
+            <div class="weui-cell__bd">
+              <p>快递单号</p>
+            </div>
+            <div class="weui-cell__ft"><span id="recoder_barcode"></span></div>
+          </div>
+         
+		<div class="weui-cell weui-flex">
+			<div class="weui-flex__item" ><button id ="scanQRCode1" class="button button-action  button-pill button-large">扫描</button></div>
+			<div class="weui-flex__item" style="padding-left:30px;"><button id ="chooseImage" class="button button-highlight button-pill button-large">上传</button></div>
+		</div>
+		<a class="weui-btn weui-btn_primary button-primary " id="btn_done" onclick="done({$stocklist['id']})" style="display:none"><i class="fa fa-sign-in "></i>&nbsp;收货</a>
+		
+		<div ><img style="width:100%" id="show_img" src="">
+      </div>
+         
+		 
+		
+
+</div>
+ <input type="hidden" value=""  id="btn_conf">
+ 
+  <input type="hidden" value=""  id="up_pic">
+
+<div style="margin-bottom: 55px;display: block;"></div>
+{template 'footer'}
+       
+
+<script src="{MODULE_URL}/template/mobile/js/jquery.min.js"></script>
+<script src="{MODULE_URL}/template/mobile/js/jquery-weui.min.js"></script>
+  
+   
+<script> 
+
+wx.ready(function () {
+
+ document.querySelector('#scanQRCode1').onclick = function () {
+
+    wx.scanQRCode({
+      needResult: 1,
+      desc: 'scanQRCode desc',
+      success: function (res) {
+      // alert(JSON.stringify(res));
+    
+      var serialNumber = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+      var serial = serialNumber.split(",");
+      serialNumber = serial[serial.length-1];
+     
+		$.post("{php echo $this->createMobileUrl('express_outgoing')}", {"act":'search',"barcode":serialNumber}, 
+                        function(data) 
+                        {
+                          if (data.success==1)
+                          {
+                            $("#recoder_code").html(data.recoder_code);
+							$("#shelves").html(data.shelves);
+							$("#recoder_express_name").html(data.recoder_express_name);
+							$("#recoder_create").html(data.recoder_create);
+							$("#recoder_senttime").html(data.recoder_senttime);
+							$("#recoder_tel").html(data.recoder_tel);
+							$("#recoder_barcode").html(serialNumber);
+							$("#btn_conf").val(data.id);
+							$('#show_img').attr("src", data.img);
+							if (data.recoder_get_status==1)
+							{
+								$.toast("单号已出库，请检查", "text");
+								$("#btn_done").hide();
+							}
+							else
+							{
+								<!-- $("#btn_done").show(); -->
+							}
+							
+                          }
+                          else
+                          {
+                            $.toast("未扫到单号，请检查", "cancel");
+							$("#recoder_code").html("");
+							$("#shelves").html("");
+							$("#recoder_express_name").html("");
+							$("#recoder_create").html("");
+							$("#recoder_senttime").html("");
+							$("#recoder_tel").html("");
+							$("#btn_done").hide();
+                          }
+                          
+                        }, "json");
+      }
+    });
+  };
+  
+  
+  
+  
+  
+	  var images = {
+            localId: [],
+            serverId: []
+        };
+        
+	  
+	    $("#chooseImage").on("click",function(){
+		var express_id=parseInt($("#btn_conf").val())
+		
+		if (isNaN(express_id) || express_id==0 )
+		{
+			$.toast("扫描后上传图片", "text");
+			return false;  
+		}
+                wx.chooseImage({
+                    count: 1, // 默认9
+                    sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                    sourceType: ['camera'], // 可以指定来源是相册还是相机，默认二者都有
+                    success: function(res) {
+                        //返回选定照片的本地ID列表
+                    var localIds = res.localIds;  //返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                        var i = 0, length = localIds.length;
+                        upload();
+						function upload() {
+                            wx.uploadImage({
+                                localId: localIds[i],   //需要上传的图片的本地ID，由chooseImage接口获得
+                                //isShowProgressTips: 1, // 默认为1，显示进度提示
+                                success: function(res) {
+								var serverId = res.serverId; // 返回图片的服务器端ID
+								$.post("{php echo $this->createMobileUrl('express_outgoing')}", {"act":"down_pic","ser_id":serverId,'express_id':express_id},
+									function(data) 
+									{ 
+										<!-- $('#up_pic').val(data.img); -->
+										$.confirm("确认出库吗？","出库提示", function() {
+											done(express_id)
+										  }, function() {
+										  //点击取消后的回调函数
+										  });
+										
+										
+										$('#show_img').attr("src", data.img);
+									}, "json"); 
+                                },
+                                fail: function(res) { alert(JSON.stringify(res));  }
+                            });
+                        }
+                    }
+                });
+            });
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+ 
+  
+});
+
+wx.error(function (res) { 
+ alert(res.errMsg); 
+}); 
+
+
+</script>   
+
+<script type="text/javascript">
+function search_barcode()
+{
+	bcode=$("#bcode").val()
+	
+	$.post("{php echo $this->createMobileUrl('express_outgoing')}", {"act":'search',"barcode":bcode}, 
+                        function(data) 
+                        {
+                          if (data.success==1 )
+                          {
+                            <!-- $.toast("查找成功", "success"); -->
+							$("#recoder_code").html(data.recoder_code);
+							$("#shelves").html(data.shelves);
+							$("#recoder_express_name").html(data.recoder_express_name);
+							$("#recoder_create").html(data.recoder_create);
+							$("#recoder_senttime").html(data.recoder_senttime);
+							$("#recoder_tel").html(data.recoder_tel);
+							$("#recoder_barcode").html(bcode);
+							$("#btn_conf").val(data.id);
+							$('#show_img').attr("src", data.img);
+							if (data.recoder_get_status==1)
+							{
+								$("#btn_done").hide();
+							}
+							else
+							{
+								$("#btn_done").show();
+							}
+							
+							
+							
+                          }
+                          
+                          else
+                          {
+                            $.toast("未扫到单号，请检查", "cancel");
+							$("#recoder_code").html("");
+							$("#shelves").html("");
+							$("#recoder_express_name").html("");
+							$("#recoder_create").html("");
+							$("#recoder_senttime").html("");
+							$("#recoder_tel").html("");
+							$("#btn_done").show();
+                          }
+                          
+                        }, "json");
+
+}
+</script> 
+<script type="text/javascript">
+  
+  function done(id)
+  {
+  
+  
+	id = $("#btn_conf").val();
+    $.post("{php echo $this->createMobileUrl('express_outgoing')}", {"act":'done',"id":id}, 
+                        function(data) 
+                        {
+                          if (data.success==1 )
+                          {
+							$.toast("出库成功", "success"); 
+							$("#btn_done").hide();
+                          }
+                          else
+                          {
+							$.toast("出库失败，请联系管理员", "cancel");
+                          }
+                          
+                        }, "json");
+  } 
+
+
+
+
+
+</script>
+
+</html>

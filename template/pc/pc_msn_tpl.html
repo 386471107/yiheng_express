@@ -1,0 +1,180 @@
+ {template 'pc/pc_header'}
+<body>
+
+    <div id="wrapper">
+
+    {template 'pc/pc_main_left'}
+
+        <div id="page-wrapper" class="gray-bg">
+        {template 'pc/pc_main_top'}
+        {template 'pc/pc_page_nav'}
+           
+        <div class="wrapper wrapper-content animated ">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="tabs-container">
+                       <!--   <span class="pull-right"><a href="{php echo $this->createWebUrl('pc_weixin_tpl',array('act'=>'renew'))}"" class="btn btn-white" type="submit">更新短信列表</a></span> -->
+                        <ul class="nav nav-tabs" id="myTab">
+                            <li class="active"><a data-toggle="tab" href="#tab-1">短信模版列表</a></li>
+                           
+                        </ul>
+ 
+                        <div class="tab-content">
+                            <div id="tab-1" class="tab-pane active">
+                                <div class="panel-body">
+								{if empty($my_msn_tpl)}
+									<div class="row">
+										<div class="col-sm-12 m-b-xs">
+											<div data-toggle="buttons" class="btn-group">
+												<label> <a class="btn btn-sm btn-warning" href="{php echo $this->createWebUrl('pc_msn_tpl',array('act'=>'copy_tpl'))}" name="copy_tpl"> 复制模版 </a></label>
+											</div>
+										</div>
+									</div>
+								{/if}	
+							{loop $my_msn_tpl $my_msn_tpl}                  
+									<div class="col-lg-12">
+										<div class="contact-box">
+											<a href="{php echo $this->createWebUrl('pc_msn_tpl',array('act'=>'edit','id'=>$my_msn_tpl['id']))}">
+												<div class="col-lg-12">
+												<h3><strong>
+												{if $my_msn_tpl['sms_type']==1}注册短信{/if}
+												{if $my_msn_tpl['sms_type']==2}更换绑定{/if}
+												{if $my_msn_tpl['sms_type']==3}到件通知{/if}
+
+												{if $my_msn_tpl['sms_com_type']==1}<label class="col-sm-2 pull-right label label-success">阿里大鱼</label>{/if}
+												{if $my_msn_tpl['sms_com_type']==2}<label class="col-sm-2 pull-right  label  label-primary">好数据</label>{/if}  
+
+												</strong></h3>
+												编号:{if $my_msn_tpl['sms_com_type']==1}{$my_msn_tpl['sms_message_tpl_id']}{else}{$my_msn_tpl['sms_message_id']}{/if}<br>
+												内容:{$my_msn_tpl['sms_message']}<br>
+												</div>
+												<div class="clearfix"></div>
+											</a>
+										</div>
+									</div>
+								 {/loop}
+						 </div>
+						</div>
+                        </div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		
+<div id="tab-2" class="tab-pane">
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="tabs-container">
+				 <ul class="nav nav-tabs" id="myTab">
+                            <li class="active"><a data-toggle="tab" href="#tab-1">短信模版列表</a></li>
+                           
+                        </ul>
+					<div class="tab-content">
+					<div id="tab-1" class="tab-pane active">
+					<div class="panel-body">
+						<fieldset class="form-horizontal">
+						<form id="form1" method="POST"  name="form1">
+							<div class="form-group"><label class="col-sm-2 control-label">Access_key:</label>
+								<div class="col-sm-10">
+								<input type="text" class="form-control"value="{$item['sms_accesskey']}" name="sms_accesskey">
+								</div>
+							</div>
+							<div class="form-group"><label class="col-sm-2 control-label">Access_secret:</label>
+								<div class="col-sm-10">
+								<input type="text" class="form-control"value="{$item['sms_accesssecret']}" name="sms_accesssecret">
+								</div>
+							</div>
+							<div class="form-group"><label class="col-sm-2 control-label">短信模版编号:</label>
+								<div class="col-sm-10">
+								<input type="text" class="form-control" placeholder="阿里大鱼短信模版编号" value="{$item['sms_message_tpl_id']}" name="sms_message_tpl_id">
+								</div>
+							</div>
+							<div class="form-group"><label class="col-sm-2 control-label">短信签名:</label>
+								<div class="col-sm-10">
+								<input type="text" class="form-control" placeholder="阿里大鱼短信签名" value="{$item['sms_signname']}" name="sms_signname">
+								</div>
+							</div>
+							<div class="form-group"><label class="col-sm-2 control-label">短信编号:</label>
+								<div class="col-sm-10">
+								<input type="text" class="form-control"value="{$item['sms_message_id']}" name="sms_message_id">
+								</div>
+							</div>
+							<div class="form-group"><label class="col-sm-2 control-label">短信内容:</label>
+								<div class="col-sm-10">
+								<input type="text" class="form-control"  value="{$item['sms_message']}"name="sms_message">
+								</div>
+							</div>
+						 <div class="form-group" >
+							<label class="col-lg-2 control-label">短信API网站</label> 
+							<div class="col-lg-10">
+							<label class="radio-inline ">
+							<input type="radio" name="sms_com_type" id="com_type1" value="1" {if $item['sms_com_type']==1}checked{/if} > <span  class="label label-success" style="margin:5px;">阿里大鱼</span>
+							</label>
+							<label class="radio-inline">
+							<input type="radio" name="sms_com_type" id="com_type2" value="2" {if $item['sms_com_type']==2}checked{/if}> <span  class="label label-danger" style="margin:5px;">好数据</span>
+							</label>
+							</div>  
+						 </div> 
+							<div class="hr-line-dashed"></div>
+							<div class="col-lg-4 col-lg-offset-2">
+								<input name="tpl_save" type="submit" value="设为默认" class="btn btn-primary span3" />
+								<input type="hidden" name="token" value="{$_W['token']}" />
+							</div>
+						</form>
+						</fieldset>
+					</div>
+					</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+	</div>
+</div>
+
+
+
+    <!-- Mainly scripts -->
+    <script src="{MODULE_URL}/template/pc/js/jquery-3.1.1.min.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/bootstrap.min.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Peity -->
+    <script src="{MODULE_URL}/template/pc/js/plugins/peity/jquery.peity.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="{MODULE_URL}/template/pc/js/inspinia.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/plugins/pace/pace.min.js"></script>
+
+    <!-- iCheck -->
+    <script src="{MODULE_URL}/template/pc/js/plugins/iCheck/icheck.min.js"></script>
+
+    <!-- Peity -->
+    <script src="{MODULE_URL}/template/pc/js/demo/peity-demo.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+        });
+    </script>
+   
+  <script>
+        {if $_GPC['act']=='edit'}
+         $('#myTab a:last').tab('show');//初始化显示哪个tab
+        {/if}
+</script>
+
+ 
+</body>
+
+</html>

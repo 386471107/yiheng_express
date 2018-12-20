@@ -1,0 +1,272 @@
+{template 'pc/pc_header'}
+<body>
+
+    <div id="wrapper">
+{template 'pc/pc_main_left'}
+        <div id="page-wrapper" class="gray-bg">
+{template 'pc/pc_main_top'}
+{template 'pc/pc_page_nav'}
+           
+
+        
+
+        <div class="wrapper wrapper-content animated fadeInRight">
+          
+
+        {if $recive==0 || $recive==2}
+          <div class="row">
+            <div class="col-lg-3">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <span class="label label-success pull-right">{if $total>0}{php echo round($totaltd/$total*100,2)}%{/if}</span>
+                        <h5>当日未收</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <h1 class="no-margins">{$totaltd}</h1>
+                      <!--   <div class="stat-percent font-bold text-success">98% <i class="fa fa-bolt"></i></div>
+                        <small>Total views</small> -->
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <span class="label label-info pull-right">{if $total>0}{php echo round($total_other/$total*100,2)}%{/if}</span>
+                        <h5>过往未收</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <h1 class="no-margins">{$total_other}</h1>
+                       <!--  <div class="stat-percent font-bold text-info">20% <i class="fa fa-level-up"></i></div>
+                        <small>New orders</small> -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <span class="label label-info pull-right">{if $total>0}{php echo round($total_weixin/$total*100,2)}%{/if}</span>
+                        <h5>微信</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <h1 class="no-margins">{$total_weixin}</h1>
+                       <!--  <div class="stat-percent font-bold text-info">20% <i class="fa fa-level-up"></i></div>
+                        <small>New orders</small> -->
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-lg-3">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <span class="label label-danger pull-right">{if $total>0}{php echo round($total_tel/$total*100,2)}%{/if}</span>
+                        <h5>短信</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <h1 class="no-margins">{$total_tel}</h1>
+                       <!--  <div class="stat-percent font-bold text-info">20% <i class="fa fa-level-up"></i></div>
+                        <small>New orders</small> -->
+                    </div>
+                </div>
+            </div>
+
+        {/if}
+
+
+
+           
+        </div>
+		
+		  <div class="mail-box-header">
+				 <form method="get" action="index.html" class="pull-right mail-search">
+                    <div class="input-group">
+						 <a href="{php echo $this->createWebUrl('pc_member_list',array('act' =>'export'))}" class="btn btn-white btn-sm" ><i class="fa fa-refresh"></i> 导出</a>
+                    </div>
+                </form>
+              
+                <h2>
+                    快递信息管理
+                </h2>
+                <div class="mail-tools tooltip-demo m-t-md">
+                    <!-- <div class="btn-group pull-right"> -->
+                        <!-- <button class="btn btn-white btn-sm"><i class="fa fa-arrow-left"></i></button> -->
+                        <!-- <button class="btn btn-white btn-sm"><i class="fa fa-arrow-right"></i></button> -->
+
+                    <!-- </div> -->
+				<div class="row">
+				
+					<div class="col-lg-12"> 
+					<form method="POST" name="form1" id="form1" >
+						<div class="col-lg-3">
+							<input type="text" class="form-control input-sm" name="barcord" placeholder="请输入快递号">
+						</div>
+						<div class="col-lg-3" >
+							<div class="pull-right mail-search">
+								<div class="input-group">
+									<!-- <input type="text" class="form-control input-sm" name="search" placeholder="Search email"> -->
+									<div class="input-group-btn">
+										<input type="submit" name="search" value="单号查找" class="btn btn-sm btn-primary">
+										<input type="hidden" name="token" value="{$_W['token']}" />
+									</div>
+								</div>
+							</div>
+						</div> 
+					</form>
+					<form method="POST" name="form2" id="form2" >
+						<div class="col-lg-3">
+						<div class="input-group date">     
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="date_added" name="sdate" type="text" class="form-control" value='{php echo date("m/d/Y",time())}'>
+                            </div>
+						</div>
+						<div class="col-lg-3" >
+							<div class="pull-right mail-search">
+								<div class="input-group">  
+									<!-- <input type="text" class="form-control input-sm" name="search" placeholder="Search email"> -->
+									<div class="input-group-btn">
+										<input type="submit" name="dsearch" value="日期查找" class="btn btn-sm btn-primary">
+										<input type="hidden" name="token" value="{$_W['token']}" />
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+					</div>
+				
+				</div>	
+				
+						
+					  
+                    <!-- <a href="{php echo $this->createWebUrl('pc_member_list',array('act' =>'export'))}" class="btn btn-white btn-sm" ><i class="fa fa-refresh"></i> 导出</a> -->
+                    <!-- <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mark as read"><i class="fa fa-eye"></i> </button> -->
+                    <!-- <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mark as important"><i class="fa fa-exclamation"></i> </button> -->
+                    <!-- <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button> -->
+
+                </div>
+            </div> 
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        
+                        <div class="ibox-content">
+                            
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr> 
+                                            <th>创建日期</th>
+                                            <th>发送时间 </th>
+											{if $recive==1}<th>收货时间 </th>{/if}
+                                            <th>发送方式</th>
+                                            <th>快递单号</th>
+                                            <th>取货码</th>
+                                            <th>查看图片</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+
+                                    {loop $list $list}
+                                    <tr>
+                                        <td><small>{php echo date("Y-m-d H:i:s",$list['recoder_create'])}</small></td>
+                                        <td><small>{if !empty($list['recoder_senttime'])}{php echo date("Y-m-d H:i:s",$list['recoder_senttime'])}{/if}</small></td>
+                                        
+										{if $recive==1}<td><small>{if !empty($list['recoder_updatetime'])}{php echo date("Y-m-d H:i:s",$list['recoder_updatetime'])}{/if}</small></td>{/if}
+                                         
+                                         
+                                         {if $list['recoder_tel_exsit']==1}
+                                         <td><small  class="label label-success pull-left">微信</small></td> 
+                                         {else}
+                                         <td><small class="label label-warning pull-left">短信</small></td>
+                                         {/if} 
+                                        
+                                        <td><small>{$list['recoder_barcode']}</small></td>
+                                        <td><small>{$list['recoder_code']}</small></td>
+                                        <td>
+                                        <a href="{php echo tomedia($list['recoder_img'])}" target="_blank">{if !empty($list['recoder_img'])}<button class=" btn btn-primary btn-xs ">查看图片</button>{/if}</a>
+                                       
+                                        </td>
+                                    </tr>
+                                    {/loop}
+
+                                   
+
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+                            
+
+                        </div>
+                        {$pager}
+                       
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- <div class="footer"> -->
+            <!-- <div class="pull-right"> -->
+                <!-- 10GB of <strong>250GB</strong> Free. -->
+            <!-- </div> -->
+            <!-- <div> -->
+                <!-- <strong>Copyright</strong> Example Company &copy; 2014-2017 -->
+            <!-- </div> -->
+        <!-- </div> -->
+
+        </div>
+        </div>
+
+
+
+    <!-- Mainly scripts -->
+    <script src="{MODULE_URL}/template/pc/js/jquery-3.1.1.min.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/bootstrap.min.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Peity -->
+    <script src="{MODULE_URL}/template/pc/js/plugins/peity/jquery.peity.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="{MODULE_URL}/template/pc/js/inspinia.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/plugins/pace/pace.min.js"></script>
+
+    <!-- iCheck -->
+    <script src="{MODULE_URL}/template/pc/js/plugins/iCheck/icheck.min.js"></script>
+	 <script src="{MODULE_URL}/template/pc/js/plugins/datapicker/bootstrap-datepicker.js"></script>
+    <!-- Peity -->
+    <script src="{MODULE_URL}/template/pc/js/demo/peity-demo.js"></script>
+	  <!-- FooTable -->
+    <script src="{MODULE_URL}/template/pc/js/plugins/footable/footable.all.min.js"></script>
+   <script>
+        $(document).ready(function() {
+
+            $('.footable').footable();
+
+            $('#date_added').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true
+            });
+
+           
+
+        });
+
+    </script>
+    <script>
+        $(document).ready(function(){
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+        });
+    </script>
+
+</body>
+
+</html>

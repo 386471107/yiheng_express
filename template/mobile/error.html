@@ -1,0 +1,47 @@
+{template 'header'}
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/jquery-weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/style.css">
+
+<body>
+	{if $_GPC['dis']=='reject'}
+		<div class="weui-msg">
+		  <div class="weui-msg__icon-area"><i class="weui-icon-warn weui-icon_msg"></i></div>
+		  <div class="weui-msg__text-area">
+			<h2 class="weui-msg__title">权限受限</h2>
+			<p class="weui-msg__desc">仅适合于本公司员工，如有疑问请联系管理员！</p>
+			 <!-- <p class="weui-msg__desc"><a href="tel:15168589418">点击拨打</a></p> -->
+		  </div>
+		  <div class="weui-msg__extra-area">
+			<div class="weui-footer">
+			  <p class="weui-footer__links">
+				<!-- <a href="javascript:void(0);" class="weui-footer__link">宁波一恒网络</a> -->
+			  </p>
+			  <!-- <p class="weui-footer__text">Copyright ©2017 Nbyiheng.net</p> -->
+			</div>
+		  </div>
+		</div>
+	{/if}
+	
+	{if $_GPC['dis']=='close'}
+		<div class="weui-msg">
+		  <div class="weui-msg__icon-area"><i class="weui-icon-warn weui-icon_msg"></i></div>
+		  <div class="weui-msg__text-area">
+			<h2 class="weui-msg__title">店铺休息中</h2>
+			<p class="weui-msg__desc">店铺休息中，如有疑问请联系管理员！</p>
+			 <!-- <p class="weui-msg__desc"><a href="tel:15168589418">点击拨打</a></p> -->
+		  </div>
+		  <div class="weui-msg__extra-area">
+			<div class="weui-footer">
+			  <p class="weui-footer__links">
+				<!-- <a href="javascript:void(0);" class="weui-footer__link">宁波一恒网络</a> -->
+			  </p>
+			  <!-- <p class="weui-footer__text">Copyright ©2017 Nbyiheng.net</p> -->
+			</div>
+		  </div>
+		</div>
+	{/if}
+	
+	
+</body>
+</html>

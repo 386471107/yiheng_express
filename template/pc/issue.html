@@ -1,0 +1,187 @@
+
+ {template 'pc/pc_header'}
+<body>
+
+    <div id="wrapper">
+
+    {template 'pc/pc_main_left'}
+        <div id="page-wrapper" class="gray-bg">
+        {template 'pc/pc_main_top'}
+        {template 'pc/pc_page_nav'}
+           
+        <div class="wrapper wrapper-content animated fadeInRight">
+              
+			   <div class="row">
+			  <fieldset class="form-horizontal">
+                                            <form method="POST" name="form1" id ="form1">
+                                         <div class="form-group"><label class="col-sm-2 control-label">修改类型:</label>
+                                            <div class="col-sm-10">
+                                                <div class="radio radio-info radio-inline">
+                                                    <input type="radio" id="inlineRadio1" value="1" name="ctype" checked="">
+                                                    <label for="inlineRadio1" class="label label-success pull-right">Added &nbsp;</label>
+                                                </div>
+                                                <div class="radio radio-inline">
+                                                    <input type="radio" id="inlineRadio2" value="2" name="ctype">
+                                                    <label for="inlineRadio2" class="label label-warning pull-right">Fixed &nbsp;</label>
+                                                </div>
+                                                <div class="radio radio-inline">
+                                                    <input type="radio" id="inlineRadio3" value="3" name="ctype">
+                                                    <label for="inlineRadio3" class="label label-danger pull-right">Bug &nbsp;</label>
+                                                </div>
+                                                <div class="radio radio-inline">
+                                                    <input type="radio" id="inlineRadio4" value="4" name="ctype">
+                                                    <label for="inlineRadio4" class="label label-primary pull-right">Modify &nbsp;</label>
+                                                </div>
+                                                <div class="radio radio-inline">
+                                                    <input type="radio" id="inlineRadio5" value="5" name="ctype">
+                                                    <label for="inlineRadio5" class="label  pull-right">Todo &nbsp;</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group"><label class="col-sm-2 control-label">修改类型:</label>
+                                            <div class="col-sm-10">
+                                                <div class="radio radio-info radio-inline">
+                                                    <input type="radio" id="inlineRadio6" value="1" name="cdone" checked="">
+                                                    <label for="inlineRadio6" class="label label-success pull-right">已处理 &nbsp;</label>
+                                                </div>
+                                                <div class="radio radio-inline">
+                                                    <input type="radio" id="inlineRadio7" value="0" name="cdone">
+                                                    <label for="inlineRadio7" class="label label-warning pull-right">未处理 &nbsp;</label>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+
+                                         <div class="form-group"><label class="col-sm-2 control-label">修改内容:</label>
+                                                <div class="col-sm-10"><textarea class="col-sm-10" rows="5" name="content"></textarea></div>
+                                            </div>
+                                      
+                                             <div class="hr-line-dashed"></div>
+                                          <div class="col-sm-4 col-sm-offset-2">
+                                         <input name="m_save" type="submit" value="保存" class="btn btn-primary span3" />
+                                          <input type="hidden" name="token" value="{$_W['token']}" />
+                                    </div>
+                                </form>
+      </fieldset>
+		  </div>  
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="tabs-container">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#tab-1">程序修改列表</a></li>
+                            <li class=""><a data-toggle="tab" href="#tab-2">新建修改记录</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="tab-1" class="tab-pane active">
+                                <div class="panel-body">
+                                    
+                                    <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+						<th class="col-lg-1">编号</th>
+                        <th class="col-lg-1">类型</th>
+                        <th class="col-lg-2">状态 </th>
+                        <th class="col-lg-6">内容 </th>
+                        <th class="col-lg-2">时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {loop $list $list}
+                            <tr>
+								 <td>{$list['issue_id']}</td>
+                                <td>
+                                    {if $list['issue_type']==1}
+                                     <span class="label label-success">Added</span>
+                                    {/if}
+                                    {if $list['issue_type']==2}
+                                     <span class="label label-warning">Fixed</span>
+                                    {/if}
+                                    {if $list['issue_type']==3}
+                                     <span class="label label-danger">Bug</span>
+                                    {/if}
+                                    {if $list['issue_type']==4}
+                                     <span class="label label-primary">Modify</span>
+                                    {/if}
+                                    {if $list['issue_type']==5}
+                                     <span class="label ">Todo</span>
+                                    {/if}
+
+                                </td>
+                                <td>
+                                    <small>
+                                         {if $list['issue_done']==1}
+                                           <span class="label label-success">已处理</span>
+                                         {else}
+                                            <span class="label label-danger">未处理</span>
+                                         {/if}
+                                    </small>
+                                </td>
+                                <td class="issue-info">
+                                <small>
+                                    {$list['issue_content']}
+                                </small>
+                                </td>
+                                <td>
+                                    {php echo date("Y-m-d H:i",$list['issue_time'])}
+                                </td>
+                            </tr>
+                        {/loop}
+                    </tbody>
+                </table>
+            </div>
+	
+
+	
+
+
+                                </div>
+								
+								 
+                            </div>
+              
+                
+   
+
+
+        </div>
+		 </div>
+       
+
+        </div>
+        </div>
+
+
+
+    <!-- Mainly scripts -->
+    <script src="{MODULE_URL}/template/pc/js/jquery-3.1.1.min.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/bootstrap.min.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Peity -->
+    <script src="{MODULE_URL}/template/pc/js/plugins/peity/jquery.peity.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="{MODULE_URL}/template/pc/js/inspinia.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/plugins/pace/pace.min.js"></script>
+
+    <!-- iCheck -->
+    <script src="{MODULE_URL}/template/pc/js/plugins/iCheck/icheck.min.js"></script>
+
+    <!-- Peity -->
+    <script src="{MODULE_URL}/template/pc/js/demo/peity-demo.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+        });
+    </script>
+   
+ 
+</body>
+
+</html>

@@ -1,0 +1,150 @@
+   <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="sidebar-collapse">
+            <ul class="nav metismenu" id="side-menu">
+                <li class="nav-header">
+                    <div class="dropdown profile-element"> <span>
+                            <img alt="image" class="img-circle" style="width:125px;" src="http://www.ehkuai.com/skin/images/logo1.png" />
+                             </span>
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">驿很快 EHKUAI.com</strong>
+                             </span> <span class="text-muted text-xs block">我的信息 <b class="caret"></b></span> </span> </a>
+                        <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                            <li><a href="profile.html">基本信息</a></li>
+                           
+                            <li class="divider"></li>
+                            <li><a href="login.html">登出</a></li>
+                        </ul>
+                    </div>
+                    <div class="logo-element">
+                        驿+
+                    </div>
+                </li>
+                <li {if $_GPC['do']=='pc_index'}class="active" {/if}>
+                    <a  href="{php echo $this->createWebUrl('pc_index')}"><i class="fa fa-indent"></i> <span class="nav-label">后台主页</span></a>
+                </li>
+
+                 <li {if $_GPC['do']=='issue'}class="active" {/if}>
+                    <a  href="{php echo $this->createWebUrl('issue')}"><i class="fa fa-indent"></i> <span class="nav-label"> ISSUE</span></a>
+                </li> 
+
+                <li {if $_GPC['do']=='pc_member_list' || $_GPC['do']=='pc_member_staff_list' || $_GPC['do']=='pc_member_ban_list' || $_GPC['do']=='pc_member_login_log' || $_GPC['do']=='pc_member_edit'  }class="active" {/if}>
+                    <a ><i class="fa fa-user"></i> <span class="nav-label">用户管理</span> <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+						<li {if $_GPC['do']=='pc_member_list' && $_GPC['level']==-1}class="active"  {/if}><a href="{php echo $this->createWebUrl('pc_member_list',array('act'=>'display','level' =>-1))}">手机号列表</a></li>
+                        <li {if $_GPC['do']=='pc_member_list' && $_GPC['level']==0}class="active"  {/if}><a href="{php echo $this->createWebUrl('pc_member_list',array('act'=>'display','level' =>0))}">会员列表</a></li>
+                        <li {if $_GPC['do']=='pc_member_staff_list' && $_GPC['level']==1}class="active"  {/if}><a href="{php echo $this->createWebUrl('pc_member_staff_list',array('act'=>'display','level' =>1))}">超管列表</a></li>
+                        <li {if $_GPC['do']=='pc_member_staff_list' && $_GPC['level']==2}class="active"  {/if}><a href="{php echo $this->createWebUrl('pc_member_staff_list',array('act'=>'display','level' =>2))}">店长列表</a></li>
+                        <li {if $_GPC['do']=='pc_member_staff_list' && $_GPC['level']==3}class="active"  {/if}><a href="{php echo $this->createWebUrl('pc_member_staff_list',array('act'=>'display','level' =>3))}">店员列表</a></li>
+                        <li {if $_GPC['do']=='pc_member_staff_list' && $_GPC['level']==4}class="active"  {/if}><a href="{php echo $this->createWebUrl('pc_member_staff_list',array('act'=>'display','level' =>4))}">收送人员列表</a></li>
+                        {if $_GPC['do']=='pc_member_edit' }<li class="active"  ><a href="javascript:void(0)">会员编辑</a></li>{/if}
+                        <li {if $_GPC['do']=='pc_member_ban_list' }class="active"  {/if}><a href="{php echo $this->createWebUrl('pc_member_ban_list')}">黑名单</a></li>
+                        <li {if $_GPC['do']=='pc_member_login_log' }class="active"  {/if}><a href="{php echo $this->createWebUrl('pc_member_login_log')}">登录记录</a></li>
+                    </ul>
+                </li>
+
+                 <li {if $_GPC['do']=='pc_shop_list' || $_GPC['do']=='pc_shop_edit'}class="active" {/if}>
+                    <a href="index.html"><i class="fa fa-th-large"></i> <span class="nav-label">商户管理</span> <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li {if $_GPC['do']=='pc_shop_list' }class="active" {/if}><a href="{php echo $this->createWebUrl('pc_shop_list')}">商户列表</a></li>
+                        <li {if $_GPC['do']=='pc_shop_edit' }class="active" {/if}> <a href="{php echo $this->createWebUrl('pc_shop_edit')}">新增商户</a></li>
+                        <!-- <li><a href="{php echo $this->createWebUrl('pc_shop_edit')}">资质信息</a></li> -->
+                    </ul>
+                </li>
+
+                <li {if $_GPC['do']=='pc_collection_list' || $_GPC['do']=='pc_uncollection_list'}class="active" {/if}>
+                    <a ><i class="fa fa-inbox"></i> <span class="nav-label">快递信息</span> <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li {if $_GPC['do']=='pc_collection_list' && $_GPC['recive']==0 }class="active" {/if}><a href="{php echo $this->createWebUrl('pc_collection_list',array('recive' =>0))}">未收列表</a></li>
+                        <li {if $_GPC['do']=='pc_collection_list' && $_GPC['recive']==1  }class="active" {/if}><a href="{php echo $this->createWebUrl('pc_collection_list',array('recive' =>1))}">已收列表</a></li>
+                        <li {if $_GPC['do']=='pc_collection_list' && $_GPC['recive']==2 }class="active" {/if}><a href="{php echo $this->createWebUrl('pc_collection_list',array('recive' =>2))}">滞留列表</a></li>
+						<li {if $_GPC['do']=='pc_collection_list' && $_GPC['recive']==-1 }class="active" {/if}><a href="{php echo $this->createWebUrl('pc_collection_list',array('recive' =>-1))}">快件查询</a></li>
+                    </ul>
+                </li>
+                 <li {if $_GPC['do']=='1' || $_GPC['do']=='2'}class="active" {/if}>
+                    <a ><i class="fa fa-envelope"></i> <span class="nav-label">收寄列表 </span><span class="label label-warning pull-right">16/24</span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a href="{php echo $this->createWebUrl('pc_wait_deliver_list')}">待送列表</a></li>
+                        <li><a href="{php echo $this->createWebUrl('pc_wait_receive_list')}">待收列表</a></li>
+                    </ul>
+                </li>
+
+
+                <li {if $_GPC['do']=='pc_weixin_send_log' || $_GPC['do']=='pc_msn_send_log'}class="active" {/if}>
+                    <a ><i class="fa fa-list-ol"></i> <span class="nav-label">发送记录</span> <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li {if $_GPC['do']=='pc_weixin_send_log'}class="active" {/if}><a href="{php echo $this->createWebUrl('pc_weixin_send_log')}">微信记录</a></li>
+                        <li {if $_GPC['do']=='pc_msn_send_log' }class="active" {/if}><a href="{php echo $this->createWebUrl('pc_msn_send_log')}">短信记录</a></li>
+                    </ul>
+                </li>
+
+                 <li {if $_GPC['do']=='pc_weixin_send_log' || $_GPC['do']=='pc_msn_send_log'}class="active" {/if}>
+                    <a ><i class="fa fa-list-ol"></i> <span class="nav-label">其它记录</span> <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li {if $_GPC['do']=='pc_weixin_send_log'}class="active" {/if}><a href="{php echo $this->createWebUrl('pc_weixin_send_log')}">图片留存</a></li>
+                        <li {if $_GPC['do']=='pc_msn_send_log' }class="active" {/if}><a href="{php echo $this->createWebUrl('pc_msn_send_log')}">充值记录</a></li>
+                    </ul>
+                </li>
+
+
+               <li {if $_GPC['do']=='pc_api' || $_GPC['do']=='pc_api_log'}class="active" {/if}>
+                    <a ><i class="fa fa-desktop"></i> <span class="nav-label">PC接入</span> <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li {if $_GPC['do']=='pc_api'}class="active" {/if}><a href="{php echo $this->createWebUrl('pc_api')}">接入列表</a></li>
+                        <li{if $_GPC['do']=='pc_api_log'}class="active" {/if}><a href="{php echo $this->createWebUrl('pc_api')}"><a href="index.html">接入历史</a></li>
+                     
+                    </ul>
+                </li>
+                
+
+                 <li {if $_GPC['do']=='pc_api' || $_GPC['do']=='pc_api_log'}class="active" {/if}>
+                    <a ><i class="fa fa-microchip"></i> <span class="nav-label">硬件接入</span> <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li {if $_GPC['do']=='pc_api'}class="active" {/if}><a href="{php echo $this->createWebUrl('pc_api')}">门禁机设置</a></li>
+                        <li{if $_GPC['do']=='pc_api_log'}class="active" {/if}><a href="{php echo $this->createWebUrl('pc_api')}"><a href="index.html">扫描枪设置</a></li>
+                        <li{if $_GPC['do']=='pc_api_log'}class="active" {/if}><a href="{php echo $this->createWebUrl('pc_api')}"><a href="index.html">摄像头设置</a></li>
+                    </ul>
+                </li>
+             
+                <li  {if $_GPC['do']=='pc_statistics' }class="active" {/if}>
+                    <a href="index.html"><i class="fa fa-line-chart"></i> <span class="nav-label">统计汇总</span> <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li  {if $_GPC['do']=='pc_statistics' && $_GPC['stype']==1}class="active" {/if}><a href="{php echo $this->createWebUrl('pc_statistics',array('stype'=>1))}">发送统计</a></li>
+                       
+                        <li  {if $_GPC['do']=='pc_statistics' && $_GPC['stype']==2}class="active" {/if}><a href="{php echo $this->createWebUrl('pc_statistics',array('stype'=>2))}">出入库统计</a></li>
+                       
+                        <li  {if $_GPC['do']=='pc_statistics' && $_GPC['stype']==3}class="active" {/if}><a href="{php echo $this->createWebUrl('pc_statistics',array('stype'=>3))}">代收送统计</a></li>
+                        
+                        
+                    </ul>
+                </li>
+        
+                <li  {if $_GPC['do']=='pc_weixin_tpl' || $_GPC['do']=='pc_msn_tpl' || $_GPC['do']=='pc_employee_setting' }class="active" {/if}>
+                    <a href="#"><i class="fa fa-sliders"></i> <span class="nav-label">基本设置</span> <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li {if $_GPC['do']=='pc_weixin_tpl' }class="active" {/if}><a href="{php echo $this->createWebUrl('pc_weixin_tpl').'#tab-2'}">微信自定义模版</a></li>
+                        <li {if $_GPC['do']=='pc_msn_tpl' }class="active" {/if}><a href="{php echo $this->createWebUrl('pc_msn_tpl')}">短信自定义模版</a></li>
+                        <li {if $_GPC['do']=='pc_employee_setting' }class="active" {/if}><a href="{php echo $this->createWebUrl('pc_employee_setting')}">店外人员功能设置</a></li>
+						<li {if $_GPC['do']=='pc_view_setting1' }class="active" {/if}><a href="{php echo $this->createWebUrl('pc_statistics')}">广告模版</a></li>
+                        <li {if $_GPC['do']=='pc_view_setting1' }class="active" {/if}><a href="{php echo $this->createWebUrl('pc_statistics')}">支付设置</a></li>
+                        <li {if $_GPC['do']=='pc_view_setting1' }class="active" {/if}><a href="{php echo $this->createWebUrl('pc_statistics')}">接入设置</a></li>
+                        <li {if $_GPC['do']=='pc_view_setting1' }class="active" {/if}><a href="{php echo $this->createWebUrl('pc_statistics')}">信息获取配置</a></li>
+                    </ul>
+                </li>
+
+                <li {if $_GPC['do']=='pc_view_setting' || $_GPC['do']=='pc_m_view_setting' }class="active" {/if}>
+                    <a href="index.html"><i class="fa fa-expeditedssl"></i> <span class="nav-label">安全管理</span> <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <!-- <li {if $_GPC['do']=='pc_view_setting1' }class="active" {/if}><a href="index.html">安全设置</a></li> -->
+                        <li {if $_GPC['do']=='pc_view_setting1' }class="active" {/if}><a href="{php echo $this->createWebUrl('pc_change_pwd')}">密码修改</a></li>
+                        <li {if $_GPC['do']=='pc_view_setting' }class="active" {/if}><a href="{php echo $this->createWebUrl('pc_view_setting')}">后台访问权限</a></li>
+						<li {if $_GPC['do']=='pc_m_view_setting' }class="active" {/if}><a href="{php echo $this->createWebUrl('pc_m_view_setting')}">前台访问权限</a></li>
+                    </ul> 
+                </li>
+
+
+              
+                
+            </ul>
+
+        </div>
+    </nav>

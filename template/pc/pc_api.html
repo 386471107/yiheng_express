@@ -1,0 +1,110 @@
+ {template 'pc/pc_header'}
+<body>
+
+    <div id="wrapper">
+
+    {template 'pc/pc_main_left'}
+
+        <div id="page-wrapper" class="gray-bg">
+        {template 'pc/pc_main_top'}
+        {template 'pc/pc_page_nav'}
+           
+        <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-content">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                         <th>序号</th>
+                                        <th>key</th>
+                                        <th>secret </th>
+                                        <th>sign </th>
+                                         <th>状态</th>
+                                        <th>起始日期</th>
+                                        <th>结束日期</th>
+                                      
+                                        <th>操作</th>
+
+                                    </thead>
+                                    <tbody>
+                                     {loop $api_list $k=>$api_list}
+                                    <tr>
+                                        <td><small>{php echo $k+1}</small></td>
+                                        <td><small>{$api_list['api_key']}</small></td>
+                                        <td><small>{$api_list['api_secret']}</small></td>
+                                        <td><small>{$api_list['api_sign']}</small></td>
+                                        <td>{if $api_list['api_status'] ==1}<small class="label label-primary pull-left">启用</small>{else}<small class="label label-danger pull-left">停用</small>{/if}</td>
+                                        <td><small>{php echo date("Y-m-d H:i",$api_list['api_validity_start'])}</small></td>
+                                        <td><small>{php echo date("Y-m-d H:i",$api_list['api_validity_end'])}</small></td>
+
+                                        
+                                          
+                                      <td >
+                                            <a href="{php echo $this->createWebUrl('pc_member_edit',array('act' =>'edit','id' =>$api_list['bind_m_uid']))}"><button class=" btn btn-primary btn-xs ">编辑</button></a>
+
+                                          <a href="{php echo $this->createWebUrl('pc_member_list',array('act' =>'cancel','id' =>$api_list['id']))}" onclick="return confirm('确认删除API接口？');return false;" class="btn btn-danger btn-xs" >删除</a>
+
+                                           
+                                         </td>
+                                    </tr>
+                                    {/loop}
+
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+                            
+
+                        </div>
+                        {$pager}
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+      
+    {template 'pc/pc_footer'}
+      
+
+        </div>
+        </div>
+
+
+
+    <!-- Mainly scripts -->
+    <script src="{MODULE_URL}/template/pc/js/jquery-3.1.1.min.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/bootstrap.min.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Peity -->
+    <script src="{MODULE_URL}/template/pc/js/plugins/peity/jquery.peity.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="{MODULE_URL}/template/pc/js/inspinia.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/plugins/pace/pace.min.js"></script>
+
+    <!-- iCheck -->
+    <script src="{MODULE_URL}/template/pc/js/plugins/iCheck/icheck.min.js"></script>
+
+    <!-- Peity -->
+    <script src="{MODULE_URL}/template/pc/js/demo/peity-demo.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+        });
+    </script>
+
+</body>
+
+</html>

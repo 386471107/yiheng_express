@@ -1,0 +1,188 @@
+{template 'header'}
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/jquery-weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/style.css">
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<style type="text/css">
+  .subscript{
+        top:0px;
+        color: #FFF;
+        height: 30px;
+        width: 100px;
+        position: absolute;
+        right: -25px;
+        text-align: center;
+        line-height: 30px;
+        font-family: "黑体";
+        background-color: #ECAD2C;
+        -moz-transform:rotate(45deg);
+        -webkit-transform:rotate(45deg);
+        -o-transform:rotate(45deg);
+        -ms-transform:rotate(45deg);
+        transform:rotate(45deg);
+      }
+	  
+	  .distance
+	  {
+			color: #888;
+			font-size: 13px;
+			line-height: 1.2;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			display: -webkit-box;
+			-webkit-box-orient: vertical;
+			-webkit-line-clamp: 2;
+			margin-right:5px;
+	}
+</style>
+<body>
+
+
+<div class="weui-search-bar" >
+  <form class="weui-search-bar__form" action="" method="POST" id="form1">
+    <div class="weui-search-bar__box">
+      <i class="weui-icon-search"></i>
+      <input type="search" class="weui-search-bar__input" type="text" placeholder="请输入店铺编号" id="area_code">
+      <a href="javascript:" class="weui-icon-clear"></a>
+    </div>
+    <label class="weui-search-bar__label" >
+      <i class="weui-icon-search"></i>
+      <span>搜索</span>
+    </label>
+  </form>
+  <a href="javascript:" class="weui-search-bar__cancel-btn"  onClick="search_shop()">搜索</a>
+</div>
+
+    <div class="weui-cells">
+      {loop $shop_list $shop_list}
+      <a onclick="set({$shop_list['area_code']})" " >
+      <div class="weui-cell" style="padding:0;border-bottom: 1px solid #ECECEC;overflow: hidden;background:#FEFEFE;" >
+        <div class="weui-panel__bd" style="width:90%;display:block" >
+          <div class="weui-media-box weui-media-box_appmsg">
+            <div class="weui-media-box__hd">
+              <img class="weui-media-box__thumb" src="{$shop_list['area_logo']}">
+            </div>
+            <div style="float:left;">
+				<h4 class="weui-media-box__title">{$shop_list['area_name']}</h4>
+				<p class="weui-media-box__desc" >{$shop_list['area_tel']}&nbsp;&nbsp;|&nbsp;&nbsp;{$shop_list['area_person']} </p>
+				<p class="weui-media-box__desc" style="margin:8px 0;">{$shop_list['area_location']}</p>
+			 </div>
+			 
+			
+        </div>
+        </div> 
+		<!-- <div class="distance">255KM</div> -->
+
+         {if $shop_list['area_code'] != $myinfo['m_defaut_area']}
+        <div class="subscript" id="sub_{$shop_list['area_code']}"  hidden="hidden"  >
+          &nbsp;&nbsp;默认
+        </div>
+      {else}
+        <div class="subscript" id="sub_{$shop_list['area_code']}" >
+          &nbsp;&nbsp;默认
+        </div>
+        <input type="hidden" id="disdiv" value="{$shop_list['area_code']}">
+      {/if}
+
+      </div>
+         </a>
+     {/loop}
+      
+  </div>
+ 
+ 
+
+<div style="margin-bottom: 55px;display: block;"></div>
+{template 'user_footer'}
+<script src="{MODULE_URL}/template/mobile/js/jquery.min.js"></script>
+<script src="{MODULE_URL}/template/mobile/js/jquery-weui.min.js"></script>
+ 
+ <script>
+wx.ready(function () { 
+			wx.getLocation({                
+			type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+			success: function (res) {
+				var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+				var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+				var speed = res.speed; // 速度，以米/每秒计
+				var accuracy = res.accuracy; // 位置精度
+				 $.post("{php echo $this->createMobileUrl('my_area')}", {"act":'update_laction',"lat":latitude,"lng":longitude}, 
+						function(data) 
+						{
+						  
+						}, "json");
+			},
+			cancel: function (res) {
+				alert('授权可获得更优质的体验！');
+
+			}
+			});
+           });
+</script>
+
+<script type="text/javascript">
+  function set(id)
+    {
+        $.actions({
+          <!-- title: "加入我的店铺", -->
+          onClose: function() {
+            console.log("close");
+          },
+          actions: [
+            {
+              text: "加入并默认",
+              className: "color-danger",
+              onClick: function() {
+                $.post("{php echo $this->createMobileUrl('my_area')}", {"act":'join',"id":id}, 
+                        function(data) 
+                        {
+                            if (data.sign=='success')
+                            {
+                              $.toast(data.tips, 500,"success");
+                              disnum = $("#disdiv").val()
+                              $("#sub_"+disnum).hide(1000);
+                              $("#sub_"+id).show(1000);
+                              $("#disdiv").val(id)
+                            }
+                          
+                        }, "json");
+                
+              }
+            },
+           
+          ]
+        });
+       
+    }
+
+
+
+
+
+  function search_shop()
+  {
+   
+    var area_code =($("#area_code").val())
+    $.post("{php echo $this->createMobileUrl('my_area')}", {"act":'search',"area_code":area_code}, 
+                        function(data) 
+                        {
+                          if (data.success==1 )
+                          {
+                            $("#list").prepend(data.res_str);
+                            $.toast("搜索到"+data.cnt+"条记录", "success");
+                            // $("#code_"+data.rid).remove();
+                          }
+                          
+                          else
+                          {
+                             $.toast("未搜到店铺信息", "cancel");
+                          }
+                          
+                        }, "json");
+  } 
+
+
+
+  </script>
+</body>
+</html>

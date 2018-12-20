@@ -1,0 +1,10 @@
+错误码：S0X01
+
+1.yiheng_express_sms_setting表中sms_key,sms_message_id,sms_message，是否为空
+错误码：S0X02
+1.Check_Sms($openid,$shop_id,$sms_type=0)，$sms_type中的值，不能为0
+2.express_sms_info 中是否存在用户信息
+错误码：S0X03
+express_sms_info 表中sms_status，sms_do是否置1
+错误码：S0X04
+yiheng_express_sms_setting表中sms_day_max设置值

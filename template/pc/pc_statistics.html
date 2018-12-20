@@ -1,0 +1,757 @@
+ {template 'pc/pc_header'}
+
+<!-- Mainly scripts -->
+<script src="{MODULE_URL}/template/pc/js/jquery-3.1.1.min.js"></script>
+<script src="{MODULE_URL}/template/pc/js/bootstrap.min.js"></script>
+<script src="{MODULE_URL}/template/pc/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="{MODULE_URL}/template/pc/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<!-- Peity -->
+<script src="{MODULE_URL}/template/pc/js/plugins/peity/jquery.peity.min.js"></script>
+<!-- Custom and plugin javascript -->
+<script src="{MODULE_URL}/template/pc/js/inspinia.js"></script>
+<script src="{MODULE_URL}/template/pc/js/plugins/pace/pace.min.js"></script>
+<!-- iCheck -->
+<script src="{MODULE_URL}/template/pc/js/plugins/iCheck/icheck.min.js"></script>
+<!-- Peity -->
+<script src="{MODULE_URL}/template/pc/js/demo/peity-demo.js"></script>
+<script>
+    $(document).ready(function(){
+    $('.i-checks').iCheck({
+    checkboxClass: 'icheckbox_square-green',
+    radioClass: 'iradio_square-green',
+    });
+    });
+</script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+<script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
+<body>
+
+    <div id="wrapper">
+
+    {template 'pc/pc_main_left'}
+
+        <div id="page-wrapper" class="gray-bg">
+        {template 'pc/pc_main_top'}
+        {template 'pc/pc_page_nav'}
+           
+        <div class="wrapper wrapper-content animated fadeInRight">
+            
+
+        {if $Stype==1}
+             <div class="row">
+                    <div class="col-lg-6">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>发送数据统计</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="row">
+                                 <div class="col-lg-12">
+                                    <div class="flot-chart">
+                                      <div id="container1" style="height: 100%"></div>
+                                       
+                                    </div>
+                                </div>
+                                
+                                </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                         <div class="col-lg-6">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>店铺发送统计</h5>
+                                
+                            </div>
+                            <div class="ibox-content">
+                                <div class="row">
+                                 <div class="col-lg-12">
+                                    <div class="flot-chart">
+                                      <div id="container2" style="height: 100%"></div>
+                                    </div>
+                                </div>
+                                
+                                </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <h5>发送数据统计列表</h5>
+                                </div>
+                                <div class="ibox-content">
+                                    <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>日期</th>
+                                                <th>微信发送</th>
+                                                <th>短信发送 </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {loop $list $key=>$list}
+                                                <tr>
+                                                    <td>{$year}-{$month}-{php echo $key+1}</td>
+                                                    <td>{$list['wx_out']}</td>
+                                                    <td>{$list['sms_out']}</td>
+                                                    <!-- <td><a href="#"><i class="fa fa-check text-navy"></i></a></td> -->
+                                                </tr>
+                                            {/loop}
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <h5>店铺发送统计列表</h5>
+                                </div>
+                                <div class="ibox-content">
+                                    <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>店铺名称 </th>
+                                                <th>总发送量 </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {loop $shop_total $key=>$shop_total}
+                                            <tr>
+                                                <td>{php echo ++$key}</td>
+                                                <td>{$shop_total['shop_name']}</td>
+                                                <td>{$shop_total['cnt']}</td>
+                                            </tr>
+                                            {/loop}
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+
+                    </div> 
+
+        {/if}
+
+             
+
+         {if $Stype==2}
+             <div class="row">
+                    <div class="col-lg-6">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>入库数据统计</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="row">
+                                 <div class="col-lg-12">
+                                    <div class="flot-chart">
+                                      <div id="container1" style="height: 100%"></div>
+                                       
+                                    </div>
+                                </div>
+                                
+                                </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                         <div class="col-lg-6">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>店铺收发统计</h5>
+                                
+                            </div>
+                            <div class="ibox-content">
+                                <div class="row">
+                                 <div class="col-lg-12">
+                                    <div class="flot-chart">
+                                      <div id="container2" style="height: 100%"></div>
+                                    </div>
+                                </div>
+                                
+                                </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <h5>入库数据统计列表</h5>
+                                </div>
+                                <div class="ibox-content">
+                                    <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>日期</th>
+                                                <th>微信入库 </th>
+                                                <th>短信入库 </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {loop $list $key=>$list}
+                                                <tr>
+                                                    <td>{$year}-{$month}-{php echo $key+1}</td>
+                                                    <td>{$list['wx_in']}</td>
+                                                    <td>{$list['sms_in']}</td>
+                                                    <!-- <td><a href="#"><i class="fa fa-check text-navy"></i></a></td> -->
+                                                </tr>
+                                            {/loop}
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <h5>店铺收发统计列表</h5>
+                                </div>
+                                <div class="ibox-content">
+                                    <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>店铺名称 </th>
+                                                <th>收件量 </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {loop $shop_total $key=>$shop_total}
+                                            <tr>
+                                                <td>{php echo ++$key}</td>
+                                                <td>{$shop_total['shop_name']}</td>
+                                                <td>{$shop_total['cnt']}</td>
+                                            </tr>
+                                            {/loop}
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+
+                    </div> 
+                    
+        {/if}
+        
+
+
+
+        {if $Stype==3}
+             <div class="row">
+                    <div class="col-lg-6">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>入库数据统计</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="row">
+                                 <div class="col-lg-12">
+                                    <div class="flot-chart">
+                                      <div id="container1" style="height: 100%"></div>
+                                       
+                                    </div>
+                                </div>
+                                
+                                </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                         <div class="col-lg-6">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>店铺收发统计</h5>
+                                
+                            </div>
+                            <div class="ibox-content">
+                                <div class="row">
+                                 <div class="col-lg-12">
+                                    <div class="flot-chart">
+                                      <div id="container2" style="height: 100%"></div>
+                                    </div>
+                                </div>
+                                
+                                </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <h5>入库数据统计列表</h5>
+                                </div>
+                                <div class="ibox-content">
+                                    <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>日期</th>
+                                                <th>微信入库 </th>
+                                                <th>短信入库 </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {loop $list $key=>$list}
+                                                <tr>
+                                                    <td>{$year}-{$month}-{php echo $key+1}</td>
+                                                    <td>{$list['wx_in']}</td>
+                                                    <td>{$list['sms_in']}</td>
+                                                    <!-- <td><a href="#"><i class="fa fa-check text-navy"></i></a></td> -->
+                                                </tr>
+                                            {/loop}
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <h5>店铺收发统计列表</h5>
+                                </div>
+                                <div class="ibox-content">
+                                    <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>店铺名称 </th>
+                                                <th>收件量 </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {loop $shop_total $key=>$shop_total}
+                                            <tr>
+                                                <td>{php echo ++$key}</td>
+                                                <td>{$shop_total['shop_name']}</td>
+                                                <td>{$shop_total['cnt']}</td>
+                                            </tr>
+                                            {/loop}
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+
+                    </div> 
+                    
+        {/if}    
+   
+
+
+        </div>
+        {template 'pc/pc_footer'}
+
+        </div>
+        </div>
+
+
+
+
+
+{if $Stype==1}
+      <script type="text/javascript">
+var dom = document.getElementById("container1");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
+option = {
+   
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data:['微信通知','短信通知']
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: {php echo $json_s_date}
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+        {
+            name:'微信通知',
+            type:'line',
+            
+            smooth: true,
+            data:{php echo $json_s_wx_notice}
+        },
+        {
+            name:'短信通知',
+            type:'line',
+            
+            smooth: true,
+            data:{php echo $json_s_message}
+        },
+        
+       
+    ]
+};
+
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+       </script>
+
+       <script type="text/javascript">
+var dom = document.getElementById("container2");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
+option = {
+    title : {
+        text: '',
+        subtext: ''
+    },
+    tooltip : {
+        trigger: 'axis'
+    },
+    legend: {
+        data:['发送量']
+    },
+    // toolbox: {
+    //     show : true,
+    //     feature : {
+    //         dataView : {show: true, readOnly: false},
+    //         magicType : {show: true, type: ['line', 'bar']},
+    //         restore : {show: true},
+    //         saveAsImage : {show: true}
+    //     }
+    // },
+    calculable : true,
+    xAxis : [
+        {
+            type : 'category',
+            data : {php echo $json_shop_x}
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value'
+        }
+    ],
+    series : [
+        {
+            name:'收发量',
+            type:'bar',
+            data:{php echo $json_shop_y},
+            // markPoint : {
+            //     data : [
+            //         {type : 'max', name: '最大值'},
+            //         {type : 'min', name: '最小值'}
+            //     ]
+            // },
+            markLine : {
+                data : [
+                    {type : 'average', name: '平均值'}
+                ]
+            }
+        },
+       
+    ]
+};
+
+
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+       </script>
+{/if}
+
+
+{if $Stype==2}
+    <script type="text/javascript">
+    var dom = document.getElementById("container1");
+    var myChart = echarts.init(dom);
+    var app = {};
+    option = null;
+    option = {
+    tooltip: {
+    trigger: 'axis'
+    },
+    legend: {
+    data:['微信入库','短信入库']
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    xAxis: {
+    type: 'category',
+    boundaryGap: false,
+    data: {php echo $json_s_date}
+    },
+    yAxis: {
+    type: 'value'
+    },
+    series: [
+    {
+    name:'微信入库',
+    type:'line',
+
+    smooth: true,
+    data:{php echo $json_s_wx_in}
+    },
+    {
+    name:'短信入库',
+    type:'line',
+
+    smooth: true,
+    data:{php echo $json_s_sms_in}
+    },
+
+
+    ]
+    };
+
+    if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+    }
+       </script>
+
+       <script type="text/javascript">
+var dom = document.getElementById("container2");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
+option = {
+    title : {
+        text: '',
+        subtext: ''
+    },
+    tooltip : {
+        trigger: 'axis'
+    },
+    legend: {
+        data:['收发量']
+    },
+    // toolbox: {
+    //     show : true,
+    //     feature : {
+    //         dataView : {show: true, readOnly: false},
+    //         magicType : {show: true, type: ['line', 'bar']},
+    //         restore : {show: true},
+    //         saveAsImage : {show: true}
+    //     }
+    // },
+    calculable : true,
+    xAxis : [
+        {
+            type : 'category',
+            data : {php echo $json_shop_x}
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value'
+        }
+    ],
+    series : [
+        {
+            name:'收发量',
+            type:'bar',
+            data:{php echo $json_shop_y},
+            // markPoint : {
+            //     data : [
+            //         {type : 'max', name: '最大值'},
+            //         {type : 'min', name: '最小值'}
+            //     ]
+            // },
+            markLine : {
+                data : [
+                    {type : 'average', name: '平均值'}
+                ]
+            }
+        },
+       
+    ]
+};
+
+
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+       </script>
+{/if}
+
+
+{if $Stype==3}
+      <script type="text/javascript">
+var dom = document.getElementById("container1");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
+option = {
+   
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data:['微信入库','短信入库']
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: {php echo $json_s_date}
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+        {
+            name:'微信入库',
+            type:'line',
+            
+            smooth: true,
+            data:{php echo $json_s_wx_in}
+        },
+        {
+            name:'短信入库',
+            type:'line',
+            
+            smooth: true,
+            data:{php echo $json_s_sms_in}
+        },
+        
+       
+    ]
+};
+
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+       </script>
+
+       <script type="text/javascript">
+var dom = document.getElementById("container2");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
+option = {
+    title : {
+        text: '',
+        subtext: ''
+    },
+    tooltip : {
+        trigger: 'axis'
+    },
+    legend: {
+        data:['收发量']
+    },
+    // toolbox: {
+    //     show : true,
+    //     feature : {
+    //         dataView : {show: true, readOnly: false},
+    //         magicType : {show: true, type: ['line', 'bar']},
+    //         restore : {show: true},
+    //         saveAsImage : {show: true}
+    //     }
+    // },
+    calculable : true,
+    xAxis : [
+        {
+            type : 'category',
+            data : {php echo $json_shop_x}
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value'
+        }
+    ],
+    series : [
+        {
+            name:'收发量',
+            type:'bar',
+            data:{php echo $json_shop_y},
+            // markPoint : {
+            //     data : [
+            //         {type : 'max', name: '最大值'},
+            //         {type : 'min', name: '最小值'}
+            //     ]
+            // },
+            markLine : {
+                data : [
+                    {type : 'average', name: '平均值'}
+                ]
+            }
+        },
+       
+    ]
+};
+
+
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+       </script>
+{/if}
+
+ 
+</body>
+
+</html>

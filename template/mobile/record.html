@@ -1,0 +1,137 @@
+{template 'header'}
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/weui/1.1.1/style/weui.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css">
+<link href="http://libs.baidu.com/fontawesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+<link href="http://www.bootcss.com/p/buttons/css/buttons.css" rel="stylesheet">
+<div class="weui-tab">
+  <div class="weui-navbar">
+    <a class="weui-navbar__item weui-bar__item--on" href="#tab1">
+      我的取件
+    </a>
+  
+    
+  </div>
+  
+  
+  <div class="weui-tab__bd">
+    <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
+      {loop $list $list}
+		<div class="weui-form-preview">
+		<div class="weui-form-preview__hd">
+		<label class="weui-form-preview__label">验证码</label>
+		
+		<em class="weui-form-preview__value ">{$list['recoder_code']}</em>
+		
+		</div>
+		<div class="weui-form-preview__bd">
+		
+		<div class="weui-form-preview__item">
+		<label class="weui-form-preview__label">微信绑定</label>
+		{if ($list['recoder_tel_exsit']==1)}
+		<span class="weui-form-preview__value">已绑定</span>
+		{/if}
+		{if ($list['recoder_tel_exsit']==0)}
+		<span class="weui-form-preview__value weui-cell_warn">未绑定</span>
+		{/if}
+		
+		</div>
+		
+		<!-- <div class="weui-form-preview__item">
+		<label class="weui-form-preview__label">快递公司</label>
+		<span class="weui-form-preview__value">{$list['recoder_express_name']}</span>
+		</div> -->
+	<!-- 	<div class="weui-form-preview__item">
+		<label class="weui-form-preview__label">货号</label>
+		<span class="weui-form-preview__value">{$list['recoder_goods_num']}</span>
+		</div> -->
+		<div class="weui-form-preview__item">
+		<label class="weui-form-preview__label">发送时间</label>
+		<span class="weui-form-preview__value">{php echo date('Y-m-d H:i:s', $list['recoder_create']); }</span>
+		</div>
+		</div>
+		<div class="weui-form-preview__ft">
+		<span class="weui-form-preview__btn weui-form-preview__btn_default" >{if ($list['recoder_get_status']==1)}已收货{else}{/if}</span>
+		
+		{if ($list['recoder_get_status']!=1)}<a class="weui-form-preview__btn weui-form-preview__btn_primary" href="{php echo $this->createMobileUrl('record',array('op' =>'check','id' => $list['id']))}">确认收货</a>{else}{/if}
+
+		</div>
+		</div>
+
+		<br>
+
+	  {/loop}
+	  
+	  
+	  
+	  
+    </div>
+    <div id="tab2" class="weui-tab__bd-item">
+      
+
+	
+	  
+	  
+	  
+	  
+	  
+	  
+    </div>
+   
+  </div>
+</div>
+
+<script type="text/javascript">
+	
+function checkin()
+{
+
+var express_no=$("#express_no").val();
+
+if (express_no=="" || express_no.length<10 || express_no.length>16)
+{
+	alert("快递单号不正确！")
+	return false;
+
+}
+ 
+
+ $.post("{php echo $this->createMobileUrl('wait_pickup')}", {"act":'addnew',"express_no":express_no}, 
+												function(data) 
+												{	
+
+													if (data.success==0)
+													{
+														$.toast("快递跟踪已超过数量!","text");	
+														return false;
+														// $.toast(data.express_no,"text");	
+													}
+													if (data.success==2)
+													{
+														$.toast("快递已到站，请查看我的取件!","text");	
+														return false;
+														// $.toast(data.express_no,"text");	
+													}
+
+													if (data.success==1)
+													{
+														$("#wait_express_list").prepend(
+
+														"<a class=\"weui-cell weui-cell_access\" href=\"javascript:;\"  onclick=\"del(1)\"><div class=\"weui-cell__bd\" >"+express_no+"</div> <div class=\"weui-cell__ft\">暂未到站</div></a>");
+														// $.toast(data.express_no,"text");	
+													}
+													
+												}, "json");
+
+}
+
+
+
+</script>
+
+<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/jquery-weui/1.0.1/js/jquery-weui.min.js"></script>
+<script src="http://jqweui.com/dist/lib/fastclick.js"></script>
+<script src="//cdn.bootcss.com/jquery-weui/1.0.1/js/swiper.min.js"></script>
+<script src="//cdn.bootcss.com/jquery-weui/1.0.1/js/city-picker.min.js"></script>

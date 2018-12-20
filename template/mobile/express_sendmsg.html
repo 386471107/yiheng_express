@@ -1,0 +1,523 @@
+{template 'header'}
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/jquery-weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/style.css">
+
+<div class="weui-tab">
+      <div class="weui-navbar" style="z-index: 0">
+		    <a class="weui-navbar__item weui-bar__item--on" href="#tab1">
+	          新增记录
+	        </a>
+	        <a class="weui-navbar__item " href="#tab2" onclick="list_recode()" >
+	          待发列表
+	        </a>
+      </div> 
+      <div class="weui-tab__bd">
+        <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
+		<div class="weui-cells">
+				<div class="weui-cell weui-cell_vcode">
+				    <div class="weui-cell__hd">
+				      <label class="weui-label">快递号1</label>
+				    </div>
+				    <div class="weui-cell__bd">
+				 		 <input class="weui-input" type="text" id="barcode" placeholder="请输入快递号">
+				    </div>
+				    <div class="weui-cell__ft">
+				    <button class="weui-vcode-btn" id ="scanQRCode1" >快递扫描</button>
+				    </div>
+			    </div>
+		 		<div class="weui-cell weui-cell_vcode">
+				    <div class="weui-cell__hd">
+				      <label class="weui-label">手机号</label>
+				    </div>
+				    <div class="weui-cell__bd">
+				 		 <input class="weui-input" type="text" id="phone" onfocus="aa()"  placeholder="请输入手机号"  > 
+				    </div>
+				    <div class="weui-cell__ft">
+				    <button class="weui-vcode-btn" onclick="checkin()">号码入库</button>
+				    </div>
+			    </div>
+
+			    <div class="weui-cell weui-cell_select weui-cell_select-before">
+                <div class="weui-cell__hd">
+                    <select class="weui-select" id ="shelves" name="shelves">
+                        <option value="0">无货架</option>
+                        <option value="01">01</option>
+                        <option value="02">02</option>
+                        <option value="03">03</option>
+                        <option value="04">04</option>
+                        <option value="05">05</option>
+                        <option value="06">06</option>
+                        <option value="07">07</option>
+                        <option value="08">08</option>
+                    </select>
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" id ="goodno" type="goodno" pattern="[0-9]*" placeholder="请输入货号">
+                </div>
+                 <div class="weui-cell__ft">
+				   <label for="weuiAgree" class="weui-agree">
+		            <input id="weuiAgree" type="checkbox" class="weui-agree__checkbox">
+		            <span class="weui-agree__text" id="autoadd">货号递增 </span>
+				  </div>
+
+            </div>
+            
+        </label>
+		</div>
+
+
+			<div class="weui-cells weui-cells_form">
+	<!-- <button class="button button-block button-rounded" style="width:100%" onclick="sendmessage()" id="sendstatus">发送消息</button>-->
+		<div class="weui-cell">
+			<div class="weui-cell__hd" style="width:50% ;text-align:center"><label class="weui-label">手机号</label></div>
+			<div class="weui-cell__bd" style="width:25% ;text-align:left"><label class="weui-label">货号</label></div>
+			<div class="weui-cell__bd" style="width:20% ;text-align:center"><label class="weui-label">绑定状态</label></div>
+			
+		</div><hr>
+		<div id="phonelist" style="height: 100%;display: block;overflow: hidden;">
+			
+		</div>
+
+	</div>
+	<!-- <div class="weui-cells__tips" id="vts" style="text-align: center;">等待操作</div>
+	<div id="record"  >		
+	<img src="{MODULE_URL}/template/mobile/images/icon_voice_off.png" style="width: 25%;display: block; margin:auto; "  id="icon_record"  name="record">
+	</div>
+ -->
+
+
+
+
+        </div>
+		
+        <div id="tab2" class="weui-tab__bd-item">
+
+      <div class="weui-cell" onClick="select_mode()">
+			<div class="weui-cell__hd" style="width:50% ;text-align:center"><label for="date" class="weui-label">手机号</label></div>
+			<div class="weui-cell__ft" style="width:50% ;text-align:center">
+			<label for="date" >微信:<span id="wxmsn"></span>&nbsp;|&nbsp;短信:<span id="msm"></span></label></div>
+		</div><hr>
+
+		<div id="send_wait" >
+		</div>
+        </div>
+	
+              
+      </div>
+    </div>
+    
+</body>
+<script src="{MODULE_URL}/template/mobile/js/jquery.min.js"></script>
+<script src="{MODULE_URL}/template/mobile/js/jquery-weui.min.js"></script>
+  
+<script> 
+
+wx.ready(function () {
+
+ document.querySelector('#scanQRCode1').onclick = function () {
+
+    wx.scanQRCode({
+      needResult: 1,
+      desc: 'scanQRCode desc',
+      success: function (res) {
+      // alert(JSON.stringify(res));
+    
+      var serialNumber = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+      var serial = serialNumber.split(",");
+      serialNumber = serial[serial.length-1];
+      // alert(serialNumber)
+      $("#barcode").val("");
+      $("#barcode").val(serialNumber);
+    
+    
+      }
+    });
+  };
+ 
+
+ 
+var btnRecord = $('#record');
+btnRecord.on('touchstart', function(event) {
+    event.preventDefault();
+    btnRecord.addClass('hold');
+    startTime = new Date().getTime();
+    // 延时后录音，避免误操作
+    recordTimer = setTimeout(function() {
+        wx.startRecord({
+            success: function() {
+            	$("#icon_record").attr('src',"{MODULE_URL}/template/mobile/images/icon_voice_on.png"); 
+				$("#vts").html('正在录音'); 
+            },
+            cancel: function() {
+                alert('用户拒绝授权录音');
+            }
+        });
+    }, 300);
+}).on('touchend', function(event) {
+    event.preventDefault();
+    btnRecord.removeClass('hold');
+    // 间隔太短
+    if (new Date().getTime() - startTime < 300) {
+        startTime = 0;
+        // 不录音
+        clearTimeout(recordTimer);
+    } else { // 松手结束录音
+
+        wx.stopRecord({
+            success: function(res) {
+                
+                // localId: res.localId, // 需要识别的音频的本地Id，由录音相关接口获得
+
+                $("#icon_record").attr('src',"{MODULE_URL}/template/mobile/images/icon_voice_off.png"); 
+                $("#vts").html('语音识别'); 
+                	wx.translateVoice({
+						   localId: res.localId, // 需要识别的音频的本地Id，由录音相关接口获得
+						    isShowProgressTips: 1, // 默认为1，显示进度提示
+						    success: function (res) {
+						      // alert(res.translateResult); // 语音识别的结果
+						     result=res.translateResult
+							 $.post("{php echo $this->createMobileUrl('express_sendmsg')}", {"act":1,"voicets":result}, 
+												function(data) 
+												{
+													if (data.success==1 && data.exsit==1)
+													{
+													$("#vts").html('<span class="color-success">识别结果为'+data.voicets+'已入库</span>'); 
+													$("#phonelist").prepend(
+														"<div class='weui-cell'   id ='list"+data.id+"'  onclick='del("+data.id+")' ><div class='weui-cell__hd' style='width:50% ;text-align:center'><label for='date' class='weui-label'>"+data.voicets+"</label></div><div class='weui-cell__bd' style='width:25% ;text-align:center'><label for='date' class='weui-label'>已绑定</label></div></div>"
+														); 
+													}
+													else if (data.success==1 && data.exsit==0 )
+													{
+													$("#vts").html('<span class="color-success">识别结果为'+data.voicets+'已入库</span>'); 
+													$("#phonelist").prepend(
+
+														"<div class='weui-cell  weui-cell_warn'  id ='list"+data.id+"'  onclick='del("+data.id+")' ><div class='weui-cell__hd' style='width:50% ;text-align:center'><label for='date' class='weui-label'>"+data.voicets+"</label></div><div class='weui-cell__bd' style='width:30% ;text-align:center'><label for='date' class='weui-label'>未绑定</label></div></div>"
+														); 
+													}
+													else
+													{
+													$("#vts").html('<span class="color-danger">识别结果为'+data.voicets+'未入库</span>'); 
+													}
+													
+												}, "json");
+						     
+						    }
+						});
+				
+
+            },
+            fail: function(res) {
+                
+                alert(JSON.stringify(res));
+            }
+        });
+    }
+});
+
+  
+});
+
+wx.error(function (res) { 
+ alert(res.errMsg); 
+}); 
+
+
+ 
+</script>   
+
+
+
+<script type="text/javascript">
+$("#phone").bind("input propertychange",function () {
+     console.log("已经输入了"+$("#phone").val().length+"个字。。。");
+});
+
+
+
+function myFunction()
+{
+    setTimeout(function(){ console.log("已经输入了"+$("#phone").val().length+"个字。。。");},3000);
+}
+
+
+
+
+function list_recode()
+{
+	 $.post("{php echo $this->createMobileUrl('express_sendmsg')}", {"act":"load_list"}, 
+												function(data) 
+												{
+													
+												$("#send_wait").html(data.list_str)
+												$("#wxmsn").html(data.wxmsn)
+												$("#msm").html(data.msn)	
+												}, "json");
+}
+function del(value)
+{
+
+ $.actions({
+          title: "选择操作",
+          onClose: function() {
+            console.log("close");
+          },
+          actions: [
+           
+            {
+              text: "删除",
+              className: 'color-danger',
+              onClick: function() {
+            
+ 
+			  $.post("{php echo $this->createMobileUrl('express_sendmsg')}", {"act":"del","id":value}, 
+		
+				function(data){
+				
+				if (data.success==1)
+				{
+				  $("div").remove("#list"+value);
+				}  
+
+				}, "json");
+			   
+			   
+				  
+				  
+              }
+            }
+          ]
+        });
+}
+
+
+
+
+
+
+
+function select_mode()
+{
+$.actions({
+          title: "发送方式选择",
+          onClose: function() {
+            console.log("close");
+          },
+          actions: [
+            {
+              text: "微信端发送",
+              className: "color-success",
+              onClick: function() {
+
+				var myVar = setInterval(function(){ send() }, 1000);
+ 
+				function send() {
+				 $.post("{php echo $this->createMobileUrl('express_sendmsg')}", { "act":"sending","type":"weixin"},  
+					function(data){
+						 
+					if (data.success==1)
+						{
+							var wxmsm_total= $("#wxmsn").html()
+							$("#wxmsn").html(parseInt(wxmsm_total) - 1)
+							$("div").remove("#list"+data.id);	
+							  // $.toast("正在发送中，请勿关闭页面", "text");
+							 if (parseInt(wxmsm_total)==1)
+							{
+								stopSend();
+								$.toast('发送完成！', 'text');
+								return false;
+							}
+						}
+
+						if (data.success==2)
+						{
+							$.toast('模版配置不准确', 'forbidden');
+							stopSend();
+							return false;
+
+						} 
+						if (data.success==0)
+						{
+							stopSend();
+							$.toast('发送完成！', 'text');
+							return false;
+						} 
+						if (data.success==-1)
+						{
+							stopSend();
+							$.toast('微信余量不足！', 'text');
+							return false;
+						} 
+
+					}, "json");
+				}
+
+				function stopSend() {
+					clearInterval(myVar); 
+				}
+
+				}
+
+            },
+            {
+              text: "短信发送",
+              className: "color-warning",
+              onClick: function() {
+              		// alert("暂不支持短信");
+              		// return false;
+			     var myVar = setInterval(function(){ send() }, 500); 
+				function send() {
+				 $.post("{php echo $this->createMobileUrl('express_sendmsg')}", { "act":"sending","type":"msm"},  
+					function(data){
+						 
+					if (data.success==1)
+						{
+							var msm_total= $("#msm").html()
+							$("#msm").html(parseInt(msm_total) - 1)
+							// $.toast("正在发送中，请勿关闭页面", "text");
+							$("div").remove("#list"+data.id);
+							if (parseInt(msm_total)==1)
+							{
+								stopSend();
+								$.toast('发送完成！', 'text');
+								return false;
+							}
+						}
+					if (data.success==2)
+					{
+						$.toast('同一时间段超次发送', 'forbidden');
+						stopSend();
+						return false;
+
+					} 
+					if (data.success==0)
+					{
+						
+						stopSend();
+						$.toast('发送完成！', 'text');
+						return false;
+
+					} 
+					if (data.success==4 || data.success==5 || data.success==6)
+					{
+						$.toast(data.tips, data.sign);
+						stopSend();
+						return false;
+
+					} 
+											
+					}, "json");
+				}
+
+				function stopSend() {
+					clearInterval(myVar); 
+				}
+              
+              }
+            },
+            
+
+             {
+              text: "标记为已发",
+              className: "color-danger",
+              onClick: function() {
+			        $.post("{php echo $this->createMobileUrl('express_sendmsg')}", {"act":'senddone'}, 
+						function(data) 
+						{
+							$.toast("操作成功", "success");
+						}, "json");  
+			  
+              
+              }
+            },
+           
+          ]
+        });
+
+
+}
+
+function aa()
+{
+	alert("aaaa")
+}
+
+
+
+function checkin()
+{
+
+var goodno=$("#goodno").val();
+var shelves=$('#shelves').val();
+var barcode=$('#barcode').val();
+
+<!-- console.log("11111111") -->
+
+var phonenum=$("#phone").val();
+var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(17[0-9]{1})|(18[0-9]{1})|(19[0-9]{1}))+\d{8})$/; 
+if(!myreg.test( phonenum)) 
+	{   
+		
+		$.toptip('请输入有效的手机号码！', 'warning');
+		return false; 
+	}
+
+
+ $.post("{php echo $this->createMobileUrl('express_sendmsg')}", {"act":'addnew',"voicets":phonenum,"shelves":shelves,"goodno":goodno,"barcode":barcode,'inputtype':1}, 
+		function(data) 
+		{
+
+			<!-- console.log("11111111") -->
+			if (data.success==0)
+			{
+				$.toast("重复单号", "cancel");
+				$('#barcode').val("");
+				$("#phone").val("");
+
+			}
+
+			if (data.success==1 && data.exsit==1)
+			{
+				$("#vts").html('<span class="color-success">识别结果为'+data.voicets+'已入库</span>'); 
+				$("#phonelist").prepend(
+					"<div class='weui-cell'   id ='list"+data.resultid+"'  onclick='del("+data.resultid+")' ><div class='weui-cell__hd' style='width:50% ;text-align:left'><label  class=''>"+data.voicets+"</label></div><div class='weui-cell__bd' style='width:25% ;text-align:left'><label for='date' class='weui-label'>"+data.shelves+data.goodno+"</label></div><div class='weui-cell__bd' style='width:25% ;text-align:center'><label for='date' class='weui-label'>已绑定</label></div></div>"
+					); 
+				$('#barcode').val("");
+				$("#phone").val("");
+			}
+			else if (data.success==1 && data.exsit==0 )
+			{
+				$("#vts").html('<span class="color-success">识别结果为'+data.voicets+'已入库</span>'); 
+				$("#phonelist").prepend(
+					"<div class='weui-cell  weui-cell_warn'  id ='list"+data.resultid+"'  onclick='del("+data.resultid+")' ><div class='weui-cell__hd' style='width:50% ;text-align:left;'><label  class=''>"+data.voicets+"</label></div><div class='weui-cell__bd' style='width:25% ;text-align:left'><label for='date' class='weui-label'>"+data.shelves+data.goodno+"</label></div><div class='weui-cell__bd' style='width:25%;text-align:center'><label for='date' class='weui-label'>未绑定</label></div></div>"
+					); 
+				$('#barcode').val("");
+				$("#phone").val("");
+			}
+			
+		}, "json");
+
+
+
+if($('#weuiAgree').is(':checked')) {
+    $("#goodno").val(parseInt(goodno)+1) 
+}
+
+
+}
+
+function PrefixInteger(num, length) {  
+ return ( "0000000000000000" + num ).substr( -length );  
+}  
+
+
+
+</script>
+
+
+
+<script src="{MODULE_URL}/template/mobile/js/jquery.min.js"></script>
+<script src="{MODULE_URL}/template/mobile/js/jquery-weui.min.js"></script>
+		
+
+</html>

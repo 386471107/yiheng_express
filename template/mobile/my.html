@@ -1,0 +1,321 @@
+{template 'header'}
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/jquery-weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/index.css">
+
+
+</head>
+<style type="text/css">
+  
+.wy-center-top {
+  width: 100%;
+  overflow: hidden;
+  background: url(http://www.sucainiu.com/demo/sucai/2017/1120/5585//images/center-top-bj.jpg) no-repeat;
+  background-size: cover
+}
+
+.wy-center-top .userinfo {
+  padding: 0
+}
+
+.wy-center-top .xx-menu {
+  height: 44px;
+  background: rgba(0,0,0,.3)
+}
+
+.user-name {
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px
+}
+
+.user-grade {
+  color: #fc0;
+  margin: 2px 0;
+  font-size: 13px
+}
+
+.user-integral {
+  font-size: 13px;
+  color: #fafafa
+}
+
+.center-ordersModule .imgicon {
+  display: inline-block;
+  height: 24px;
+  text-align: center;
+  margin-bottom: 5px
+}
+
+.center-ordersModule .imgicon img {
+  height: 24px;
+  width: auto
+}
+.center-ordersModule .name {
+  font-size: 12px;
+  color: #333
+}
+
+.center-ordersModule {
+  text-align: center;
+  display: block;
+  padding: 10px 0;
+  position: relative
+}
+
+.center-ordersModule .imgicon {
+  display: inline-block;
+  height: 24px;
+  text-align: center;
+  margin-bottom: 5px
+}
+
+.center-ordersModule .imgicon img {
+  height: 24px;
+  width: auto
+}
+
+.center-ordersModule .name {
+  font-size: 12px;
+  color: #333
+}
+
+.center-list-txt
+{
+  margin-left: 8px;
+   font-size: 16px;
+}
+</style>
+  <body ontouchstart="">
+
+<div class='weui-content'>
+
+
+
+ 
+
+  <div class="wy-center-top">
+    <div class="weui-media-box weui-media-box_appmsg">
+      <div class="weui-media-box__hd"><img class="weui-media-box__thumb radius" src="{$myinfo['m_avatar']}" alt="" style="border-radius: 50%"></div>
+      <div class="weui-media-box__bd">
+        <h4 class="weui-media-box__title user-name">{$myinfo['m_nickname']}</h4>
+        {if $myinfo['m_level']==1}
+          <p class="user-grade">超级管理</p>
+        {/if}
+        {if $myinfo['m_level']==2}
+          <p class="user-grade">店铺店长</p>
+        {/if}
+        {if $myinfo['m_level']==3}
+          <p class="user-grade">店铺员工</p>
+        {/if}
+		{if $myinfo['m_level']==4}
+          <p class="user-grade">站外员工</p>
+        {/if}
+        {if $myinfo['m_level']==0 }
+          <p class="user-grade">普通会员</p>
+        {/if}
+        {if $myinfo['m_follow']!=1}
+          <a><p class="user-integral">重要提示：<em class="num">关注微信后方可接收消息</em></p> </a>
+        {/if}
+      </div>
+    </div> 
+
+</div>
+<!-- <div class="weui-panel weui-panel_access">
+    <div class="weui-panel__bd">
+    <div class="weui-flex">
+      <div class="weui-flex__item">
+    <a href="" class="center-ordersModule">
+    <div class="imgicon"><img src="images/center-icon-order-dsh.png" /></div>
+    <div class="name">待收货</div>
+    </a>
+    </div>
+    <div class="weui-flex__item">
+    <a href="" class="center-ordersModule">
+    <span class="weui-badge" style="position: absolute;top:5px;right:10px; font-size:10px;">2</span>
+    <div class="imgicon"><img src="images/center-icon-order-dfk.png" /></div>
+    <div class="name">待付款</div>
+    </a>
+    </div>
+    <div class="weui-flex__item">
+    <a href="" class="center-ordersModule">
+    <span class="weui-badge" style="position: absolute;top:5px;right:10px; font-size:10px;">1</span>
+    <div class="imgicon"><img src="images/center-icon-order-dfh.png" /></div>
+    <div class="name">待发货</div>
+    </a>
+    </div>
+
+    <div class="weui-flex__item">
+    <a href="orders.html" class="center-ordersModule">
+    <span class="weui-badge" style="position: absolute;top:5px;right:10px; font-size:10px;">2</span>
+    <div class="imgicon"><img src="images/center-icon-order-dpj.png" /></div>
+    <div class="name">待评价</div>
+    </a>
+    </div>
+    </div>
+    </div>
+</div>
+
+ -->
+ {if $has_shop!=0}
+
+    {if $myinfo['m_level']==2}
+    <div class="weui-cells">
+      <a class="weui-cell weui-cell_access" href="{php echo $this->createMobileUrl('area_default')}">
+        <div class="weui-cell__hd"><img src="{MODULE_URL}/template/mobile/images/my_shops.png" alt="" class="weui-grid__icon"></div>
+        <div class="weui-cell__bd weui-cell_primary">
+         <p class="center-list-txt">我的店铺</p>
+        </div>
+        <span class="weui-cell__ft">{$shop_total}&nbsp;家</span>
+      </a>
+      <a class="weui-cell weui-cell_access" href="{php echo $this->createMobileUrl('my_staff_list')}">
+        <div class="weui-cell__hd"><img src="{MODULE_URL}/template/mobile/images/my_employees.png" alt="" class="weui-grid__icon"></div>
+        <div class="weui-cell__bd weui-cell_primary">
+          <p class="center-list-txt">我的店员</p>
+        </div>
+        <span class="weui-cell__ft">{$staff_total}&nbsp;人</span>
+      </a>
+
+      <a class="weui-cell weui-cell_access" href="javascript:void(0)">
+        <div class="weui-cell__hd"><img src="{MODULE_URL}/template/mobile/images/my_message.png" alt="" class="weui-grid__icon"></div>
+        <div class="weui-cell__bd weui-cell_primary">
+          <p class="center-list-txt">剩余短信</p>
+        </div>
+        <span class="weui-cell__ft">{$surplus_total['sms_surplus']}&nbsp;条</span>
+      </a>
+    </div>
+    {/if}
+<div class="weui-cells">
+    <a class="weui-cell weui-cell_access" href="{php echo $this->createMobileUrl('my_wait')}">
+      <div class="weui-cell__hd"><img src="{MODULE_URL}/template/mobile/images/my_wait.png" alt="" class="weui-grid__icon"></div>
+      <div class="weui-cell__bd weui-cell_primary">
+         <p class="center-list-txt">待收列表</p>
+      </div>
+      <span class="weui-badge" >{$myinfo['w_cnt']}</span>
+    </a>
+    <a class="weui-cell weui-cell_access" href="{php echo $this->createMobileUrl('my_done')}">
+      <div class="weui-cell__hd"><img src="{MODULE_URL}/template/mobile/images/my_done.png" alt="" class="weui-grid__icon"></div>
+      <div class="weui-cell__bd weui-cell_primary">
+          <p class="center-list-txt">已收列表</p>
+      </div>
+      <span class="weui-cell__ft"></span>
+    </a>
+
+    {if $myinfo['m_level']==3}
+     <a class="weui-cell weui-cell_access" href="javascript:void(0)">
+    <div class="weui-cell__hd"><img src="{MODULE_URL}/template/mobile/images/my_message.png" alt="" class="weui-grid__icon"></div> 
+    <div class="weui-cell__bd weui-cell_primary">
+    <p class="center-list-txt">剩余短信</p>
+    </div>
+    <span class="weui-cell__ft">{if (!empty($sms_item))}{$sms_item['sms_surplus']}{else}0{/if}&nbsp;条</span>
+    </a>
+
+    {/if}
+
+   <!--  <a class="weui-cell weui-cell_access" href="{php echo $this->createMobileUrl('my_done')}">
+      <div class="weui-cell__hd"><img src="{MODULE_URL}/template/mobile/images/my_done.png" alt="" class="weui-grid__icon"></div>
+      <div class="weui-cell__bd weui-cell_primary">
+          <p class="center-list-txt">寄件地址</p>
+      </div>
+      <span class="weui-cell__ft"></span>
+    </a>
+    <a class="weui-cell weui-cell_access" href="{php echo $this->createMobileUrl('my_done')}">
+      <div class="weui-cell__hd"><img src="{MODULE_URL}/template/mobile/images/my_done.png" alt="" class="weui-grid__icon"></div>
+      <div class="weui-cell__bd weui-cell_primary">
+          <p class="center-list-txt">收货地址</p>
+      </div>
+      <span class="weui-cell__ft"></span>
+    </a> -->
+  
+    {if $myinfo['m_tel'] !=''}
+    <a class="weui-cell " href="{php echo $this->createMobileUrl('register',array('act' =>'rebind'))}">
+    {else}
+    <a class="weui-cell " href="{php echo $this->createMobileUrl('register')}">
+    {/if}
+    
+      <div class="weui-cell__hd"><img src="{MODULE_URL}/template/mobile/images/my_register.png" alt="" class="weui-grid__icon"></div>
+      <div class="weui-cell__bd weui-cell_primary center-list-txt">
+      <p style="color:#000" >手机绑定</p>
+      </div>
+      {if $myinfo['m_tel'] !=''}
+      <span class="weui-cell__ft">{$myinfo['m_tel']}</span>
+      {else}
+      <span class="weui-cell__ft">未绑定</span>
+      {/if}
+    </a>
+ 
+    
+
+</div>
+{/if}
+
+<div class="weui-cells">
+
+      <a class="weui-cell weui-cell_access" href="{php echo $this->createMobileUrl('my_area')}">
+      <div class="weui-cell__hd"><img src="{MODULE_URL}/template/mobile/images/my_area_default.png" alt="" class="weui-grid__icon"></div>
+        <div class="weui-cell__bd weui-cell_primary">
+          <p class="center-list-txt">周边网点</p>
+        </div>
+      <span class="weui-cell__ft"></span>
+      </a>
+     
+ </div>
+{if $has_shop!=0}
+ <!--  <div class="weui-cells">
+        <a class="weui-cell weui-cell_access" href="{php echo $this->createMobileUrl('apply')}">
+        <div class="weui-cell__hd"><img src="{MODULE_URL}/template/mobile/images/my_apply.png" alt="" class="weui-grid__icon"></div>
+          <div class="weui-cell__bd weui-cell_primary">
+            <p class="center-list-txt">人员入驻申请</p>
+          </div>
+        <span class="weui-cell__ft"></span>
+        </a>
+ </div> -->
+{/if}
+<div style="margin-bottom: 55px;display: block;"></div>
+<!-- 
+
+
+  <div class="weui-cells">
+
+      <a class="weui-cell weui-cell_access" href="{php echo $this->createMobileUrl('shop_info')}">
+      <div class="weui-cell__hd"><img src="images/center-icon-sc.png" alt="" class="weui-grid__icon"></div>
+        <div class="weui-cell__bd weui-cell_primary">
+          <p class="center-list-txt">商家信息</p>
+        </div>
+      <span class="weui-cell__ft"></span>
+      </a>
+       <a class="weui-cell weui-cell_access" href="{php echo $this->createMobileUrl('about')}">
+      <div class="weui-cell__hd"><img src="images/center-icon-sc.png" alt="" class="weui-grid__icon"></div>
+        <div class="weui-cell__bd weui-cell_primary">
+          <p class="center-list-txt">关于我们</p>
+        </div>
+      <span class="weui-cell__ft"></span>
+      </a>
+  </div>
+</div>
+
+ -->
+{template 'user_footer'}
+</body></html>
+ <script>
+wx.ready(function () { 
+		wx.getLocation({                
+		type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+		success: function (res) {
+			var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+			var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+			var speed = res.speed; // 速度，以米/每秒计
+			var accuracy = res.accuracy; // 位置精度
+		$.post("{php echo $this->createMobileUrl('my_area')}", {"act":'update_laction',"lat":latitude,"lng":longitude}, 
+		function(data) 
+		{
+
+		}, "json");
+		},
+		cancel: function (res) {
+		alert('授权可获得更优质的体验！');
+		}
+		});
+	});
+</script>
+

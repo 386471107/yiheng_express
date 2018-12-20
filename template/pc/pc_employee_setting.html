@@ -1,0 +1,268 @@
+ {template 'pc/pc_header'}
+<body>
+ 
+<div id="wrapper">
+
+    {template 'pc/pc_main_left'}
+
+    <div id="page-wrapper" class="gray-bg">
+        {template 'pc/pc_main_top'}
+        {template 'pc/pc_page_nav'}
+
+        <div class="wrapper wrapper-content animated fadeInRight ecommerce">
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="tabs-container">
+                            
+                            <div class="tab-content">
+                                <div id="tab-1" class="tab-pane active">
+                                    <form method="POST" name="form1" id ="form1">
+                                    <div class="panel-body">
+                                        <input type="hidden" name="uid" id= "uid" value="{$item['sms_uid']}">
+                                        <fieldset class="form-horizontal">
+                                            
+                                            <div class="form-group"><label class="col-lg-2 control-label">店铺名称:</label>
+                                                <div class="col-lg-10">
+                                                     <input class="form-control"  value="{$def_shop}" readonly="">
+                                                </div>
+                                            </div>
+
+                                           
+                                            <div class="form-group"><label class="col-lg-2 control-label">快递点代码:</label>
+                                                <div class="col-lg-10">
+                                                    <input class="form-control" name="bind_shop_id" type="number" id="bind_shop_id" value="{$item['bind_shop_id']}" readonly="true">
+                                                     <div class="help-block">快递点唯一编码（数字格式），不允许重复,不允许修改</div>
+                                                </div>
+                                            </div>
+                                             <div class="form-group"><label class="col-lg-2 control-label">微信名:</label>
+                                                <div class="col-lg-10">
+                                                     <input class="form-control"  value="{$item['m_nickname']}" name="m_nickname" readonly="">
+                                                     <div class="help-block text-danger">*此项不作更改</div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group"><label class="col-lg-2 control-label">真实姓名:</label>
+                                                <div class="col-lg-10">
+                                                     <input class="form-control"  value="{$item['m_realname']}" name="m_realname">
+                                                </div>
+                                            </div>
+                                             <div class="form-group"><label class="col-lg-2 control-label">联系电话:</label>
+                                                <div class="col-lg-10">
+                                                      <input class="form-control"  value="{$item['m_tel']}" name="m_tel">
+                                                </div>
+                                            </div>
+                                            <div class="form-group"><label class="col-lg-2 control-label">备注:</label>
+                                                <div class="col-lg-10">
+                                                      <input class="form-control"  value="{$item['m_remark']}" name="m_remark">
+                                                </div>
+                                            </div>
+                                           
+                                            <div class="form-group"><label class="col-lg-2 control-label">剩余短信:</label>
+                                                <div class="col-lg-10">
+                                                    <input class="form-control" type="number" id ="sms_surplus" value="{if ($item['sms_surplus'])}{$item['sms_surplus']}{else}0{/if}" name="sms_surplus">
+                                                <div class="help-block">短信剩余，暂作店长短信余量另供注册使用（到时会把注册移入到店铺短信），0为无短信，不允许绑定</div>
+
+                                            </div>
+                                           
+
+                                            <div class="form-group"><label class="col-lg-2 control-label">短信状态:</label>
+                                            <div class="col-lg-10">
+                                                <div class="radio radio-info radio-inline col-lg-2 ">
+                                                    <input type="radio" id="inlineRadio1" value="1" name="sms_status" {if  $item['sms_status'] == 1 }checked=""{/if}>
+                                                <label for="inlineRadio1" class="label label-success pull-left">开启 &nbsp;</label>
+                                                </div>
+                                                <div class="radio radio-inline col-lg-2">
+                                                <input type="radio" id="inlineRadio2" value="0" name="sms_status" {if $item['sms_status'] == 0 }checked=""{/if} >
+                                                <label for="inlineRadio2" class="label label-danger pull-left">关闭 &nbsp;</label>
+                                                </div>
+
+                                            </div>
+
+                                            </div>
+
+
+
+
+
+
+                                             <div class="form-group"><label class="col-lg-2 control-label">会员状态:</label>
+                                                <div class="col-lg-10">
+													<div class="radio radio-inline col-lg-2">
+														<input type="radio" id="s1" value="0" name="m_level" {if $item['m_level']==0}checked=""{/if}>
+														<label for="s1" class="label label-primary pull-left">普通会员 &nbsp;</label>
+													</div>
+													  <div class="radio radio-inline col-lg-2">
+														<input type="radio" id="s5" value="4" name="m_level" {if $item['m_level']==4}checked=""{/if}>
+														<label for="s5" class="label label-primary pull-left">站外员工 &nbsp;</label>
+													</div>
+													 <div class="radio radio-inline col-lg-2">
+														<input type="radio" id="s2" value="3" name="m_level" {if $item['m_level']==3}checked=""{/if}>
+														<label for="s2" class="label label-success pull-left">店铺员工 &nbsp;</label>
+													</div>
+													 <div class="radio radio-inline col-lg-2" >
+														<input type="radio" id="s3" value="2" name="m_level" {if $item['m_level']==2}checked=""{/if}>
+														<label for="s3" class="label label-warning pull-left">店铺管理 &nbsp;</label>
+													</div>
+													<!-- 仅供专业版 -->
+													 <div class="radio radio-inline col-lg-2">
+														<input type="radio" id="s4" value="1" name="m_level" {if $item['m_level']==1}checked=""{/if}>
+														<label for="s4" class="label label-danger pull-left">超级管理 &nbsp;</label>
+													</div>
+													<!-- 仅供专业版 -->
+
+                                                </div>
+                                            </div>
+
+                                              <div class="form-group"><label class="col-lg-2 control-label">权限更改通知:</label>
+                                                <div class="col-lg-10">
+                                                <div class="radio radio-info radio-inline col-lg-2">
+                                            <input type="radio" id="n1" value="1" name="sms_notice" {if $item['sms_notice']==1}checked=""{/if}>
+                                            <label for="n1" class="label label-success pull-left">开启 &nbsp;</label>
+
+                                        </div>
+                                        <div class="radio radio-inline col-lg-2">
+                                            <input type="radio" id="n2" value="0"  name="sms_notice" {if $item['sms_notice']==0}checked=""{/if}>
+                                            <label for="n2" class="label label-danger pull-left">关闭 &nbsp;</label>
+                                        </div>
+
+                                                </div>
+                                            </div>
+
+
+                                               <div class="form-group"><label class="col-lg-2 control-label">黑名单:</label>
+                                                <div class="col-lg-10">
+                                            
+                                        <div class="radio radio-inline col-lg-2">
+                                            <input type="radio" id="ban2" value="0" name="m_ban" {if $item['bind_m_ban']==0}checked=""{/if} >
+                                            <label for="ban2" class="label label-success pull-left">否 &nbsp;</label>
+                                        </div>
+
+                                            <div class="radio radio-info radio-inline col-lg-2">
+                                            <input type="radio" id="ban1" value="1" name="m_ban" {if $item['bind_m_ban']==1}checked=""{/if} >
+                                            <label for="ban1" class="label label-danger pull-left">是 &nbsp;</label>
+
+                                        </div>
+
+                                                </div>
+                                            </div>
+
+ 
+                                           
+
+
+                                        </fieldset>
+                                        <div class="hr-line-dashed"></div>
+                                          <div class="col-lg-4 col-lg-offset-2">
+                                             <input name="m_save" type="submit" value="保存" class="btn btn-primary span3" />
+                                             <input type="hidden" name="token" value="{$_W['token']}" />
+                                        
+                                    </div>
+                                    </form>
+                                    </div>
+                                </div>
+                           
+                             
+                            </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="footer">
+            <div class="pull-right">
+                10GB of <strong>250GB</strong> Free.
+            </div>
+            <div>
+                <strong>Copyright</strong> Example Company &copy; 2014-2017
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+ <!-- Mainly scripts -->
+    <script src="{MODULE_URL}/template/pc/js/jquery-3.1.1.min.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/bootstrap.min.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Peity -->
+    <script src="{MODULE_URL}/template/pc/js/plugins/peity/jquery.peity.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="{MODULE_URL}/template/pc/js/inspinia.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/plugins/pace/pace.min.js"></script>
+
+    <!-- iCheck -->
+    <script src="{MODULE_URL}/template/pc/js/plugins/iCheck/icheck.min.js"></script>
+
+    <!-- Peity -->
+    <script src="{MODULE_URL}/template/pc/js/demo/peity-demo.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+        });
+    </script>
+
+
+
+<!-- 
+<script type="text/javascript">
+    
+    function chagecode()
+    {
+       
+        var area_code = $('#uarea_code option:selected').val();
+
+        var uid = $('#uid').val();
+
+        $('#m_defaut_area').val(area_code);
+
+        $.post("{php echo $this->createWebUrl('pc_member_edit')}", { "act":"get_msg",'area_code':area_code,'id':uid},  
+            function(data){
+            
+            if (data.success==1)
+                {
+                   
+                    $('#sms_surplus').val(data.sms_surplus);
+
+                    $("input[name='sms_status'][value='"+ sms_status +"']").attr("checked",true); 
+
+                    $("input[name='m_level'][value='"+ data.level +"']").attr("checked",true); 
+                    
+                    $("input[name='m_ban'][value='"+ data.ban +"']").attr("checked",true);  
+
+                    $("input[name='sms_notice'][value='"+ data.allow_notice +"']").attr("checked",true);
+
+                }
+                else
+                {
+                   
+                    $('#sms_surplus').val(0);
+
+                    $("input[name='sms_status'][value='"+ 0 +"']").attr("checked",true); 
+
+                    $("input[name='m_level'][value='"+ 0 +"']").attr("checked",true); 
+                    
+                    $("input[name='m_ban'][value='"+ 0 +"']").attr("checked",true);  
+
+                    $("input[name='sms_notice'][value='"+ 0 +"']").attr("checked",true);
+
+                    // $("input[name='sms_status']:eq(1)").attr("checked",'checked');
+                }
+                
+            }, "json");
+        
+    }
+    
+</script> -->
+
+</body>
+
+</html>
+

@@ -1,0 +1,664 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="http://www.we7.cc" versionCode="">
+  
+  <application setting='false'>
+    <name><![CDATA[一恒快递]]></name>
+    <identifie><![CDATA[yiheng_express]]></identifie>
+    <version><![CDATA[2.0.2]]></version>
+    <type><![CDATA[business]]></type>
+    <ability><![CDATA[一个快递解决方案]]></ability>
+    <description><![CDATA[一个快递分发解决方案]]></description>
+    <author><![CDATA[宁波一恒网络]]></author>
+    <url><![CDATA[http://bbs.we7.cc/]]></url>
+    <setting><![CDATA[]]></setting>
+
+  </application>
+
+	
+	<platform>
+		<handles>
+
+			<message type="image" />
+			<message type="voice" />
+			<message type="text" />
+			<message type="qr" />
+		</handles>
+
+		<rule embed="false" />
+
+		<rule embed="false" />
+
+	<supports>
+			<item type="app" />
+	</supports>
+
+	</platform>
+
+	
+	<bindings>
+	<cover>
+			<entry title="管理入口" do="home" state="" direct="false" /> 
+			<entry title="用户入口" do="my" state="" direct="false" />  
+		</cover>
+		<menu> 
+	  	<entry title="幻灯设置" do="slide_manage" state="" direct="false" />
+		<entry title="会员管理" do="staff_manage" state="" direct="false" />
+		<entry title="快递列表" do="express_list" state="" direct="false" />
+		<entry title="基本设置" do="base_setting" state="" direct="false" />
+	
+		</menu>
+	</bindings>
+
+	<install><![CDATA[
+
+DROP TABLE IF EXISTS `ims_yiheng_express_api`;
+
+CREATE TABLE `ims_yiheng_express_api` (
+  `api_id` int(11) NOT NULL AUTO_INCREMENT,
+  `api_key` varchar(20) DEFAULT NULL,
+  `api_secret` varchar(50) DEFAULT NULL,
+  `api_sign` varchar(50) DEFAULT NULL COMMENT '签名',
+  `api_validity_start` int(11) DEFAULT NULL COMMENT '开始时间',
+  `api_validity_end` int(11) DEFAULT NULL COMMENT '结束时间',
+  `api_status` tinyint(1) DEFAULT NULL,
+  `uniacid` int(11) DEFAULT NULL,
+  PRIMARY KEY (`api_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+
+insert  into `ims_yiheng_express_api`(`api_id`,`api_key`,`api_secret`,`api_sign`,`api_validity_start`,`api_validity_end`,`api_status`,`uniacid`) values (1,'100025','1ca8089736b8ce41591426','1ca8089736b8ce4159142622sswq21s',1469537696,1569537696,1,3),(2,'100026','1ca8089736b8ce41591426','1ca8089736b8ce41591426',1469537696,1569537696,0,3);
+
+
+DROP TABLE IF EXISTS `ims_yiheng_express_api_log`;
+
+CREATE TABLE `ims_yiheng_express_api_log` (
+  `apilog_id` int(11) NOT NULL AUTO_INCREMENT,
+  `apilog_ip` varchar(50) DEFAULT NULL,
+  `apilog_time` int(11) DEFAULT NULL,
+  `uniacid` int(11) DEFAULT NULL,
+  PRIMARY KEY (`apilog_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `ims_yiheng_express_apply`;
+
+CREATE TABLE `ims_yiheng_express_apply` (
+  `apply_id` int(11) NOT NULL AUTO_INCREMENT,
+  `apply_openid` varchar(50) NOT NULL COMMENT '申请openid',
+  `apply_shop_id` int(11) NOT NULL COMMENT '店铺id',
+  `apply_createtime` int(11) NOT NULL COMMENT '创建时间',
+  `apply_ip` varchar(50) NOT NULL COMMENT '申请ip',
+  `apply_os` varchar(50) NOT NULL,
+  `apply_status` tinyint(1) DEFAULT '0' COMMENT '申请状态',
+  `uniacid` int(11) DEFAULT NULL,
+  PRIMARY KEY (`apply_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+
+
+DROP TABLE IF EXISTS `ims_yiheng_express_area`;
+
+CREATE TABLE `ims_yiheng_express_area` (
+  `area_id` int(11) NOT NULL AUTO_INCREMENT,
+  `area_code` int(11) DEFAULT NULL COMMENT '企业代码',
+  `area_location` varchar(250) DEFAULT NULL COMMENT '位置',
+  `area_lat` varchar(50) DEFAULT NULL COMMENT '纬度',
+  `area_lng` varchar(50) DEFAULT NULL COMMENT '经度',
+  `area_desc` text COMMENT '描述',
+  `area_name` varchar(100) DEFAULT NULL COMMENT '名称',
+  `area_tel` varchar(50) DEFAULT NULL COMMENT '电话',
+  `area_logo` varchar(100) DEFAULT NULL,
+  `area_person` varchar(50) DEFAULT NULL,
+  `area_code_sence` varchar(50) NOT NULL COMMENT '场景值不能为空,并且只能为字符串',
+  `area_image` varchar(100) DEFAULT NULL,
+  `area_last_message` int(11) DEFAULT '0' COMMENT '短信余量',
+  `area_alert_message` int(11) DEFAULT NULL COMMENT '短信最小余量阀值',
+  `area_msn_price` float DEFAULT NULL COMMENT '短信价格',
+  `area_wx_notice_total` int(11) DEFAULT '0' COMMENT '微信数量余量',
+  `area_wx_notice_used` int(11) DEFAULT '0' COMMENT '微信数量已用',
+  `area_member_total` int(11) DEFAULT '0' COMMENT '会员总数',
+  `area_member_wx` int(11) DEFAULT '0' COMMENT '微信会员',
+  `area_scan_only` tinyint(1) DEFAULT '0' COMMENT '仅能通过扫描加入',
+  `uniacid` int(11) DEFAULT NULL,
+  PRIMARY KEY (`area_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `ims_yiheng_express_delivery`;
+
+CREATE TABLE `ims_yiheng_express_delivery` (
+  `dlv_id` int(11) NOT NULL AUTO_INCREMENT,
+  `dlv_from_name` varchar(250) DEFAULT NULL COMMENT '寄件人',
+  `dlv_from_company` varchar(250) DEFAULT NULL COMMENT '寄件公司',
+  `dlv_from_tel` varchar(250) DEFAULT NULL COMMENT '寄件电话',
+  `dlv_from_addr` varchar(250) DEFAULT NULL COMMENT '寄件地址',
+  `dlv_to_name` varchar(250) DEFAULT NULL COMMENT '收件姓名',
+  `dlv_to_company` varchar(250) DEFAULT NULL COMMENT '收件公司',
+  `dlv_to_tel` varchar(250) DEFAULT NULL COMMENT '收件电话',
+  `dlv_to_addr` varchar(250) DEFAULT NULL COMMENT '收件地址',
+  `dlv_remark` varchar(250) DEFAULT NULL COMMENT '备注',
+  `dlv_createname` int(11) DEFAULT NULL COMMENT '创建时间',
+  `dlv_updatetime` int(11) DEFAULT NULL COMMENT '接收时间',
+  `dlv_deliverytime` int(11) DEFAULT NULL COMMENT '快递公司收件时间',
+  `dlv_express_company` varchar(250) DEFAULT NULL COMMENT '快递公司',
+  `dlv_express_barcode` varchar(250) DEFAULT NULL COMMENT '条形码',
+  `dlv_amount` float DEFAULT NULL COMMENT '付款金额',
+  `dlv_pay_status` int(11) DEFAULT NULL COMMENT '付款状态',
+  `dlv_express_volume` float DEFAULT NULL COMMENT '快递体积',
+  `dlv_express_weight` float DEFAULT NULL COMMENT '快递重量',
+  `dlv_price protection` float DEFAULT NULL COMMENT '保价',
+  `dlv_fetch_status` int(11) DEFAULT NULL COMMENT '取件状态',
+  `dlv_get_type` varchar(250) DEFAULT NULL COMMENT '寄件方式，上门，自寄',
+  `dlv_get_time` varchar(250) DEFAULT NULL COMMENT '取件时间',
+  `dlv_status` int(11) DEFAULT NULL COMMENT '快递状态',
+  `uniacid` int(11) DEFAULT NULL,
+  PRIMARY KEY (`dlv_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `ims_yiheng_express_ecode`;
+
+CREATE TABLE `ims_yiheng_express_ecode` (
+  `ecode_id` int(11) NOT NULL AUTO_INCREMENT,
+  `ecode_name` varchar(50) DEFAULT NULL,
+  `ecode_comCode` varchar(50) DEFAULT NULL,
+  `ecode_com` int(11) DEFAULT NULL COMMENT '1.快递鸟，2快递100',
+  PRIMARY KEY (`ecode_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=511 DEFAULT CHARSET=utf8;
+
+insert  into `ims_yiheng_express_ecode`(`ecode_id`,`ecode_name`,`ecode_comCode`,`ecode_com`) values (1,'顺丰速运','SF',1),(2,'百世快递','HTKY',1),(3,'中通快递','ZTO',1),(4,'申通快递','STO',1),(5,'圆通速递','YTO',1),(6,'韵达速递','YD',1),(7,'邮政快递包裹','YZPY',1),(8,'EMS','EMS',1),(9,'天天快递','HHTT',1),(10,'京东快递','JD',1),(11,'优速快递','UC',1),(12,'德邦快递','DBL',1),(13,'宅急送','ZJS',1),(14,'TNT快递','TNT',1),(15,'UPS','UPS',1),(16,'DHL','DHL',1),(17,'FEDEX联邦(国内件）','FEDEX',1),(18,'FEDEX联邦(国际件）','FEDEX_GJ',1),(19,'安捷快递','AJ',1),(20,'阿里跨境电商物流','ALKJWL',1),(21,'安讯物流','AXWL',1),(22,'安邮美国','AYUS',1),(23,'亚马逊物流','AMAZON',1),(24,'澳门邮政','AOMENYZ',1),(25,'安能物流','ANE',1),(26,'澳多多','ADD',1),(27,'澳邮专线','AYCA',1),(28,'安鲜达','AXD',1),(29,'安能快运','ANEKY',1),(30,'八达通  ','BDT',1),(31,'百腾物流','BETWL',1),(32,'北极星快运','BJXKY',1),(33,'奔腾物流','BNTWL',1),(34,'百福东方','BFDF',1),(35,'贝海国际 ','BHGJ',1),(36,'八方安运','BFAY',1),(37,'百世快运','BTWL',1),(38,'春风物流','CFWL',1),(39,'诚通物流','CHTWL',1),(40,'传喜物流','CXHY',1),(41,'程光   ','CG',1),(42,'城市100','CITY100',1),(43,'城际快递','CJKD',1),(44,'CNPEX中邮快递','CNPEX',1),(45,'COE东方快递','COE',1),(46,'长沙创一','CSCY',1),(47,'成都善途速运','CDSTKY',1),(48,'联合运通','CTG',1),(49,'疯狂快递','CRAZY',1),(50,'CBO钏博物流','CBO',1),(51,'承诺达','CND',1),(52,'D速物流','DSWL',1),(53,'到了港','DLG ',1),(54,'大田物流','DTWL',1),(55,'东骏快捷物流','DJKJWL',1),(56,'德坤','DEKUN',1),(57,'德邦快运','DBLKY',1),(58,'E特快','ETK',1),(59,'EWE','EWE',1),(60,'快服务','KFW',1),(61,'飞康达','FKD',1),(62,'富腾达  ','FTD',1),(63,'凡宇货的','FYKD',1),(64,'速派快递','FASTGO',1),(65,'丰通快运','FT',1),(66,'冠达   ','GD',1),(67,'国通快递','GTO',1),(68,'广东邮政','GDEMS',1),(69,'共速达','GSD',1),(70,'广通       ','GTONG',1),(71,'迦递快递','GAI',1),(72,'港快速递','GKSD',1),(73,'高铁速递','GTSD',1),(74,'汇丰物流','HFWL',1),(75,'黑狗冷链','HGLL',1),(76,'恒路物流','HLWL',1),(77,'天地华宇','HOAU',1),(78,'鸿桥供应链','HOTSCM',1),(79,'海派通物流公司','HPTEX',1),(80,'华强物流','hq568',1),(81,'环球速运  ','HQSY',1),(82,'华夏龙物流','HXLWL',1),(83,'豪翔物流 ','HXWL',1),(84,'合肥汇文','HFHW',1),(85,'辉隆物流','HLONGWL',1),(86,'华企快递','HQKD',1),(87,'韩润物流','HRWL',1),(88,'青岛恒通快递','HTKD',1),(89,'货运皇物流','HYH',1),(90,'好来运快递','HYLSD',1),(91,'皇家物流','HJWL',1),(92,'捷安达  ','JAD',1),(93,'京广速递','JGSD',1),(94,'九曳供应链','JIUYE',1),(95,'急先达','JXD',1),(96,'晋越快递','JYKD',1),(97,'加运美','JYM',1),(98,'景光物流','JGWL',1),(99,'佳怡物流','JYWL',1),(100,'京东快运','JDKY',1),(101,'跨越速运','KYSY',1),(102,'跨越物流','KYWL',1),(103,'快速递物流','KSDWL',1),(104,'龙邦快递','LB',1),(105,'立即送','LJSKD',1),(106,'联昊通速递','LHT',1),(107,'民邦快递','MB',1),(108,'民航快递','MHKD',1),(109,'美快    ','MK',1),(110,'门对门快递','MDM',1),(111,'迈隆递运','MRDY',1),(112,'明亮物流','MLWL',1),(113,'南方','NF',1),(114,'能达速递','NEDA',1),(115,'平安达腾飞快递','PADTF',1),(116,'泛捷快递','PANEX',1),(117,'品骏快递','PJ',1),(118,'PCA Express','PCA',1),(119,'全晨快递','QCKD',1),(120,'全日通快递','QRT',1),(121,'快客快递','QUICK',1),(122,'全信通','QXT',1),(123,'如风达','RFD',1),(124,'日日顺物流','RRS',1),(125,'瑞丰速递','RFEX',1),(126,'赛澳递','SAD',1),(127,'苏宁物流','SNWL',1),(128,'圣安物流','SAWL',1),(129,'晟邦物流','SBWL',1),(130,'上大物流','SDWL',1),(131,'盛丰物流','SFWL',1),(132,'速通物流','ST',1),(133,'速腾快递','STWL',1),(134,'速必达物流','SUBIDA',1),(135,'速递e站','SDEZ',1),(136,'速呈宅配','SCZPDS',1),(137,'速尔快递','SURE',1),(138,'台湾邮政','TAIWANYZ',1),(139,'唐山申通','TSSTO',1),(140,'通用物流','TYWL',1),(141,'全一快递','UAPEX',1),(142,'优联吉运','ULUCKEX',1),(143,'UEQ Express','UEQ',1),(144,'万家康  ','WJK',1),(145,'万家物流','WJWL',1),(146,'武汉同舟行','WHTZX',1),(147,'维普恩','WPE',1),(148,'微特派','WTP',1),(149,'迅驰物流  ','XCWL',1),(150,'信丰物流','XFEX',1),(151,'希优特','XYT',1),(152,'新杰物流','XJ',1),(153,'源安达快递','YADEX',1),(154,'远成物流','YCWL',1),(155,'远成快运','YCSY',1),(156,'义达国际物流','YDH',1),(157,'易达通  ','YDT',1),(158,'越丰物流','YFEX',1),(159,'原飞航物流','YFHEX',1),(160,'亚风快递','YFSD',1),(161,'运通快递','YTKD',1),(162,'亿翔快递','YXKD',1),(163,'运东西网','YUNDX',1),(164,'壹米滴答','YMDD',1),(165,'邮政国内标快','YZBK',1),(166,'一站通速运','YZTSY',1),(167,'驭丰速运','YFSUYUN',1),(168,'增益快递','ZENY',1),(169,'汇强快递','ZHQKD',1),(170,'众通快递','ZTE',1),(171,'中铁快运','ZTKY',1),(172,'中铁物流','ZTWL',1),(173,'郑州速捷','SJ',1),(174,'中通快运','ZTOKY',1),(175,'中邮快递','ZYKD',1),(176,'中粮我买网','WM',1),(177,'','',1),(178,'AAE全球专递','AAE',1),(179,'ACS雅仕快递','ACS',1),(180,'ADP Express Tracking','ADP',1),(181,'安圭拉邮政','ANGUILAYOU',1),(182,'APAC','APAC',1),(183,'Aramex','ARAMEX',1),(184,'奥地利邮政','AT',1),(185,'Australia Post Tracking','AUSTRALIA',1),(186,'比利时邮政','BEL',1),(187,'BHT快递','BHT',1),(188,'秘鲁邮政','BILUYOUZHE',1),(189,'巴西邮政','BR',1),(190,'不丹邮政','BUDANYOUZH',1),(191,'CDEK','CDEK',1),(192,'加拿大邮政','CA',1),(193,'递必易国际物流','DBYWL',1),(194,'大道物流','DDWL',1),(195,'德国云快递','DGYKD',1),(196,'到乐国际','DLGJ',1),(197,'DHL德国','DHL_DE',1),(198,'DHL(英文版)','DHL_EN',1),(199,'DHL全球','DHL_GLB',1),(200,'DHL Global Mail','DHLGM',1),(201,'丹麦邮政','DK',1),(202,'DPD','DPD',1),(203,'DPEX','DPEX',1),(204,'EMS国际','EMSGJ',1),(205,'易客满','EKM',1),(206,'EPS (联众国际快运)','EPS',1),(207,'EShipper','ESHIPPER',1),(208,'丰程物流','FCWL',1),(209,'法翔速运','FX',1),(210,'FQ','FQ',1),(211,'国际e邮宝','GJEYB',1),(212,'国际邮政包裹','GJYZ',1),(213,'GE2D','GE2D',1),(214,'冠泰','GT',1),(215,'GLS','GLS',1),(216,'安的列斯群岛邮政','IADLSQDYZ',1),(217,'欧洲专线(邮政)','IOZYZ',1),(218,'澳大利亚邮政','IADLYYZ',1),(219,'阿尔巴尼亚邮政','IAEBNYYZ',1),(220,'阿尔及利亚邮政','IAEJLYYZ',1),(221,'阿富汗邮政','IAFHYZ',1),(222,'安哥拉邮政','IAGLYZ',1),(223,'阿根廷邮政','IAGTYZ',1),(224,'埃及邮政','IAJYZ',1),(225,'阿鲁巴邮政','IALBYZ',1),(226,'奥兰群岛邮政','IALQDYZ',1),(227,'阿联酋邮政','IALYYZ',1),(228,'阿曼邮政','IAMYZ',1),(229,'阿塞拜疆邮政','IASBJYZ',1),(230,'爱沙尼亚邮政','IASNYYZ',1),(231,'博茨瓦纳邮政','IBCWNYZ',1),(232,'波多黎各邮政','IBDLGYZ',1),(233,'冰岛邮政','IBDYZ',1),(234,'白俄罗斯邮政','IBELSYZ',1),(235,'波黑邮政','IBHYZ',1),(236,'保加利亚邮政','IBJLYYZ',1),(237,'巴基斯坦邮政','IBJSTYZ',1),(238,'黎巴嫩邮政','IBLNYZ',1),(239,'便利速递','IBLSD',1),(240,'玻利维亚邮政','IBLWYYZ',1),(241,'百慕达邮政','IBMDYZ',1),(242,'波兰邮政','IBOLYZ',1),(243,'宝通达','IBTD',1),(244,'贝邮宝','IBYB',1),(245,'出口易','ICKY',1),(246,'达方物流','IDFWL',1),(247,'德国邮政','IDGYZ',1),(248,'危地马拉邮政','IWDMLYZ',1),(249,'乌干达邮政','IWGDYZ',1),(250,'乌克兰EMS','IWKLEMS',1),(251,'乌克兰邮政','IWKLYZ',1),(252,'乌拉圭邮政','IWLGYZ',1),(253,'林克快递','ILKKD',1),(254,'文莱邮政','IWLYZ',1),(255,'新喀里多尼亚邮政','IXGLDNYYZ',1),(256,'爱尔兰邮政','IE',1),(257,'夏浦物流','IXPWL',1),(258,'叙利亚邮政','IXLYYZ',1),(259,'印度邮政','IYDYZ',1),(260,'夏浦世纪','IXPSJ',1),(261,'厄瓜多尔邮政','IEGDEYZ',1),(262,'俄罗斯邮政','IELSYZ',1),(263,'厄立特里亚邮政','IELTLYYZ',1),(264,'飞特物流','IFTWL',1),(265,'瓜德罗普岛邮政','IGDLPDYZ',1),(266,'哥斯达黎加邮政','IGSDLJYZ',1),(267,'韩国邮政','IHGYZ',1),(268,'华翰物流','IHHWL',1),(269,'互联易','IHLY',1),(270,'哈萨克斯坦邮政','IHSKSTYZ',1),(271,'黑山邮政','IHSYZ',1),(272,'津巴布韦邮政','IJBBWYZ',1),(273,'吉尔吉斯斯坦邮政','IJEJSSTYZ',1),(274,'捷克邮政','IJKYZ',1),(275,'加纳邮政','IJNYZ',1),(276,'柬埔寨邮政','IJPZYZ',1),(277,'克罗地亚邮政','IKNDYYZ',1),(278,'肯尼亚邮政','IKNYYZ',1),(279,'科特迪瓦EMS','IKTDWEMS',1),(280,'科特迪瓦邮政','IKTDWYZ',1),(281,'罗马尼亚邮政','ILMNYYZ',1),(282,'摩尔多瓦邮政','IMEDWYZ',1),(283,'马耳他邮政','IMETYZ',1),(284,'尼日利亚邮政','INRLYYZ',1),(285,'塞尔维亚邮政','ISEWYYZ',1),(286,'塞浦路斯邮政','ISPLSYZ',1),(287,'乌兹别克斯坦邮政','IWZBKSTYZ',1),(288,'西班牙邮政','IXBYYZ',1),(289,'新加坡EMS','IXJPEMS',1),(290,'希腊邮政','IXLYZ',1),(291,'新西兰邮政','IXXLYZ',1),(292,'意大利邮政','IYDLYZ',1),(293,'英国邮政','IYGYZ',1),(294,'亚美尼亚邮政','IYMNYYZ',1),(295,'也门邮政','IYMYZ',1),(296,'智利邮政','IZLYZ',1),(297,'日本邮政','JP',1),(298,'今枫国际','JFGJ',1),(299,'极光转运','JGZY',1),(300,'吉祥邮转运','JXYKD',1),(301,'嘉里国际','JLDT',1),(302,'绝配国际速递','JPKD',1),(303,'佳惠尔','SYJHE',1),(304,'联运通','LYT',1),(305,'联合快递','LHKDS',1),(306,'林道国际','SHLDHY',1),(307,'荷兰邮政','NL',1),(308,'新顺丰','NSF',1),(309,'ONTRAC','ONTRAC',1),(310,'OCS','OCS',1),(311,'全球邮政','QQYZ',1),(312,'POSTEIBE','POSTEIBE',1),(313,'啪啪供应链','PAPA',1),(314,'秦远海运','QYHY',1),(315,'启辰国际','VENUCIA',1),(316,'瑞典邮政','RDSE',1),(317,'SKYPOST','SKYPOST',1),(318,'瑞士邮政','SWCH',1),(319,'首达速运','SDSY',1),(320,'穗空物流','SK',1),(321,'首通快运','STONG',1),(322,'申通快递国际单','STO_INTL',1),(323,'上海久易国际','JYSD',1),(324,'泰国138','TAILAND138',1),(325,'USPS美国邮政','USPS',1),(326,'万国邮政','UPU',1),(327,'中越国际物流','VCTRANS',1),(328,'星空国际','XKGJ',1),(329,'迅达国际','XD',1),(330,'香港邮政','XGYZ',1),(331,'喜来快递','XLKD',1),(332,'鑫世锐达','XSRD',1),(333,'新元国际','XYGJ',1),(334,'ADLER雄鹰国际速递','XYGJSD',1),(335,'日本大和运输(Yamato)','YAMA',1),(336,'YODEL','YODEL',1),(337,'一号线','YHXGJSD',1),(338,'约旦邮政','YUEDANYOUZ',1),(339,'玥玛速运','YMSY',1),(340,'鹰运','YYSD',1),(341,'易境达','YJD',1),(342,'洋包裹','YBG',1),(343,'','',1),(344,'AOL（澳通）','AOL',1),(345,'BCWELT   ','BCWELT',1),(346,'笨鸟国际','BN',1),(347,'优邦国际速运','UBONEX',1),(348,'UEX   ','UEX',1),(349,'韵达国际','YDGJ',1),(350,'爱购转运','ZY_AG',1),(351,'爱欧洲','ZY_AOZ',1),(352,'澳世速递','ZY_AUSE',1),(353,'AXO','ZY_AXO',1),(354,'贝海速递','ZY_BH',1),(355,'八达网','ZY_BDA',1),(356,'蜜蜂速递','ZY_BEE',1),(357,'百利快递','ZY_BL',1),(358,'斑马物流','ZY_BM',1),(359,'百通物流','ZY_BT',1),(360,'策马转运','ZY_CM',1),(361,'EFS POST','ZY_EFS',1),(362,'宜送转运','ZY_ESONG',1),(363,'ETD','ZY_ETD',1),(364,'飞碟快递','ZY_FD',1),(365,'飞鸽快递','ZY_FG',1),(366,'风行快递','ZY_FX',1),(367,'风行速递','ZY_FXSD',1),(368,'飞洋快递','ZY_FY',1),(369,'皓晨快递','ZY_HC',1),(370,'华兴速运','ZY_HXSY',1),(371,'海悦速递','ZY_HYSD',1),(372,'君安快递','ZY_JA',1),(373,'时代转运','ZY_JD',1),(374,'骏达快递','ZY_JDKD',1),(375,'骏达转运','ZY_JDZY',1),(376,'久禾快递','ZY_JH',1),(377,'金海淘','ZY_JHT',1),(378,'联邦转运FedRoad','ZY_LBZY',1),(379,'领跑者快递','ZY_LPZ',1),(380,'赤兔马转运','ZY_CTM',1),(381,'龙象快递','ZY_LX',1),(382,'量子物流','ZY_LZWL',1),(383,'美国转运','ZY_MGZY',1),(384,'美速通','ZY_MST',1),(385,'美西转运','ZY_MXZY',1),(386,'QQ-EX','ZY_QQEX',1),(387,'瑞天快递','ZY_RT',1),(388,'瑞天速递','ZY_RTSD',1),(389,'速达快递','ZY_SDKD',1),(390,'四方转运','ZY_SFZY',1),(391,'上腾快递','ZY_ST',1),(392,'天际快递','ZY_TJ',1),(393,'天马转运','ZY_TM',1),(394,'滕牛快递','ZY_TN',1),(395,'TrakPak','ZY_TPAK',1),(396,'太平洋快递','ZY_TPY',1),(397,'唐三藏转运','ZY_TSZ',1),(398,'TWC转运世界','ZY_TWC',1),(399,'润东国际快线','ZY_RDGJ',1),(400,'同心快递','ZY_TX',1),(401,'天翼快递','ZY_TY',1),(402,'败欧洲','ZY_BOZ',1),(403,'德国海淘之家','ZY_DGHT',1),(404,'德运网','ZY_DYW',1),(405,'文达国际DCS','ZY_WDCS',1),(406,'同舟快递','ZY_TZH',1),(407,'UCS合众快递','ZY_UCS',1),(408,'星辰快递','ZY_XC',1),(409,'先锋快递','ZY_XF',1),(410,'西邮寄','ZY_XIYJ',1),(411,'云骑快递','ZY_YQ',1),(412,'优晟速递','ZY_YSSD',1),(413,'运淘美国','ZY_YTUSA',1),(414,'至诚速递','ZY_ZCSD',1),(415,'增速海淘','ZYZOOM',1),(416,'中驰物流','ZH',1),(417,'中欧快运','ZO',1),(418,'准实快运','ZSKY',1),(419,'中外速运','ZWSY',1),(420,'郑州建华','ZZJH',1),(421,'aae全球专递','aae',2),(422,'安捷快递','anjie',2),(423,'安信达快递','anxindakuaixi',2),(424,'彪记快递','biaojikuaidi',2),(425,'bht','bht',2),(426,'百福东方国际物流','baifudongfang',2),(427,'中国东方（COE）','coe',2),(428,'长宇物流','changyuwuliu',2),(429,'大田物流','datianwuliu',2),(430,'德邦物流','debangwuliu',2),(431,'dhl','dhl',2),(432,'dpex','dpex',2),(433,'d速快递','dsukuaidi',2),(434,'递四方','disifang',2),(435,'ems快递','ems',2),(436,'fedex（国外）','fedex',2),(437,'飞康达物流','feikangda',2),(438,'凤凰快递','fenghuangkuaidi',2),(439,'飞快达','feikuaida',2),(440,'国通快递','guotongkuaidi',2),(441,'港中能达物流','ganzhongnengda',2),(442,'广东邮政物流','guangdongyouzhengwuliu',2),(443,'共速达','gongsuda',2),(444,'汇通快运','huitongkuaidi',2),(445,'恒路物流','hengluwuliu',2),(446,'华夏龙物流','huaxialongwuliu',2),(447,'海红','haihongwangsong',2),(448,'海外环球','haiwaihuanqiu',2),(449,'佳怡物流','jiayiwuliu',2),(450,'京广速递','jinguangsudikuaijian',2),(451,'急先达','jixianda',2),(452,'佳吉物流','jjwl',2),(453,'加运美物流','jymwl',2),(454,'金大物流','jindawuliu',2),(455,'嘉里大通','jialidatong',2),(456,'晋越快递','jykd',2),(457,'快捷速递','kuaijiesudi',2),(458,'联邦快递（国内）','lianb',2),(459,'联昊通物流','lianhaowuliu',2),(460,'龙邦物流','longbanwuliu',2),(461,'立即送','lijisong',2),(462,'乐捷递','lejiedi',2),(463,'民航快递','minghangkuaidi',2),(464,'美国快递','meiguokuaidi',2),(465,'门对门','menduimen',2),(466,'OCS','ocs',2),(467,'配思货运','peisihuoyunkuaidi',2),(468,'全晨快递','quanchenkuaidi',2),(469,'全峰快递','quanfengkuaidi',2),(470,'全际通物流','quanjitong',2),(471,'全日通快递','quanritongkuaidi',2),(472,'全一快递','quanyikuaidi',2),(473,'如风达','rufengda',2),(474,'三态速递','santaisudi',2),(475,'盛辉物流','shenghuiwuliu',2),(476,'申通','shentong',2),(477,'顺丰','shunfeng',2),(478,'速尔物流','sue',2),(479,'盛丰物流','shengfeng',2),(480,'赛澳递','saiaodi',2),(481,'天地华宇','tiandihuayu',2),(482,'天天快递','tiantian',2),(483,'tnt','tnt',2),(484,'ups','ups',2),(485,'万家物流','wanjiawuliu',2),(486,'文捷航空速递','wenjiesudi',2),(487,'伍圆','wuyuan',2),(488,'万象物流','wxwl',2),(489,'新邦物流','xinbangwuliu',2),(490,'信丰物流','xinfengwuliu',2),(491,'亚风速递','yafengsudi',2),(492,'一邦速递','yibangwuliu',2),(493,'优速物流','youshuwuliu',2),(494,'邮政包裹挂号信','youzhengguonei',2),(495,'邮政国际包裹挂号信','youzhengguoji',2),(496,'远成物流','yuanchengwuliu',2),(497,'圆通速递','yuantong',2),(498,'源伟丰快递','yuanweifeng',2),(499,'元智捷诚快递','yuanzhijiecheng',2),(500,'韵达快运','yunda',2),(501,'运通快递','yuntongkuaidi',2),(502,'越丰物流','yuefengwuliu',2),(503,'源安达','yad',2),(504,'银捷速递','yinjiesudi',2),(505,'宅急送','zhaijisong',2),(506,'中铁快运','zhongtiekuaiyun',2),(507,'中通速递','zhongtong',2),(508,'中邮物流','zhongyouwuliu',2),(509,'忠信达','zhongxinda',2),(510,'芝麻开门','zhimakaimen',2);
+
+
+DROP TABLE IF EXISTS `ims_yiheng_express_issue`;
+
+CREATE TABLE `ims_yiheng_express_issue` (
+  `issue_id` int(11) NOT NULL AUTO_INCREMENT,
+  `issue_type` int(11) DEFAULT NULL,
+  `issue_content` text,
+  `issue_time` int(11) DEFAULT NULL,
+  PRIMARY KEY (`issue_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+
+
+DROP TABLE IF EXISTS `ims_yiheng_express_level_recode`;
+
+CREATE TABLE `ims_yiheng_express_level_recode` (
+  `lv_id` int(11) NOT NULL AUTO_INCREMENT,
+  `lv_openid` varchar(50) DEFAULT NULL,
+  `lv_shop_id` int(11) DEFAULT NULL,
+  `lv_m_level` int(11) DEFAULT NULL,
+  `uniacid` int(11) DEFAULT NULL,
+  PRIMARY KEY (`lv_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `ims_yiheng_express_log_login`;
+
+CREATE TABLE `ims_yiheng_express_log_login` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `login_mid` int(11) DEFAULT NULL COMMENT '用户id',
+  `login_time` int(11) DEFAULT NULL COMMENT '操作时间',
+  `login_ip` varchar(25) DEFAULT NULL COMMENT '登录ip',
+  `login_os` varchar(25) DEFAULT NULL COMMENT '系统',
+  `login_container` varchar(25) DEFAULT NULL,
+  `login_uniacid` int(11) DEFAULT NULL COMMENT '公众号',
+  `login_page` varchar(10) DEFAULT NULL COMMENT '页面信息',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1502 DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `ims_yiheng_express_member`;
+
+CREATE TABLE `ims_yiheng_express_member` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `m_fansid` int(11) NOT NULL,
+  `m_uid` int(11) NOT NULL COMMENT '用户id',
+  `m_openid` varchar(50) DEFAULT NULL COMMENT '用户openid',
+  `m_avatar` varchar(150) DEFAULT NULL COMMENT '用户头像',
+  `m_nickname` varchar(50) DEFAULT NULL COMMENT '用户名',
+  `m_realname` varchar(50) DEFAULT NULL COMMENT '真实姓名',
+  `m_tel` varchar(20) NOT NULL DEFAULT '' COMMENT '电话',
+  `m_addtime` int(11) DEFAULT NULL COMMENT '加入时间',
+  `m_sex` int(11) DEFAULT NULL COMMENT '性别',
+  `m_follow` int(11) DEFAULT NULL COMMENT '是否关注',
+  `m_country` varchar(50) DEFAULT NULL COMMENT '国家',
+  `m_province` varchar(50) DEFAULT NULL COMMENT '省',
+  `m_city` varchar(50) DEFAULT NULL COMMENT '市',
+  `m_subscribe_time` int(11) DEFAULT NULL COMMENT '关注时间',
+  `m_remark` varchar(50) DEFAULT NULL COMMENT '备注',
+  `m_visit_count` int(11) DEFAULT NULL COMMENT '访问次数',
+  `m_visit_lasttime` int(11) DEFAULT NULL COMMENT '最后访问时间',
+  `m_visit_ip` varchar(25) DEFAULT NULL COMMENT '访问ip地址',
+  `m_belong_shop` int(11) DEFAULT NULL COMMENT 'shop id',
+  `m_is_shop_staff` tinyint(1) DEFAULT '0' COMMENT '是否为staff 管理员,亦可以访问后台',
+  `m_is_shop_manage` tinyint(1) DEFAULT '0' COMMENT '是否为shop 管理员,可以访问后台',
+  `m_is_weixin_manage` tinyint(1) NOT NULL DEFAULT '0' COMMENT '超级管理员，一般不设置值，多企业时可以查看所有信息',
+  `m_ban` tinyint(1) DEFAULT '0' COMMENT '黑名单标志',
+  `m_apply_time` int(11) DEFAULT NULL,
+  `m_apply` tinyint(1) DEFAULT '0' COMMENT '点员工申请',
+  `m_sence_list` varchar(250) DEFAULT NULL COMMENT '多店铺，场景值',
+  `m_area_list` varchar(250) DEFAULT NULL COMMENT '多店铺,店铺ID值',
+  `m_allow_notice` tinyint(1) DEFAULT '1' COMMENT '是否允许通知',
+  `m_level` int(11) DEFAULT '0' COMMENT '会员级别，1为超管，2区域负责人，3区域员工，0普通',
+  `m_defaut_area` int(11) DEFAULT NULL COMMENT '默认区域',
+  `uniacid` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+
+
+
+DROP TABLE IF EXISTS `ims_yiheng_express_member_bind`;
+
+CREATE TABLE `ims_yiheng_express_member_bind` (
+  `bind_id` int(11) NOT NULL AUTO_INCREMENT,
+  `bind_shop_id` int(11) DEFAULT NULL COMMENT '店铺id',
+  `bind_m_uid` int(11) DEFAULT NULL COMMENT '会员id',
+  `bind_m_openid` varchar(50) DEFAULT NULL COMMENT '会员openid',
+  `bind_m_level` int(11) DEFAULT '0' COMMENT '会员级别',
+  `bind_from_sence` varchar(150) DEFAULT NULL COMMENT '来源场景',
+  `bind_default` tinyint(1) DEFAULT '0' COMMENT '默认店铺',
+  `bind_tel` varchar(11) DEFAULT NULL COMMENT '绑定电话号码',
+  `bind_time` int(11) DEFAULT NULL COMMENT '加入时间',
+  `bind_weixin` tinyint(4) DEFAULT '0' COMMENT '是否绑定',
+  `bind_m_ban` tinyint(1) DEFAULT '0' COMMENT '是否为黑名单',
+  `uniacid` int(11) DEFAULT NULL,
+  PRIMARY KEY (`bind_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `ims_yiheng_express_notice_log`;
+
+CREATE TABLE `ims_yiheng_express_notice_log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `send_openid` varchar(30) DEFAULT NULL COMMENT '发送openid',
+  `send_to_openid` varchar(30) DEFAULT NULL,
+  `send_time` int(11) DEFAULT NULL COMMENT '发送时间',
+  `send_ip` varchar(50) DEFAULT NULL,
+  `send_type` tinyint(1) DEFAULT NULL COMMENT '发送类型',
+  `send_shop_id` int(11) DEFAULT NULL,
+  `send_status` varchar(250) DEFAULT NULL COMMENT '发送状态',
+  `send_error_desc` varchar(250) DEFAULT NULL COMMENT '错误描述',
+  `uniacid` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `ims_yiheng_express_pages`;
+
+CREATE TABLE `ims_yiheng_express_pages` (
+  `pages_id` int(11) NOT NULL AUTO_INCREMENT,
+  `page_page` varchar(50) NOT NULL,
+  `page_parent_name` varchar(150) DEFAULT NULL,
+  `page_name` varchar(50) NOT NULL,
+  `page_param` varchar(50) DEFAULT NULL,
+  `page_type` enum('page','module') DEFAULT 'page',
+  `page_remark` varchar(250) DEFAULT NULL,
+  `page_view_groups` varchar(250) NOT NULL DEFAULT '' COMMENT '能访问的groupid组',
+  `page_status` tinyint(1) DEFAULT '0' COMMENT '0为暂时停止访问',
+  `page_order_by` int(1) DEFAULT '0',
+  `page_group` int(11) DEFAULT NULL,
+  `uniacid` int(11) DEFAULT NULL,
+  PRIMARY KEY (`pages_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+
+
+insert  into `ims_yiheng_express_pages`(`pages_id`,`page_page`,`page_parent_name`,`page_name`,`page_param`,`page_type`,`page_remark`,`page_view_groups`,`page_status`,`page_order_by`,`page_group`,`uniacid`) values (1,'pc_index','后台主页','后台主页',NULL,'page','主后台页面','[1,2,3]',1,0,0,3),(3,'pc_member_list','会员管理','会员列表',NULL,'page',NULL,'[1,2,3]',1,0,1,3),(4,'pc_member_staff_list','会员管理','店员列表','level=3','page',NULL,'[2,3]',1,0,1,3),(7,'pc_member_ban_list','会员管理','黑名单',NULL,'page',NULL,'[1,3]',1,0,1,3),(8,'pc_member_edit','会员管理','会员编辑',NULL,'page',NULL,'[3]',1,0,1,3),(9,'pc_shop_list','店铺管理','商铺列表','','page',NULL,'',1,0,2,3),(10,'pc_shop_edit','店铺管理','商铺编辑','','page',NULL,'',1,1,2,3),(11,'pc_member_staff_list','会员管理','店长列表','level=2','page',NULL,'[3]',1,0,1,3),(12,'pc_collection_list','快递信息','未收列表','recive=0','page',NULL,'',1,0,3,3),(13,'pc_collection_list','快递信息','已收列表','recive=1','page',NULL,'',1,0,3,3),(14,'pc_collection_list','快递信息','滞留列表','recive=2','page',NULL,'',1,0,3,3),(16,'pc_wait_deliver_list','收寄列表','待送列表',NULL,'page',NULL,'',1,0,4,3),(17,'pc_wait_receive_list','收寄列表','待收列表',NULL,'page',NULL,'',1,0,4,3),(18,'pc_weixin_send_log','发送记录','微信发送记录',NULL,'page',NULL,'',1,0,5,3),(19,'pc_msn_send_log','发送记录','短信发送记录',NULL,'page',NULL,'',1,0,5,3),(20,'pc_member_staff_list','会员管理','超管列表','level=1','page',NULL,'',1,0,1,3),(21,'pc_member_staff_list','会员管理','收送人员列表','level=4','page',NULL,'',1,0,1,3);
+
+
+DROP TABLE IF EXISTS `ims_yiheng_express_pages_group`;
+
+CREATE TABLE `ims_yiheng_express_pages_group` (
+  `g_id` int(11) NOT NULL AUTO_INCREMENT,
+  `group_id` int(11) NOT NULL COMMENT 'user_group id',
+  `group_name` varchar(250) NOT NULL COMMENT 'user_group  group_name',
+  `group_pages` varchar(250) DEFAULT NULL COMMENT 'pages列表，供权限调用时取值',
+  `uniacid` int(11) DEFAULT NULL,
+  PRIMARY KEY (`g_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+
+insert  into `ims_yiheng_express_pages_group`(`g_id`,`group_id`,`group_name`,`group_pages`,`uniacid`) values (1,1,'免费版','[3,7]',3),(2,2,'普通版','[3,4]',3),(3,3,'授权版','[3,8,4,11,7]',3);
+
+
+DROP TABLE IF EXISTS `ims_yiheng_express_recode`;
+
+CREATE TABLE `ims_yiheng_express_recode` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uniacid` int(11) DEFAULT NULL COMMENT '公众号',
+  `recoder_shop_id` int(11) DEFAULT '0' COMMENT '快递所属店铺',
+  `recoder_nickname` varchar(50) DEFAULT NULL COMMENT '用户名',
+  `recoder_create` int(11) NOT NULL COMMENT '创建时间',
+  `recoder_create_year` int(11) DEFAULT NULL COMMENT '创建时间_年',
+  `recoder_create_month` int(11) DEFAULT NULL COMMENT '创建时间_月',
+  `recoder_create_day` int(11) DEFAULT NULL COMMENT '创建时间_日',
+  `recoder_create_hour` int(11) DEFAULT NULL COMMENT '创建时间_时',
+  `recoder_updatetime` int(11) DEFAULT '0' COMMENT '更新时间',
+  `recoder_updatetime_year` int(11) DEFAULT '0' COMMENT '更新时间_年',
+  `recoder_updatetime_month` int(11) DEFAULT '0' COMMENT '更新时间_月',
+  `recoder_updatetime_day` int(11) DEFAULT '0' COMMENT '更新时间_日',
+  `recoder_updatetime_hour` int(11) DEFAULT '0' COMMENT '更新时间_时',
+  `recoder_senttime` int(11) DEFAULT NULL COMMENT '发送时间',
+  `recoder_smssentcount` int(11) DEFAULT '0' COMMENT '短信发送次数',
+  `recoder_wxsentcount` int(11) DEFAULT '0' COMMENT '微信发送次数',
+  `recoder_tel` varchar(11) NOT NULL DEFAULT '' COMMENT '用户电话号',
+  `recoder_shelves` int(11) DEFAULT NULL COMMENT '货架号',
+  `recoder_goods_num` int(11) DEFAULT '0' COMMENT '货号',
+  `recoder_barcode` varchar(30) DEFAULT NULL COMMENT '快递条形码',
+  `recoder_express_id` varchar(20) DEFAULT NULL COMMENT '快递id',
+  `recoder_express_name` varchar(20) NOT NULL COMMENT '快递名称',
+  `recoder_tel_exsit` tinyint(1) NOT NULL DEFAULT '0' COMMENT '电话是否存在',
+  `recoder_code` varchar(50) DEFAULT NULL COMMENT '取件码',
+  `recoder_get_status` tinyint(1) DEFAULT '0' COMMENT '取件状态',
+  `recoder_send_status` tinyint(1) DEFAULT '0' COMMENT '消息发送状态',
+  `recoder_status` int(11) DEFAULT '1' COMMENT '是否接收，用户可关闭发送状态',
+  `recoder_add_openid` varchar(50) DEFAULT NULL COMMENT '录入人员openid',
+  `recoder_openid` varchar(50) DEFAULT NULL COMMENT '快递接收者openid',
+  `recoder_done_openid` varchar(50) DEFAULT '' COMMENT '完成操作的 openid ，管理端操作会出现此数据',
+  `recoder_done_by` varchar(50) DEFAULT NULL COMMENT '完成人员',
+  `recoder_retention` tinyint(1) DEFAULT '0' COMMENT '滞留快件',
+  `recoder_test` varchar(50) DEFAULT NULL,
+  `recoder_viewtime` int(11) DEFAULT NULL COMMENT '用户收到信息后查看时间',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=19112 DEFAULT CHARSET=utf8;
+
+
+
+DROP TABLE IF EXISTS `ims_yiheng_express_recode_att`;
+
+CREATE TABLE `ims_yiheng_express_recode_att` (
+  `att_id` int(11) NOT NULL AUTO_INCREMENT,
+  `att_shop_id` int(11) DEFAULT NULL,
+  `att_message` varchar(250) DEFAULT NULL,
+  `att_nu` varchar(30) DEFAULT NULL,
+  `att_ischeck` tinyint(1) DEFAULT '0',
+  `att_condition` varchar(20) DEFAULT NULL,
+  `att_com` varchar(30) DEFAULT NULL COMMENT '公司名，拼音',
+  `att_com_ch` varchar(30) DEFAULT NULL COMMENT '公司名，中文',
+  `att_status` int(11) DEFAULT NULL,
+  `att_state` int(11) DEFAULT NULL,
+  `att_data` text,
+  `att_cratetime` int(11) DEFAULT NULL,
+  `att_ip` varchar(30) DEFAULT NULL,
+  `uniacid` int(11) DEFAULT NULL,
+  PRIMARY KEY (`att_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `ims_yiheng_express_reg`;
+
+CREATE TABLE `ims_yiheng_express_reg` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `reg_uid` int(11) DEFAULT NULL COMMENT 'uid',
+  `reg_tel` varchar(11) NOT NULL COMMENT '电话',
+  `reg_cnt` int(11) NOT NULL COMMENT '次数',
+  `reg_lasttime` int(11) NOT NULL COMMENT '最后一次发送时间',
+  `reg_ip` varchar(25) DEFAULT NULL COMMENT '注册ip',
+  `reg_code` int(11) NOT NULL COMMENT '随机码',
+  `reg_openid` varchar(50) DEFAULT NULL COMMENT '申请人openid',
+  `uniacid` int(11) NOT NULL COMMENT '公众号',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `ims_yiheng_express_reg_log`;
+
+CREATE TABLE `ims_yiheng_express_reg_log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `reg_uid` int(11) DEFAULT NULL COMMENT 'uid',
+  `reg_tel` varchar(11) NOT NULL COMMENT '电话',
+  `reg_cnt` int(11) NOT NULL COMMENT '次数',
+  `reg_lasttime` int(11) NOT NULL COMMENT '最后一次发送时间',
+  `reg_ip` varchar(25) DEFAULT NULL COMMENT '注册ip',
+  `reg_code` int(11) NOT NULL COMMENT '随机码',
+  `reg_openid` varchar(50) DEFAULT NULL COMMENT '申请人openid',
+  `uniacid` int(11) NOT NULL COMMENT '公众号',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `ims_yiheng_express_shop`;
+
+CREATE TABLE `ims_yiheng_express_shop` (
+  `shop_id` int(11) NOT NULL AUTO_INCREMENT,
+  `shop_location` varchar(250) DEFAULT NULL COMMENT '位置',
+  `shop_lat` varchar(50) DEFAULT NULL COMMENT '纬度',
+  `shop_lng` varchar(50) DEFAULT NULL COMMENT '经度',
+  `shop_name` varchar(100) DEFAULT NULL COMMENT '名称',
+  `shop_tel` varchar(50) DEFAULT NULL COMMENT '电话',
+  `shop_logo` varchar(100) DEFAULT NULL,
+  `shop_person` varchar(50) DEFAULT NULL,
+  `shop_code` varchar(50) DEFAULT NULL COMMENT '店面号，一般不用',
+  `uniacid` int(11) DEFAULT NULL,
+  PRIMARY KEY (`shop_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+DROP TABLE IF EXISTS `ims_yiheng_express_slide`;
+
+CREATE TABLE `ims_yiheng_express_slide` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uniacid` int(11) DEFAULT '0',
+  `slide_shopid` int(11) DEFAULT '0' COMMENT '公商户id',
+  `slide_name` varchar(50) DEFAULT '' COMMENT '幻灯名称',
+  `slide_link` varchar(255) DEFAULT '' COMMENT '链接',
+  `slide_thumb` varchar(255) DEFAULT '' COMMENT '图片',
+  `slide_displayorder` int(11) DEFAULT '0' COMMENT '显示顺序',
+  `slide_status` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+
+insert  into `ims_yiheng_express_slide`(`id`,`uniacid`,`slide_shopid`,`slide_name`,`slide_link`,`slide_thumb`,`slide_displayorder`,`slide_status`) values (1,3,0,'兼职','','images/3/2018/04/oZ4LL1K6RrM3lbcm9B11MNK4vWpdWB.jpg',2,1),(2,3,0,'宣传','http://wx.nbyiheng.net/addons/yiheng_express//template/mobile/images/2.jpg','images/3/2018/04/tzK5oB6364w6b63hk6bNNBL5zl4KeN.jpg',2,1),(3,3,0,'test','','images/3/2018/04/lAGt774ZuTTGVy4Ma619MuH1SQy90A.jpg',3,1);
+
+DROP TABLE IF EXISTS `ims_yiheng_express_sms_change_log`;
+
+CREATE TABLE `ims_yiheng_express_sms_change_log` (
+  `chg_id` int(11) NOT NULL AUTO_INCREMENT,
+  `chg_web_user` varchar(120) DEFAULT NULL COMMENT '后台用户',
+  `chg_web_uid` int(11) DEFAULT NULL COMMENT '后台用户uid',
+  `chg_shop_id` int(11) DEFAULT NULL,
+  `chg_user_openid` varchar(120) DEFAULT NULL COMMENT '被修改用户openid',
+  `chg_uid` int(11) DEFAULT NULL COMMENT '被修改用户 uid',
+  `chg_cur_total` int(11) DEFAULT NULL COMMENT '当前数量',
+  `chg_total` int(11) DEFAULT NULL COMMENT '修改数量',
+  `chg_before_total` int(11) DEFAULT NULL COMMENT '修改前数量',
+  `chg_type` tinyint(1) DEFAULT NULL,
+  `chg_ip` varchar(30) DEFAULT NULL,
+  `chg_shop_cur_total` int(11) DEFAULT NULL COMMENT '当前店铺短信数量',
+  `uniacid` int(11) DEFAULT NULL,
+  PRIMARY KEY (`chg_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `ims_yiheng_express_sms_info`;
+
+CREATE TABLE `ims_yiheng_express_sms_info` (
+  `sms_id` int(11) NOT NULL AUTO_INCREMENT,
+  `sms_uid` int(11) DEFAULT NULL COMMENT '用户id,将废弃',
+  `sms_used` int(11) DEFAULT '0' COMMENT '短信使用',
+  `sms_surplus` int(11) DEFAULT '0' COMMENT '短信剩余',
+  `sms_surplus_alert` int(11) DEFAULT '0' COMMENT '短信剩余提醒量',
+  `sms_surplus_notice` int(11) DEFAULT '0' COMMENT '短信剩余提醒',
+  `sms_shop_id` int(11) NOT NULL COMMENT '店铺id',
+  `sms_level` int(11) DEFAULT NULL COMMENT '用户级别',
+  `sms_remark` varchar(200) DEFAULT NULL COMMENT '备注',
+  `sms_type` int(11) DEFAULT NULL COMMENT '1.超级管理员，2店长，3职员',
+  `sms_openid_cando` varchar(50) DEFAULT NULL COMMENT '与type关联，为3时需要openid 确认',
+  `sms_status` tinyint(1) DEFAULT '0' COMMENT '0,关闭1，开启',
+  `sms_notice` tinyint(1) DEFAULT '0' COMMENT '更改权限后通知用户',
+  `uniacid` int(11) DEFAULT NULL,
+  `sms_m_uid` int(11) NOT NULL COMMENT '用户id',
+  PRIMARY KEY (`sms_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `ims_yiheng_express_sms_log`;
+
+CREATE TABLE `ims_yiheng_express_sms_log` (
+  `send_id` int(11) NOT NULL AUTO_INCREMENT,
+  `send_openid` varchar(50) DEFAULT NULL COMMENT 'openid',
+  `send_time` int(11) DEFAULT NULL COMMENT '发送时间',
+  `send_status` tinyint(1) DEFAULT NULL COMMENT '发送状态',
+  `send_to_tel` varchar(11) DEFAULT NULL COMMENT '发送至',
+  `send_type` int(11) DEFAULT NULL COMMENT '发送类型',
+  `send_title` varchar(250) DEFAULT NULL COMMENT '发送标题',
+  `send_contnet` varchar(250) DEFAULT NULL COMMENT '发送内容',
+  `send_ip` varchar(50) DEFAULT NULL COMMENT '发送端ip地址',
+  `send_err` varchar(250) DEFAULT NULL COMMENT '发送错误消息',
+  `send_shop_id` int(11) DEFAULT NULL COMMENT '店铺id',
+  `send_respose` varchar(250) DEFAULT NULL,
+  `uniacid` int(11) DEFAULT NULL COMMENT '公众号',
+  PRIMARY KEY (`send_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `ims_yiheng_express_sms_setting`;
+
+CREATE TABLE `ims_yiheng_express_sms_setting` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sms_title` varchar(50) DEFAULT NULL COMMENT '发送标题',
+  `sms_type` smallint(6) DEFAULT NULL COMMENT '1.注册，2，更换，3提醒',
+  `sms_key` varchar(50) DEFAULT NULL COMMENT 'key',
+  `sms_message_id` int(11) DEFAULT NULL COMMENT '模版id',
+  `sms_message` text COMMENT '模版内容',
+  `sms_platform` varchar(250) DEFAULT NULL COMMENT '平台',
+  `sms_total` int(11) DEFAULT NULL COMMENT '多平台时短信总数',
+  `sms_remark` int(11) DEFAULT NULL COMMENT '备注',
+  `sms_do` tinyint(1) DEFAULT '1' COMMENT '是否启用',
+  `sms_area_id` int(11) DEFAULT NULL COMMENT '区域代码',
+  `sms_day_max` int(11) DEFAULT '200' COMMENT '单日取大发送量',
+  `sms_hour_max` int(11) DEFAULT NULL COMMENT '每小时最大发送量',
+  `uniacid` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+   
+ 
+DROP TABLE IF EXISTS `ims_yiheng_express_sms_user`;
+
+CREATE TABLE `ims_yiheng_express_sms_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_uid` int(11) DEFAULT NULL COMMENT '使用者uid',
+  `user_openid` varchar(50) DEFAULT NULL COMMENT 'openid',
+  `user_sms_surplus` int(11) DEFAULT '0' COMMENT '剩余短信，多店需要',
+  `user_sms_cando` tinyint(1) DEFAULT NULL COMMENT '是否允许发送',
+  `user_sms_change` int(11) DEFAULT NULL COMMENT '修改时间',
+  `uniacid` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `ims_yiheng_express_statistics`;
+
+CREATE TABLE `ims_yiheng_express_statistics` (
+  `s_id` int(11) NOT NULL AUTO_INCREMENT,
+  `s_shop_id` varchar(50) NOT NULL COMMENT '店铺id',
+  `s_in` int(11) DEFAULT '0' COMMENT '入库数量',
+  `s_exsit` int(11) DEFAULT NULL COMMENT '当前剩余量',
+  `s_wx_in` int(11) DEFAULT NULL COMMENT '微信入库数',
+  `s_sms_in` int(11) DEFAULT NULL COMMENT '短信入库数',
+  `s_out` int(11) DEFAULT '0' COMMENT '出库数量',
+  `s_wx_out` int(11) DEFAULT NULL COMMENT '微信出库数',
+  `s_sms_out` int(11) DEFAULT NULL COMMENT '短信出库数',
+  `s_error` int(11) DEFAULT '0' COMMENT '错误数量',
+  `s_date` int(11) NOT NULL COMMENT '入库日期',
+  `s_date_y` int(11) DEFAULT NULL,
+  `s_date_m` int(11) DEFAULT NULL,
+  `s_date_d` int(11) DEFAULT NULL,
+  `s_wx_notice` int(11) DEFAULT '0' COMMENT '当天通知消息',
+  `s_message` int(11) DEFAULT '0' COMMENT '当天短信消息',
+  `s_total_notice` int(11) DEFAULT NULL COMMENT '当天发送消息',
+  `s_send_openid` varchar(50) DEFAULT NULL,
+  `uniacid` int(11) NOT NULL,
+  PRIMARY KEY (`s_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `ims_yiheng_express_tpl`;
+
+CREATE TABLE `ims_yiheng_express_tpl` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `tpl_shop_id` int(11) DEFAULT NULL COMMENT '对应m_default_area',
+  `tpl_id` varchar(50) DEFAULT NULL,
+  `tpl_title` varchar(100) DEFAULT NULL,
+  `tpl_kw1_pre` varchar(100) DEFAULT NULL COMMENT '关键字前缀',
+  `tpl_kw2_pre` varchar(100) DEFAULT NULL COMMENT '关键字前缀',
+  `tpl_kw3_pre` varchar(100) DEFAULT NULL COMMENT '关键字前缀',
+  `tpl_kw4_pre` varchar(100) DEFAULT NULL COMMENT '关键字前缀',
+  `tpl_kw5_pre` varchar(100) DEFAULT NULL COMMENT '关键字前缀',
+  `tpl_kw1` varchar(100) DEFAULT NULL,
+  `tpl_kw2` varchar(100) DEFAULT NULL,
+  `tpl_kw3` varchar(100) DEFAULT NULL,
+  `tpl_kw4` varchar(100) DEFAULT NULL,
+  `tpl_kw5` varchar(100) DEFAULT NULL,
+  `tpl_remark` varchar(100) DEFAULT NULL,
+  `tpl_status` tinyint(1) DEFAULT '0',
+  `uniacid` int(11) DEFAULT NULL,
+  `tpl_short_id` varchar(30) NOT NULL COMMENT '模版短编号TM****',
+  `tpl_size` int(11) NOT NULL COMMENT '模版数据长度',
+  `tpl_alert_title` varchar(150) NOT NULL COMMENT '模版提示大标题，不能修改',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `ims_yiheng_express_tpl_example`;
+
+CREATE TABLE `ims_yiheng_express_tpl_example` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `tpl_id` varchar(50) DEFAULT NULL,
+  `tpl_title` varchar(100) DEFAULT NULL,
+  `tpl_kw1` varchar(100) DEFAULT NULL,
+  `tpl_kw2` varchar(100) DEFAULT NULL,
+  `tpl_kw3` varchar(100) DEFAULT NULL,
+  `tpl_kw4` varchar(100) DEFAULT NULL,
+  `tpl_kw5` varchar(100) DEFAULT NULL,
+  `tpl_remark` varchar(100) DEFAULT NULL,
+  `tpl_status` tinyint(1) DEFAULT '1',
+  `tpl_short_id` varchar(30) NOT NULL COMMENT '模版短编号TM****',
+  `tpl_size` int(11) NOT NULL COMMENT '模版数据长度',
+  `tpl_alert_title` varchar(150) NOT NULL COMMENT '模版提示大标题，不能修改',
+  `tpl_primary_industry` varchar(150) DEFAULT NULL,
+  `tpl_deputy_industry` varchar(150) DEFAULT NULL,
+  `uniacid` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=945 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `ims_yiheng_express_wait_pickup`;
+
+CREATE TABLE `ims_yiheng_express_wait_pickup` (
+  `wait_id` int(11) NOT NULL AUTO_INCREMENT,
+  `wait_openid` varchar(50) DEFAULT NULL COMMENT 'openid',
+  `wait_express_no` varbinary(20) DEFAULT NULL COMMENT '快递号',
+  `wait_addtime` int(11) DEFAULT NULL COMMENT '加入时间',
+  `wait_sendtime` int(11) DEFAULT NULL COMMENT '发送时间',
+  `wait_sendstatus` tinyint(1) DEFAULT '0' COMMENT '发送状态',
+  `wait_status` tinyint(1) DEFAULT '1' COMMENT '1为使用，0为删除',
+  `wait_exsit` tinyint(1) DEFAULT '0' COMMENT '是否存在',
+  `wait_get_status` tinyint(1) DEFAULT '0' COMMENT '0为未收，1为收货',
+  `uniacid` int(11) DEFAULT NULL,
+  PRIMARY KEY (`wait_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+DROP TABLE IF EXISTS `ims_yiheng_express_web_user`;
+
+CREATE TABLE `ims_yiheng_express_web_user` (
+  `web_id` int(11) NOT NULL AUTO_INCREMENT,
+  `web_uid` int(11) NOT NULL COMMENT '后台管理uid',
+  `web_uname` varchar(250) NOT NULL COMMENT '后台管理用户名',
+  `web_shop_id` int(11) NOT NULL COMMENT '下属店铺id',
+  `web_shop_name` varchar(250) NOT NULL COMMENT '下属店铺名称',
+  `web_default_shop` int(11) NOT NULL DEFAULT '0' COMMENT '默认店铺',
+  `web_group` int(11) DEFAULT NULL COMMENT '后台用户所属组',
+  `web_area_id` int(11) DEFAULT NULL COMMENT '店铺数据库中id',
+  `web_remark` varchar(250) DEFAULT NULL,
+  `uniacid` int(11) NOT NULL,
+  PRIMARY KEY (`web_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+
+
+
+		]]></install>
+	<uninstall><![CDATA[]]></uninstall>
+	<upgrade><![CDATA[]]></upgrade>
+</manifest>

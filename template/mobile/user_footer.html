@@ -1,0 +1,118 @@
+
+<div class="weui-tabbar footer" style="position: fixed;" >
+
+
+
+    {if ($myinfo['m_level'] ==1 || $myinfo['m_level'] ==2 || $myinfo['m_level'] ==3) }
+    
+       
+   
+                <a href="{php echo $this->createMobileUrl('home')}" class="weui-tabbar__item {if $_GPC['do']=='aa'}weui-bar__item_on{/if}">
+                    <span style="display: inline-block;position: relative;">
+                        {if $_GPC['do']=='home'}
+                        <img src="{MODULE_URL}/template/mobile/images/icons/icon_index_cur.png" alt="" class="weui-tabbar__icon">
+                        {else}
+                          <img src="{MODULE_URL}/template/mobile/images/icons/icon_index.png" alt="" class="weui-tabbar__icon">
+                        {/if}
+                        <!-- <span class="weui-badge" style="position: absolute;top: -2px;right: -13px;">8</span>  -->
+                    </span>
+                    <p class="weui-tabbar__label">主页</p>
+                </a>
+               
+               
+                <a href="{php echo $this->createMobileUrl('my_area')}" class="weui-tabbar__item">
+                        
+                         {if $_GPC['do']=='shop_info' || $_GPC['do']=='my_area'}
+                        <img src="{MODULE_URL}/template/mobile/images/icons/icon_post_office_cur.png" alt="" class="weui-tabbar__icon">
+                        {else}
+                          <img src="{MODULE_URL}/template/mobile/images/icons/icon_post_office.png" alt="" class="weui-tabbar__icon">
+
+                        {/if}
+                    
+                    
+                    <p class="weui-tabbar__label">周边网点</p>
+                </a>
+
+
+             <a href="{php echo $this->createMobileUrl('manage')}" class="weui-tabbar__item">
+
+               <!--   <a href="{php echo $this->createMobileUrl('manage')}" class="weui-tabbar__item {if $_GPC['do']=='manage'}weui-bar__item_on{/if}">
+ -->
+                         {if $_GPC['do']=='manage'}
+                        <img src="{MODULE_URL}/template/mobile/images/icons/icon_level_cur.png" alt="" class="weui-tabbar__icon">
+                        {else}
+                          <img src="{MODULE_URL}/template/mobile/images/icons/icon_level.png" alt="" class="weui-tabbar__icon">
+
+                        {/if}
+                    
+                    <p class="weui-tabbar__label">权限管理</p>
+                </a>
+
+
+                {/if}
+                 <a href="{php echo $this->createMobileUrl('my')}" class="weui-tabbar__item">
+                  {if $_GPC['do']=='my'}
+                        <img src="{MODULE_URL}/template/mobile/images/icons/icon_my_cur.png" alt="" class="weui-tabbar__icon">
+                        {else}
+                          <img src="{MODULE_URL}/template/mobile/images/icons/icon_my.png" alt="" class="weui-tabbar__icon">
+
+                        {/if}
+
+                    <p class="weui-tabbar__label">我的</p>
+                </a>
+</div>
+<!-- 
+<div class="weui-footer">
+            <p class="weui-footer__links">
+                <a href="javascript:void(0);" class="weui-footer__link">宁波一恒网络</a>
+                <a href="javascript:void(0);" class="weui-footer__link"></a>
+            </p>
+            <p class="weui-footer__text">Copyright © 2016-2018 NBYIHENG.net</p>
+</div>
+		{if empty($footer_off)}
+			<div class="text-center footer" style="display:none;">
+				{if !empty($_W['page']['footer'])}
+					{$_W['page']['footer']}
+				{else}
+					
+				{/if}
+				&nbsp;&nbsp;{$_W['setting']['copyright']['statcode']}
+			</div>
+		{/if}
+	
+		
+	</div>
+
+
+
+
+<div id="dialog2" style="opacity: 1;display:none;">
+        <div class="weui-mask"></div>
+        <div class="weui-dialog">
+            <div class="weui-dialog__bd">返回错误！</div>
+            <div class="weui-dialog__ft">
+                <a href="javascript:hidemod('dialog2');" class="weui-dialog__btn weui-dialog__btn_primary">确定</a>
+            </div>
+        </div>
+</div> 
+
+<div id="toast" style="opacity: 1; display: none;">
+        <div class="weui-mask_transparent"></div>
+        <div class="weui-toast">
+            <i class="weui-icon-success-no-circle weui-icon_toast"></i>
+            <p class="weui-toast__content" style="color:#fff">已完成</p>
+        </div>
+</div>
+<div id="loadingToast" style="opacity: 1; display: none;">
+        <div class="weui-mask_transparent"></div>
+        <div class="weui-toast">
+            <i class="weui-loading weui-icon_toast"></i>
+            <p class="weui-toast__content" style="color:#fff">数据加载中</p>
+        </div>
+</div>
+
+	
+
+</body>
+</html>
+ -->

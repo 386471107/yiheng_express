@@ -1,0 +1,464 @@
+{template 'header'}
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/jquery-weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/index.css">
+<style type="text/css">
+  .site-operation .name .def {
+    color: #1AAD19;
+    border: 1px solid #1AAD19;
+    font-size: 12px;
+    margin-left: 10px;
+    padding: 0 5px;
+    font-weight: normal;
+}
+.site-operation .site {
+    font-size: 13px;
+}
+.site-operation .phone {
+    font-size: 13px;
+}
+.site-operation .comp {
+    font-size: 13px;
+}
+.site-operation .compile i {
+    background: url(../images/icon31.png) no-repeat;
+    background-size: 24px;
+}
+style.css:114
+.site-operation i {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin-right: 3px;
+    position: relative;
+    top: 6px;
+}
+</style>
+<body>
+  
+<div class="weui-panel weui-panel_access">
+
+ <div class="weui-cells ">
+    <div class="weui-panel__bd ">
+      <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg open-popup" data-target="#reciver">
+        <div class="weui-media-box__hd">
+          <img class="weui-media-box__thumb" src="{MODULE_URL}/template/mobile/images/icon_recive_txt.png">
+        </div>
+
+
+        <div class="weui-media-box__bd " >
+          <h4 class="weui-media-box__title" id="rec"> {if !empty($addr_rec_list[0]['addr_name'])}{$addr_rec_list[0]['addr_name']} {$addr_rec_list[0]['addr_tel']}{else}点击选择收件人{/if} </h4>
+          <p class="weui-media-box__desc" id="rec_addr">{if !empty($addr_rec_list)}{$addr_rec_list[0]['addr_province']}{$addr_rec_list[0]['addr_city']}{$addr_rec_list[0]['addr_district']}{$addr_rec_list[0]['addr_addr']}{else}暂无默认收件人{/if}</p> 
+        </div>
+        <div class=" weui-cell__ft">>></div>
+      </a>
+      <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg open-popup" data-target="#send">
+        <div class="weui-media-box__hd">
+          <img class="weui-media-box__thumb" src="{MODULE_URL}/template/mobile/images/icon_send_txt.png">
+        </div>
+        <div class="weui-media-box__bd">
+          <h4 class="weui-media-box__title" id="sender" >{if !empty($addr_send_list[0]['addr_name'])}{$addr_send_list[0]['addr_name']} {$addr_send_list[0]['addr_tel']}{else}点击选择寄件人{/if}</h4>
+          <p class="weui-media-box__desc" id="sender_addr" >{if !empty($addr_send_list)}{$addr_send_list[0]['addr_province']}{$addr_send_list[0]['addr_city']}{$addr_send_list[0]['addr_district']}{$addr_send_list[0]['addr_addr']}{else}暂无默认寄件人{/if}</p>
+        </div>
+        <div class=" weui-cell__ft">>></div>
+      </a>
+    </div>
+ </div> 
+
+      <div class="weui-cells">
+          <a class="weui-cell weui-cell_access" href="javascript:;">
+            <div class="weui-cell__bd">
+              <p>物品信息</p>
+            </div>
+            <div class="weui-cell__ft">请选择物品信息</div>
+          </a>
+        </div>
+    <div class="weui-cells">
+        <div class="weui-flex">
+        <div class="weui-flex__item">
+          <a class="weui-cell weui-cell_access"onclick="attr()">
+            <div class="weui-cell__bd">
+              <p>重量</p>
+            </div>
+            <div class="weui-cell__ft">0.00kg</div>
+          </a>
+        </div>
+        <div class="weui-flex__item">
+           <a class="weui-cell weui-cell_access" onclick="attr()">
+            <div class="weui-cell__bd">
+              <p>保价</p>
+            </div>
+            <div class="weui-cell__ft">0.00元</div>
+          </a>
+        </div>
+      </div>
+   </div>   
+  <div class="weui-cells weui-cells_form">
+      <div class="weui-cell">
+        <div class="weui-cell__bd">
+          <textarea class="weui-textarea" placeholder="可以给快递小哥留个话，比如：贵重物品，请小心投递" rows="2"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="weui-cell weui-cell__ft">取件时间：08:00 - 20:00</div>
+</div>
+
+
+<div class="weui-tabbar footer" style="position: fixed;" >
+<input type="submit"  class="weui-btn weui-btn_primary " value="寄件" >
+</div>
+   
+    <div id="addr_add" class="weui-popup__container popup-bottom" style="z-index: 1000">
+    <div class="weui-popup__overlay close-popup"></div>
+    <div class="weui-popup__modal" >
+        <div class="toolbar">
+          <div class="toolbar-inner">
+            <a href="javascript:;" class="picker-button close-popup">关闭</a>
+            <h1 class="title" id="addrtitle">标题</h1>
+          </div>
+        </div>
+        <div class="modal-content" >
+            <div class="weui-cells mt10 add-site">
+            <div class="weui-cell f16">
+            <div class="weui-cell__hd"><label class="weui-label">收货人</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" name="rec_name" id="rec_name" placeholder="请输入收货人">
+            </div>
+          </div>
+          <div class="weui-cell f16">
+            <div class="weui-cell__hd"><label class="weui-label">手机号码</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="tel" name="rec_tel" id="rec_tel"  maxlength="11" placeholder="请输入手机号码">
+            </div>
+          </div>
+          <div class="weui-cell f16 weui-cell_access">
+            <div class="weui-cell__hd"><label class="weui-label">所在地区</label></div>
+            <div class="weui-cell__bd">
+                 <input class="weui-input" type="text" id="city-picker" name="rec_city"   placeholder="请选择省市/城市/区县"  readonly="">
+            </div>
+            <div class="weui-cell__ft">
+            </div>
+          </div>
+          <div class="weui-cell f16">
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" name="rec_detail" id="rec_detail"  placeholder="请输入详情地址"> 
+            </div>
+          </div>
+          <div class="weui-cell f16">
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" name="rec_comp" id="rec_comp"  placeholder="请输入公司名称（选填）">
+            </div>
+          </div>
+          </div>
+
+          <div class="weui-cells mt10 weui-cells_form">
+        <div class="weui-cell weui-cell_switch">
+          <div class="weui-cell__bd">设为默认地址</div>
+          <div class="weui-cell__ft"> 
+            <input class="weui-switch" type="checkbox" name="rec_default" id="rec_default" >
+          </div>
+        </div>
+      </div> 
+      <div class="weui-flex">
+        <input type="hidden" name="addr_flag"  id="addr_flag">
+        <button class="weui-btn weui-btn_primary" onclick="add_new_addr()">保存</button> 
+      </div>
+        </div>
+      </div>
+  </div>
+
+  <div id="attr_change" class="weui-popup__container popup-bottom" style="z-index: 1000">
+    <div class="weui-popup__overlay close-popup"></div>
+    <div class="weui-popup__modal" >
+        <div class="toolbar">
+          <div class="toolbar-inner">
+            <a href="javascript:;" class="picker-button close-popup">关闭</a>
+            <h1 class="title" id="addrtitle">修改快递信息</h1>
+          </div>
+        </div>
+        <div class="modal-content" >
+            <div class="weui-cells mt10 add-site">
+            <div class="weui-cell f16">
+            <div class="weui-cell__hd"><label class="weui-label">重量</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="number" name="weight_c" id="weight_c" placeholder="请输入重量信息">
+            </div>
+          </div>
+          <div class="weui-cell f16">
+            <div class="weui-cell__hd"><label class="weui-label">保价</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="number" name="price_c" id="price_c"  maxlength="11" placeholder="请输入保价">
+            </div>
+          </div>
+         
+      <div class="weui-flex">
+        <input type="hidden" name="addr_flag"  id="addr_flag">
+        <button class="weui-btn weui-btn_primary" onclick="add_new_addr()">保存</button> 
+      </div>
+        </div>
+      </div>
+  </div>
+ </div>
+
+
+<div id="reciver" class='weui-popup__container' style="z-index: 2000">
+        <div class="weui-popup__overlay"></div>
+        <div class="weui-popup__modal">
+          <div class="toolbar">
+            <div class="toolbar-inner">
+              <a href="javascript:;" class="picker-button close-popup">关闭</a>
+              <h1 class="title">请选择收件人</h1>
+            </div>
+          </div>
+          <div style="padding:55px 0;">
+          <div class="site-operation weui-cells_checkbox" id="addr_all">
+            {loop $addr_rec_list $addr_rec_list}
+              <div class="weui-cell b-top " id="div{$addr_rec_list['addr_id']}">
+                <label class="weui-cell__hd weui-check__label" >
+                  <input type="radio" class="weui-check" name="checkbox2" id="s{$addr_rec_list['addr_id']}" {if $addr_rec_list['addr_default']}checked="checked"{/if} onchange="fill_addr_rec({$addr_rec_list['addr_id']})">
+                <i class="weui-icon-checked"></i>
+                </label>
+                <div class="weui-cell__bd "  onclick="do_action({$addr_rec_list['addr_id']})" >
+                    <div class="name" id="name{$addr_rec_list['addr_id']}"><span id="namea{$addr_rec_list['addr_id']}">{$addr_rec_list['addr_name']}</span>
+                      {if $addr_rec_list['addr_default']==1}<span class="def">常用地址</span>{/if}
+                    </div>
+                    <div class="site" id="site{$addr_rec_list['addr_id']}">{$addr_rec_list['addr_province']}{$addr_rec_list['addr_city']}{$addr_rec_list['addr_district']}{$addr_rec_list['addr_addr']}</div>
+                    <div >
+                    <span class="comp" id="comp{$addr_rec_list['addr_id']}">{$addr_rec_list['addr_comp']}</span>
+                    <span class="phone" id="phone{$addr_rec_list['addr_id']}">{$addr_rec_list['addr_tel']}</span>
+                  </div>
+                </div>
+              </div>
+          {/loop}
+          </div>        
+      </div>
+      <div class="weui-flex weui-fixed-btm p10">
+         <a onClick="add_address(0)" class="weui-btn weui-btn_primary  open-popup" >新添地址</a>
+      </div>
+  </div>
+</div>
+
+
+
+
+
+<div id="send" class='weui-popup__container' style="z-index: 2000">
+        <div class="weui-popup__overlay"></div>
+        <div class="weui-popup__modal">
+          <div class="toolbar">
+            <div class="toolbar-inner">
+              <a href="javascript:;" class="picker-button close-popup">关闭</a>
+              <h1 class="title">请选择寄件人</h1>
+            </div>
+          </div>
+          <div style="padding:55px 0;">
+          <div class="site-operation weui-cells_checkbox" id="addr_alla">
+            {loop $addr_send_list $addr_send_list}
+              <div class="weui-cell b-top " id="div{$addr_send_list['addr_id']}">
+                <label class="weui-cell__hd weui-check__label" >
+                  <input type="radio" class="weui-check" name="checkbox1" id="s{$addr_send_list['addr_id']}"  {if $addr_send_list['addr_default']}checked="checked"{/if} onchange="fill_addr_sender({$addr_send_list['addr_id']})">
+                <i class="weui-icon-checked"></i>
+                </label>
+                <div class="weui-cell__bd "  onclick="do_action({$addr_send_list['addr_id']})" >
+                    <div class="name" id="name{$addr_send_list['addr_id']}"><span id="namea{$addr_send_list['addr_id']}">{$addr_send_list['addr_name']}</span>
+                      {if $addr_send_list['addr_default']==1}<span class="def">常用地址</span>{/if}
+                    </div>
+                    <div class="site" id="site{$addr_send_list['addr_id']}">{$addr_send_list['addr_province']}{$addr_send_list['addr_city']}{$addr_send_list['addr_district']}{$addr_send_list['addr_addr']}</div>
+                    <div >
+                    <span class="comp" id="comp{$addr_send_list['addr_id']}">{$addr_send_list['addr_comp']}</span>
+                    <span class="phone" id="phone{$addr_send_list['addr_id']}">{$addr_send_list['addr_tel']}</span>
+                  </div>
+                </div>
+              </div>
+          {/loop}
+          </div>        
+      </div>
+      <div class="weui-flex weui-fixed-btm p10">
+         <a onclick="add_address(1)" class="weui-btn weui-btn_primary  open-popup" >新添地址</a>
+      </div>
+  </div>
+</div>
+
+
+</body>
+    <script src="{MODULE_URL}template/mobile/js/jquery-2.1.4.js"></script>
+<script src="../lib/fastclick.js"></script>
+<script>
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+<script src="{MODULE_URL}template/mobile/js/jquery-weui.js"></script>
+<script type="text/javascript" src="{MODULE_URL}template/mobile/js/city-picker.min.js""></script>
+
+
+
+<script>
+  $("#city-picker").cityPicker({
+    title: "请选择收货地址",
+    onChange: function (picker, values, displayValues) {
+          console.log(values, displayValues);
+        }
+  });
+</script>
+
+
+
+<script type="text/javascript">
+
+  function add_new_addr()
+  {
+    var rec_name=$("#rec_name").val();
+    var rec_tel=$("#rec_tel").val();
+    var rec_city=$("#city-picker").val();
+    var rec_detail=$("#rec_detail").val();
+    var rec_comp=$("#rec_comp").val();
+    var addr_flag=$("#addr_flag").val();
+    var rec_default=$('#rec_default').is(':checked');
+
+
+    if(rec_name=="" || rec_tel=="" || rec_city=="" || rec_detail=="" ) 
+    {   
+      $.toptip('内容未完整输入，请检查！', 'warning');
+    }
+
+    $.post("{php echo $this->createMobileUrl('send_express')}", {"act":"addr_add",'rec_name':rec_name,'rec_tel':rec_tel,'addr_flag':addr_flag,'rec_city':rec_city,'rec_detail':rec_detail,'rec_comp':rec_comp,'rec_default':rec_default}, 
+          function(data) 
+          {
+
+
+            if (rec_default== true)
+            var def_str='<span class="def">常用地址</span>';
+            else
+            var def_str=' ';
+            append_str='<div class="weui-cell b-top" id="div'+data.id+'">'+
+                                  '<label class="weui-cell__hd weui-check__label" >'+
+                                    '<input type="radio" class="weui-check" id="s'+data.id+'" name="checkbox2"  checked="checked" onchange="fill_addr_rec('+data.id+')">'+
+                                    '<i class="weui-icon-checked"></i>'+
+                                  '</label>'+
+                                  '<div class="weui-cell__bd"  onclick="do_action('+data.id+')" >'+
+                                  '<div class="name" id="name'+data.id+'"><span id="namea'+data.id+'">'+rec_name+'</span>'+def_str+
+                                  '</div>'+
+                                  '<div class="site" id="site'+data.id+'">'+rec_city+rec_detail+'</div>'+
+                                  '<div >'+
+                                  '<span class="comp" id="comp'+data.id+'">'+rec_comp+'</span>'+
+                                  '<span class="phone" id="phone'+data.id+'">'+rec_tel+'</span>'+
+                                  '</div>'+
+                                    '</div>'
+            if (addr_flag==1)
+            {
+              $("#addr_alla").prepend(append_str)
+            }                        
+            
+            else
+            {
+             $("#addr_all").prepend(append_str)   
+            }
+             
+            $("#rec").html(rec_name+' '+rec_tel)
+            $("#rec_addr").html(rec_city+rec_detail)
+
+ 
+
+           $.toast(data.tips, data.dstype);
+          }, "json");
+
+
+    $.closePopup()
+
+  }
+
+  function fill_addr_rec(id)
+  {
+    $("#rec").html($("#namea"+id).html()+"  "+$("#phone"+id).html())
+    $("#rec_addr").html($("#site"+id).html())
+    $.closePopup();
+  }
+
+   function fill_addr_sender(id)
+  {
+    $("#sender").html($("#namea"+id).html()+"  "+$("#phone"+id).html())
+    $("#sender_addr").html($("#site"+id).html())
+    $.closePopup();
+  }
+
+function add_address(flag)
+{
+  if(flag==1)
+  {
+    
+    $("#addr_flag").val("1")
+    $("#addrtitle").html("新增寄件人信息")
+  } 
+  else
+  {
+    $("#addr_flag").val("0")
+    $("#addrtitle").html("新增收件人信息")
+  }
+  $("#addr_add").popup();
+
+}
+
+function attr()
+{
+   $("#attr_change").popup();
+}
+
+  
+</script>
+
+
+    <script>
+      $(document).on("open", ".weui-popup-modal", function() {
+        console.log("open popup");
+      }).on("close", ".weui-popup-modal", function() {
+        console.log("close popup");
+      });
+    </script>
+  
+<script>
+
+  function do_action(id)
+  {
+      $.actions({
+          title: "选择操作",
+          onClose: function() {
+            console.log("close");
+          },
+          actions: [
+            {
+              text: "编辑",
+              className: "color-warning", 
+              onClick: function() {
+                $.alert("你选择了“编辑”");
+              }
+            },
+            {
+              text: "删除",
+              className: 'color-danger',
+              onClick: function() {
+                  $.confirm("您确定要删除此地址吗?", "确认删除?", function() {
+                  
+                 $.post("{php echo $this->createMobileUrl('send_express')}", {"act":"addr_del",'id':id}, 
+                   function(data) 
+                    {
+                     $("#div"+id).remove(); 
+                     $.toast(data.tips, data.dstype);
+                    }, "json");
+                  }, function() {
+                  //取消操作
+                  });
+              }
+            }
+          ]
+        });
+
+  }
+      
+    </script>
+
+
+
+
+</html>
+

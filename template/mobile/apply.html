@@ -1,0 +1,59 @@
+
+{template 'header'}
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/jquery-weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/style.css">
+
+<body>
+  {if $act !='to_apply'}
+  <div class="weui-msg">
+      <div class="weui-msg__icon-area"><i class="weui-icon-waiting weui-icon_msg"></i></div>
+      <div class="weui-msg__text-area">
+        <h2 class="weui-msg__title">友情提示</h2>
+        <p class="weui-msg__desc">申请时效为48小时，请及时联系管理员确认！</a></p>
+      </div>
+      <div class="weui-msg__opr-area">
+        <p class="weui-btn-area">
+          <a href="{php echo $this->createMobileUrl('apply',array('act' =>'to_apply'))}" class="weui-btn weui-btn_primary">点击申请</a>
+         
+        </p>
+      </div>
+      <div class="weui-msg__extra-area">
+        <div class="weui-footer">
+          <p class="weui-footer__links">
+            <a href="javascript:void(0);" class="weui-footer__link"></a>
+          </p>
+          <p class="weui-footer__text"></p>
+        </div>
+      </div>
+    </div>
+    {else}
+    <div class="weui-msg">
+      <div class="weui-msg__icon-area"><i class="weui-icon-success weui-icon_msg"></i></div>
+      <div class="weui-msg__text-area">
+        <h2 class="weui-msg__title">操作成功</h2>
+        <p class="weui-msg__desc">等待管理员确认</p>
+      </div>
+      <div class="weui-msg__opr-area">
+        <p class="weui-btn-area">
+          <a href="{php echo $this->createMobileUrl('my')}" class="weui-btn weui-btn_primary">点击返回</a>
+        
+        </p>
+      </div>
+      <div class="weui-msg__extra-area">
+        <div class="weui-footer">
+          <p class="weui-footer__links">
+            <a href="javascript:void(0);" class="weui-footer__link"></a>
+          </p>
+          <p class="weui-footer__text"></p>
+        </div>
+      </div>
+    </div>
+    {/if}
+ 
+</body>
+</html>
+
+
+
+</html>

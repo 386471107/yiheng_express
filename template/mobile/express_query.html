@@ -1,0 +1,153 @@
+{template 'header'}
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/jquery-weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/style.css">
+
+
+<link href="https://cdn.bootcss.com/Buttons/2.0.0/css/buttons.css" rel="stylesheet">
+<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
+<style type="text/css">
+
+
+</style>
+
+<div class="weui-cells weui-cells_form">
+<div class="weui-search-bar" >
+  <form class="weui-search-bar__form" action="" method="POST" id="form1">
+    <div class="weui-search-bar__box">
+      <i class="weui-icon-search"></i>
+      <input type="search" class="weui-search-bar__input" type="number" placeholder="请输入查询号码" id="search_text">
+      <a href="javascript:" class="weui-icon-clear"></a>
+    </div>
+    <label class="weui-search-bar__label" >
+      <i class="weui-icon-search"></i>
+      <span>搜索</span>
+    </label>
+  </form>
+  <a href="javascript:" class="weui-search-bar__cancel-btn"  onClick="search_info()">搜索</a>
+</div>
+
+<div class="weui-flex">
+  <div class="weui-flex__item">
+    <div class="weui-cell">
+      <div class="weui-cell__bd">
+        <input  style="text-align: center;" class="weui-input " id="search_type" type="text" value="" placeholder="选择搜索类别" >
+      </div>
+    </div>
+  </div>
+  <div class="weui-flex__item">
+   <div class="weui-cell">
+      <div class="weui-cell__bd">
+        <input  style="text-align: center;" class="weui-input " id="search_status" type="text" value="" placeholder="选择取件状态" >
+      </div>
+    </div>
+  
+
+  </div>
+</div>
+
+      
+      <input type="hidden" name="st" id="st" value="0">
+       <input type="hidden" name="ss" id="ss" value="0">
+    </div>
+    <div id="list">
+    </div>
+
+<div style="margin-bottom: 55px;display: block;"></div>
+{template 'footer'}
+       
+
+<script src="{MODULE_URL}/template/mobile/js/jquery.min.js"></script>
+<script src="{MODULE_URL}/template/mobile/js/jquery-weui.min.js"></script>
+  
+ 
+    <script>
+      
+      $("#search_type").select({
+        title: "选择搜索类别",
+        items: [
+          {
+            title: "手机号",
+            value: "1",
+          },
+          {
+            title: "取件码",
+            value: "2",
+          },
+          {
+            title: "快递号",
+            value: "3"
+          }
+        ],
+        onChange: function(d) {
+          $("#st").val(d.values);
+        },
+        onClose: function() {
+          console.log("close");
+        },
+        onOpen: function() {
+          console.log("open");
+        },
+      });
+
+
+       $("#search_status").select({
+        title: "选择取件状态",
+        items: [
+          {
+            title: "未取件",
+            value: "0",
+          },
+          {
+            title: "已取件",
+            value: "1",
+          }
+        ],
+        onChange: function(d) {
+          $("#ss").val(d.values);
+        },
+        onClose: function() {
+          console.log("close");
+        },
+        onOpen: function() {
+          console.log("open");
+        },
+      });
+     
+    </script>
+
+<script type="text/javascript">
+  
+ 
+
+
+  function search_info()
+  {
+   $("#list").empty()
+    var search_text =($("#search_text").val())
+    var search_type =($("#st").val())
+    var search_status =($("#ss").val())
+    $.post("{php echo $this->createMobileUrl('express_query')}", {"act":'search',"search_text":search_text,"search_type":search_type,"search_status":search_status}, 
+                        function(data) 
+                        {
+                          if (data.success==1 )
+                          {
+                            $("#list").prepend(data.res_str);
+                            $.toast("搜索到"+data.cnt+"条记录", "success");
+                            // $("#code_"+data.rid).remove();
+                          }
+                          
+                          else
+                          {
+                             $.toast("未搜到记录", "cancel");
+                          }
+                          
+                        }, "json");
+  } 
+
+
+
+
+</script>
+ 
+</html>

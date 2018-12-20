@@ -1,0 +1,214 @@
+{template 'header'}
+
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/jquery-weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/style.css">
+
+
+
+<body> 
+
+<div class="weui-cells">
+		<div class="weui-cell weui-cell_vcode">
+				    <div class="weui-cell__hd">
+				      <label class="weui-label">快递单号</label>
+				    </div>
+				    <div class="weui-cell__bd">
+				  <input class="weui-input" type="number" id="express_no" value="" placeholder="请输入快递单号" ">
+				    </div>
+				    <div class="weui-cell__ft">
+				    <button class="weui-vcode-btn" onclick="checkin()">单号入库</button>
+				    </div>
+			    </div>
+
+			    <div class="weui-cell weui-cell_select weui-cell_select-before">
+                <div class="weui-cell__hd">
+                    <select class="weui-select" id ="shelves" name="shelves">
+                        <option value="0">无货架</option>
+                        <option value="01">01</option>
+                        <option value="02">02</option>
+                        <option value="03">03</option>
+                        <option value="04">04</option>
+                        <option value="05">05</option>
+                        <option value="06">06</option>
+                        <option value="07">07</option>
+                        <option value="08">08</option>
+                    </select>
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" id ="goodno" type="goodno" pattern="[0-9]*" placeholder="请输入货号">
+                </div>
+                 <div class="weui-cell__ft">
+						<label for="weuiAgree" class="weui-agree">
+						<input id="weuiAgree" type="checkbox" class="weui-agree__checkbox">
+						<span class="weui-agree__text" id="autoadd">货号递增 </span>
+						</label>
+				</div>
+ 				</div>
+			</div>
+			</div>
+	<div class="weui-cells mt5">
+		<button  id ="scanQRCode1" class="weui-btn weui-btn_default">点击扫描</button>
+	</div>
+	  
+	
+		<div class="weui-cell">
+			<div class="weui-cell__hd" style="width:60% ;text-align:center"><label for="date" class="weui-label">快递单号</label></div>
+			<div class="weui-cell__bd" style="text-align:left"><label for="date" class="weui-label">货号</label></div>
+		
+		</div>
+		<hr>
+		<div id="phonelist" style="height: 100%;display: block;overflow: hidden;">
+		
+			
+		</div>
+
+
+
+	
+
+	<script src="{MODULE_URL}/template/mobile/js/jquery.min.js"></script>
+	<script src="{MODULE_URL}/template/mobile/js/jquery-weui.min.js"></script>
+		
+<script> 
+
+wx.ready(function () {
+ 
+  
+ 
+ document.querySelector('#scanQRCode1').onclick = function () {
+
+    wx.scanQRCode({
+      needResult: 1,
+      desc: 'scanQRCode desc',
+      success: function (res) {
+       // alert(JSON.stringify(res));
+		var serialNumber = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+		var serial = serialNumber.split(",");
+		serialNumber = serial[serial.length-1];
+		var goodno=$("#goodno").val();
+		var shelves=$('#shelves').val();
+		
+		 $.post("{php echo $this->createMobileUrl('express_scan')}", {"serialNumber":serialNumber,"shelves":shelves,"goodno":goodno,"act":"scan"}, 
+						function(data) 
+						{
+							if (data.success==1)
+							{
+
+									$("#phonelist").prepend(
+									"<div class=\"weui-cell\" id=\"list"+data.resultid+"\" onclick=\"del("+data.resultid+")\"><div class=\"weui-cell__bd\" >"+serialNumber+"</div> <div class=\"weui-cell__ft\">"+shelves+"-"+goodno+"</div></div>");
+									$("#phone").val('')
+									if($('#weuiAgree').is(':checked')) {
+									$("#goodno").val(parseInt(goodno)+1) 
+									}
+									return ;
+
+								
+
+						
+							}
+							if (data.success==3 )
+							{
+							$.toptip("单号已入库！", 1000,'error');
+							return ;
+							}
+							
+							
+						}, "json");  
+		
+		
+      }
+    });
+  };
+ 
+  
+  
+
+   
+});
+
+
+
+</script>   
+	
+<script > 	
+function checkin()
+{
+
+
+var serialNumber=$("#express_no").val();
+
+var goodno=$("#goodno").val();
+var shelves=$('#shelves').val();
+
+ $.post("{php echo $this->createMobileUrl('express_scan')}", {"serialNumber":serialNumber,"shelves":shelves,"goodno":goodno,"act":"scan"}, 
+												function(data) 
+												{
+													if (data.success==1 )
+													{
+														$("#phonelist").prepend(
+														"<div class=\"weui-cell \" id=\"list"+data.resultid+"\" onclick=\"del("+data.resultid+")\"><div class=\"weui-cell__bd\" >"+serialNumber+"</div> <div class=\"weui-cell__ft\">"+shelves+"-"+goodno+"</div></div>");
+														$("#phone").val('')
+														if($('#weuiAgree').is(':checked')) {
+														$("#goodno").val(parseInt(goodno)+1) 
+														}
+														return ;
+
+													}
+													if (data.success==3 )
+													{
+													$.toast("单号已入库！", "text");
+													return ;
+													}
+													
+													
+													
+													
+												}, "json");
+
+	
+}	
+</script>   
+
+
+<script>
+function del(value)
+{
+
+ $.actions({
+          title: "选择操作",
+          onClose: function() {
+            console.log("close");
+          },
+          actions: [
+           
+            {
+              text: "删除",
+              className: 'color-danger',
+              onClick: function() {
+            
+ 
+			  $.post("{php echo $this->createMobileUrl('express_scan')}", {"act":"del","id":value}, 
+		
+				function(data){
+				
+				if (data.success==1)
+				{
+				  $("div").remove("#list"+value);
+				}  
+
+				}, "json");
+			   
+			   
+				  
+				  
+              }
+            }
+          ]
+        });
+}
+
+</script>
+{template 'footer'}
+</body>
+</html>

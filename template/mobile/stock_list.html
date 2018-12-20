@@ -1,0 +1,215 @@
+{template 'header'}
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/jquery-weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/style.css">
+
+
+<link href="https://cdn.bootcss.com/Buttons/2.0.0/css/buttons.css" rel="stylesheet">
+<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
+<style type="text/css">
+
+
+</style>
+
+
+
+<div class="weui-search-bar" >
+  <form class="weui-search-bar__form" action="" method="POST" id="form1">
+    <div class="weui-search-bar__box">
+      <i class="weui-icon-search"></i>
+      <input type="search" class="weui-search-bar__input" type="number" placeholder="请输入手机号查询" id="tel">
+      <a href="javascript:" class="weui-icon-clear"></a>
+    </div>
+    <label class="weui-search-bar__label" >
+      <i class="weui-icon-search"></i>
+      <span>搜索</span>
+    </label>
+  </form>
+  <a href="javascript:" class="weui-search-bar__cancel-btn"  onClick="search_tel()">搜索</a>
+</div>
+<div id="list">
+ <input type="hidden" value="2" id ="page" name="page">
+
+{loop $stocklist $stocklist}
+
+      <div class="weui-cells weui-cells_checkbox" id="code_{$stocklist['id']}">
+          <label class="weui-cell weui-check__label" onclick="del_recode({$stocklist['id']})">
+            
+            <div class="weui-cell__bd" >
+              <p>取件码:{$stocklist['recoder_code']}</p>
+            </div>
+        <div class="weui-cell__ft">{$stocklist['recoder_shelves']}-{$stocklist['recoder_goods_num']}</div>
+          </label>
+          <div class="weui-cell">
+            <div class="weui-cell__hd"><img src="{MODULE_URL}/template/mobile/images/icon_time.png" alt="" style="width:25px;margin-right:5px;display:block"></div>
+            <div class="weui-cell__bd">
+              <p>发送时间</p>
+            </div>
+             <div class="weui-cell__ft">{php echo date("Y-m-d H:i",$stocklist['recoder_create'])}</div>
+          </div>
+
+          <div class="weui-cell">
+              <div class="weui-cell__hd"><img src="{MODULE_URL}/template/mobile/images/icon_tel.png" alt="" style="width:25px;margin-right:5px;display:block"></div>
+            <div class="weui-cell__bd">
+              <p>联系电话</p>
+            </div>
+            <div class="weui-cell__ft">{$stocklist['recoder_tel']}</div>
+          </div>
+
+          {if !empty($stocklist['recoder_barcode'])}
+          <div class="weui-cell">
+              <div class="weui-cell__hd"><img src="{MODULE_URL}/template/mobile/images/icon_express.png" alt="" style="width:25px;margin-right:5px;display:block"></div>
+            <div class="weui-cell__bd">
+              <p>快递单号</p>
+            </div>
+            <div class="weui-cell__ft">{$stocklist['recoder_barcode']}</div>
+          </div>
+         {/if}
+        <div class="weui-cell weui-flex">
+          <div class="weui-flex__item" ></div>
+          <div class="weui-flex__item"></div>
+         <div class="weui-flex__item "><a class="button button-small button-highlight  " onclick="done({$stocklist['id']})"><i class="fa fa-sign-in " aria-hidden="true"></i>&nbsp;收货</a></div>
+        </div>
+      </div>
+         
+{/loop} 
+</div>
+  {if $load_done==1}
+     <div class="weui-loadmore weui-loadmore_line"  style="margin-bottom: 60px;" id="none_data">
+     <span class="weui-loadmore__tips">暂无更多数据</span>
+    </div>
+    {else}
+
+    <div class="weui-loadmore" style="margin-bottom: 60px;" id="loadmore"> 
+       <i class="fa fa-spinner fa-pulse"></i> 
+       <span class="weui-loadmore__tips">正在加载</span> 
+    </div>
+
+   
+    {/if} 
+
+<div style="margin-bottom: 55px;display: block;"></div>
+{template 'footer'}
+       
+
+<script src="{MODULE_URL}/template/mobile/js/jquery.min.js"></script>
+<script src="{MODULE_URL}/template/mobile/js/jquery-weui.min.js"></script>
+  
+  <script>
+      var loading = false;
+      $(document.body).infinite().on("infinite", function() {
+        if(loading) return;
+        loading = true;
+       var page = parseInt($("#page").val())
+       // console.log(page)
+          $.post("{php echo $this->createMobileUrl('stock_list')}", {"act":"load_more","page":page}, 
+            function(data) 
+            {
+              
+               setTimeout(function() {
+                $("#list").append(data.res_str);
+                if (data.done==1)
+                { 
+                  $("#loadmore").hide();
+                  $("#none_data").show();
+                  $(document.body).destroyInfinite()
+                  $.toast("已无更多数据","text");
+                }
+                loading = false;
+                page=page+1
+                $("#page").val(page)
+              }, 500);
+              
+            }, "json"); 
+
+        
+      });
+  </script>
+
+<script type="text/javascript">
+  
+  function done(id)
+  {
+    $.post("{php echo $this->createMobileUrl('stock_list')}", {"act":'done',"id":id}, 
+                        function(data) 
+                        {
+                          if (data.success==1 )
+                          {
+                            
+                            $.toast("出库成功", "success");
+                            $("#code_"+data.rid).remove();
+                          }
+                          
+                          else
+                          {
+                             $.toast("出库失败", "cancel");
+                          }
+                          
+                        }, "json");
+  } 
+
+
+
+
+  function search_tel()
+  {
+   
+    var tel =($("#tel").val())
+    $.post("{php echo $this->createMobileUrl('stock_list')}", {"act":'search',"tel":tel}, 
+                        function(data) 
+                        {
+                          if (data.success==1 )
+                          {
+                            $("#list").prepend(data.res_str);
+                            $.toast("搜索到"+data.cnt+"条记录", "success");
+                            // $("#code_"+data.rid).remove();
+                          }
+                          
+                          else
+                          {
+                             $.toast("未搜到此电话号", "cancel");
+                          }
+                          
+                        }, "json");
+  } 
+
+
+
+
+</script>
+ <script>
+    
+
+     function del_recode(id)
+     {
+       $.actions({
+          actions: [
+           
+            {
+              text: "删除",
+              className: 'bg-danger',
+               onClick: function() {
+                // $.alert("你选择了“删除”");
+                 $.post("{php echo $this->createMobileUrl('stock_list')}", {"act":'del',"id":id}, 
+                        function(data) 
+                        {
+                          if (data.success==1 )
+                          {
+                            $("#code_"+data.rid).remove();
+                            $.toast("删除成功", "success");
+                          }
+                          
+                          else
+                          {
+                             $.toast("删除失败", "cancel");
+                          }
+                          
+                        }, "json");
+              }
+            }
+          ]
+        });
+     }
+    </script>   
+
+</html>

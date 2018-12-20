@@ -1,0 +1,99 @@
+{template 'header'}
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/jquery-weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/style.css">
+
+
+<link href="https://cdn.bootcss.com/Buttons/2.0.0/css/buttons.css" rel="stylesheet">
+<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
+
+
+{if empty($mitem['m_tel'])}
+{template 'none_express'}
+{else}
+{loop $wait_list $wait_list}
+
+      <div class="weui-cells weui-cells_checkbox" id="code_{$wait_list['id']}">
+	        <label class="weui-cell weui-check__label" for="s11">
+	          
+	          <div class="weui-cell__bd">
+	            <p>取件码:{$wait_list['recoder_code']}</p>
+	          </div>
+				<div class="weui-cell__ft">{$wait_list['recoder_shelves']}-{$wait_list['recoder_goods_num']}</div>
+	        </label>
+	        <div class="weui-cell">
+            <div class="weui-cell__hd"><img src="{MODULE_URL}/template/mobile/images/icon_time.png" alt="" style="width:25px;margin-right:5px;display:block"></div>
+            <div class="weui-cell__bd">
+              <p>发送时间</p>
+            </div>
+             <div class="weui-cell__ft">{php echo date("Y-m-d H:i",$wait_list['recoder_create'])}</div>
+          </div>
+
+        
+
+          {if !empty($wait_list['recoder_express_name'])}
+          <div class="weui-cell">
+              <div class="weui-cell__hd"><img src="{MODULE_URL}/template/mobile/images/icon_express.png" alt="" style="width:25px;margin-right:5px;display:block"></div>
+            <div class="weui-cell__bd">
+              <p>快递公司</p>
+            </div>
+            <div class="weui-cell__ft">{$wait_list['recoder_express_name']}</div>
+          </div>
+         {/if}
+		 
+		   {if !empty($wait_list['recoder_barcode'])}
+          <div class="weui-cell">
+              <div class="weui-cell__hd"><img src="{MODULE_URL}/template/mobile/images/icon_express.png" alt="" style="width:25px;margin-right:5px;display:block"></div>
+            <div class="weui-cell__bd">
+              <p>快递单号</p>
+            </div>
+            <div class="weui-cell__ft">{$wait_list['recoder_barcode']}</div>
+          </div>
+         {/if}
+        <!-- <div class="weui-cell weui-flex"> -->
+
+        <!-- <div class="weui-flex__item" ></div> -->
+          <!-- <div class="weui-flex__item " ><a style="float: right;" class="button button-small button-highlight  " onclick="done({$wait_list['id']})"><i class="fa fa-sign-in " aria-hidden="true"></i>&nbsp;确认收货</a></div> -->
+        <!-- </div> -->
+      </div>
+
+ 
+
+         
+{/loop}
+
+{/if}
+<div style="margin-bottom: 55px;display: block;"></div>
+{template 'user_footer'}
+       
+
+<script src="{MODULE_URL}/template/mobile/js/jquery.min.js"></script>
+<script src="{MODULE_URL}/template/mobile/js/jquery-weui.min.js"></script>
+  
+
+ <script type="text/javascript">
+     function done(id)
+  {
+    $.post("{php echo $this->createMobileUrl('my_wait')}", {"act":'done',"id":id}, 
+                        function(data) 
+                        {
+                          if (data.success==1 )
+                          {
+                            
+                            $.toast("收件成功", "success");
+                            $("#code_"+data.rid).remove();
+                          }
+                          
+                          else
+                          {
+                             $.toast("收件失败", "cancel");
+                          }
+                          
+                        }, "json");
+  } 
+
+ </script> 
+
+		
+
+</html>

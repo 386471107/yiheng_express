@@ -1,0 +1,115 @@
+{template 'header'}
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/jquery-weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/index.css">
+
+<style>
+
+#scrollDiv{height:40px;line-height:40px;overflow:hidden; background:url({MODULE_URL}/template/mobile/images/icon_notice.png) no-repeat 10px center; background-size: 24px; border-bottom:1px solid #ccc; padding-left: 44px;}
+#scrollDiv li{height:40px; overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+
+.weui-grid__icon {
+width: 38px;
+height: 38px;
+margin: 0 auto;
+}
+
+
+
+.weui-cell_access_a {
+    
+    color: inherit;
+}
+</style>
+</head>
+
+  <body ontouchstart="">
+
+    <div class="swiper-container swiper-container-horizontal" style="width: 100%">
+      <!-- Additional required wrapper -->
+    <div class="swiper-wrapper" >
+      <div class="swiper-slide swiper-slide-duplicate" data-swiper-slide-index="2" style="width:100%;height:25%"><img src="{MODULE_URL}/template/mobile/images/1.jpg"></div>
+        <!-- Slides -->
+        <div class="swiper-slide swiper-slide-prev" data-swiper-slide-index="0" style="width:100%;"><img src="{MODULE_URL}/template/mobile/images/1.jpg"></div>
+        <div class="swiper-slide swiper-slide-active" data-swiper-slide-index="1" style="width:100%;"><img src="{MODULE_URL}/template/mobile/images/2.jpg"></div>
+        <div class="swiper-slide swiper-slide-next" data-swiper-slide-index="2" style="width:100%;"><img src="{MODULE_URL}/template/mobile/images/3.jpg"></div>
+     
+
+    </div>
+      <!-- If we need pagination -->
+      <div class="swiper-pagination swiper-pagination-bullets"><span class="swiper-pagination-bullet"></span><span class="swiper-pagination-bullet swiper-pagination-bullet-active"></span><span class="swiper-pagination-bullet"></span></div>
+    </div>
+
+	<div id="scrollDiv">
+	  <ul>
+		<li>{$shop['area_name']}</li>
+		<!-- <li>一恒快递手知通<a href="">链接测试</a></li> -->
+		<!-- <li>一恒快递手知通</li> -->
+	  </ul>
+	</div> 
+		
+        <div class="weui-grids"> 
+			 <a href="{php echo $this->createMobileUrl('express_sendmsg')}" class="weui-grid">
+				<div class="weui-grid__icon">
+					<img src="{MODULE_URL}/template/mobile/images/icons/icon_express_sendmsg.png" alt="">
+				</div>
+				<p class="weui-grid__label">快递入库</p>
+			</a>
+			 <a href="{php echo $this->createMobileUrl('express_sendmsg')}" class="weui-grid">
+				<div class="weui-grid__icon">
+					<img src="{MODULE_URL}/template/mobile/images/icons/icon_express_sendmsg.png" alt="">
+				</div>
+				<p class="weui-grid__label">待加</p>
+			</a>
+			 <a href="{php echo $this->createMobileUrl('express_sendmsg')}" class="weui-grid">
+				<div class="weui-grid__icon">
+					<img src="{MODULE_URL}/template/mobile/images/icons/icon_express_sendmsg.png" alt="">
+				</div>
+				<p class="weui-grid__label">待加</p>
+			</a>
+		 </div>
+		 
+		<div class="weui-cells">
+			<a class="weui-cell weui-cell_access_a" href="javascript:;">
+				<div class="weui-cell__bd">
+					<p>余库余量：</p>
+				</div>
+				<div class="weui-cell__ft" id="cur_addr1">{php echo $item['e_send_day_max']-$item['e_send_day']}</div>
+			</a>
+          <a class="weui-cell weui-cell_access_a" href="javascript:;">
+            <div class="weui-cell__bd">
+              <p>当前位置：</p>
+            </div>
+            <div class="weui-cell__ft" id="cur_addr">定位中...</div>
+          </a>
+
+        </div>
+{template 'footer'}
+</body>
+
+
+</html>
+
+<script>
+wx.ready(function () { 
+			wx.getLocation({                
+			type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+			success: function (res) {
+				var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+				var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+				var speed = res.speed; // 速度，以米/每秒计
+				var accuracy = res.accuracy; // 位置精度
+				 $.post("{php echo $this->createMobileUrl('employee')}", {"act":'update_laction',"lat":latitude,"lng":longitude}, 
+						function(data) 
+						{
+						  $("#cur_addr").html(data.e_address)
+						}, "json");
+			},
+			cancel: function (res) {
+				alert('必须获取位置才可操作!');
+				wx.closeWindow();
+			}
+			});
+           });
+</script>
+

@@ -1,0 +1,269 @@
+ {template 'pc/pc_header'}
+<body>
+
+    <div id="wrapper">
+
+    {template 'pc/pc_main_left'}
+
+        <div id="page-wrapper" class="gray-bg">
+        {template 'pc/pc_main_top'}
+        {template 'pc/pc_page_nav'}
+           
+        <div class="wrapper wrapper-content animated ">
+               
+            <div class="row">
+
+                <div class="col-lg-12">
+                    <div class="tabs-container">
+                         <span class="pull-right"><a href="{php echo $this->createWebUrl('pc_weixin_tpl',array('act'=>'renew'))}"" class="btn btn-white" type="submit">更新微信列表</a></span>
+                        <ul class="nav nav-tabs" id="myTab">
+                            <li class="active"><a data-toggle="tab" href="#tab-1">微信模版列表</a></li>
+                            {if $_GPC['set_def']>0 || $_GPC['modify_def']>0}
+                                <!-- <li class=""><a data-toggle="tab" href="#tab-2">编辑我的模版</a></li> -->
+                            {/if}
+                        </ul>
+
+                        <div class="tab-content">
+                            <div id="tab-1" class="tab-pane active">
+                                <div class="panel-body">
+								
+								{if empty($my_tpl)}
+									<div class="row">
+										<div class="col-sm-12 m-b-xs">
+											<div data-toggle="buttons" class="btn-group">
+												<label> <a class="btn btn-sm btn-warning" href="{php echo $this->createWebUrl('pc_weixin_tpl',array('act'=>'copy_tpl'))}" name="copy_tpl">无使用中模版，点击复制模版 </a></label>
+											</div>
+										</div>
+									</div>
+								
+								{else}
+            <div class="col-lg-12" >
+                <div class="contact-box" style="border: 2px dashed #FF3366" >
+                    <a href="{php echo $this->createWebUrl('pc_weixin_tpl',array('modify_def'=>$my_tpl['id']))}">
+                        <div class="col-lg-12">
+                            <h3><strong>{$my_tpl['tpl_alert_title']}</strong><span class="pull-right"><span><i class="fa fa-circle text-navy"></i> 使用中</span></span></h3>
+                                {$my_tpl['tpl_title']}<br>
+                                {$my_tpl['tpl_kw1_pre']}:{$my_tpl['tpl_kw1']}&nbsp;<br>
+                                {if $my_tpl['tpl_size']>1}{$my_tpl['tpl_kw2_pre']}:{$my_tpl['tpl_kw2']}{/if}&nbsp;<br>
+                                {if $my_tpl['tpl_size']>2}{$my_tpl['tpl_kw3_pre']}:{$my_tpl['tpl_kw3']}{/if}&nbsp;<br>
+                                {if $my_tpl['tpl_size']>3}{$my_tpl['tpl_kw4_pre']}:{$my_tpl['tpl_kw4']}{/if}&nbsp;<br>
+                                {if $my_tpl['tpl_size']>4}{$my_tpl['tpl_kw5_pre']}:{$my_tpl['tpl_kw5']}{/if}&nbsp;<br><br>
+                                {$my_tpl['tpl_remark']}<br>
+                        </div>
+                        <div class="clearfix"></div>
+                    </a>
+                </div>
+             </div>
+           
+			 
+			 {/if}	
+			 
+			 
+               {loop $tpl_example_all $tpl_example}                  
+               <div class="col-lg-6">
+                <div class="contact-box">
+                    <a href="{php echo $this->createWebUrl('pc_weixin_tpl',array('set_def'=>$tpl_example['id']))}">
+                        <div class="col-lg-12">
+                            <h3><strong>{$tpl_example['tpl_alert_title']}</strong></h3>
+                                {$tpl_example['tpl_title']}<br>
+                                {$tpl_example['tpl_kw1']}&nbsp;<br>
+                                {if $my_tpl['tpl_size'] >1}{$tpl_example['tpl_kw2']}{/if}&nbsp;<br>
+                                {if $my_tpl['tpl_size'] >2}{$tpl_example['tpl_kw3']}{/if}&nbsp;<br>
+                                {if $my_tpl['tpl_size'] >3}{$tpl_example['tpl_kw4']}{/if}&nbsp;<br>
+                                {if $my_tpl['tpl_size'] >4} {$tpl_example['tpl_kw5']}{/if}&nbsp;<br><br>
+                                {$tpl_example['tpl_remark']}<br>
+                        </div>
+                        <div class="clearfix"></div>
+                    </a>
+                </div>
+
+             </div>
+
+
+             {/loop}
+
+               
+
+            
+
+     </div>
+	 
+	
+                                <div class="panel-body">
+                                    <div class="row">
+                <div class="col-lg-12">
+                    <div class="tabs-container">
+                          <div class="alert alert-success">
+                            本例提供参数，你可以在文本内填入以下参数进行内容送
+                            例：你的快递于#in_time#到达#area_name#，快递单号为#barcode#，取件码为#rnd_code#，请及时取件.谢谢！！！<br>
+                            #area_name# 所属快递点名称<br>
+                            #rnd_code# 随机码<br>
+                            #in_time# 入库时间<br>
+                            #barcode# 快递条形码<br>
+							#slv# 库位号<br>
+                            关键字部份中,“：”前部份为系统提示，后部份为用户自定义数据<br>
+                            </div>  
+
+                            <div class="tab-content">
+                                <div id="tab-1" class="tab-pane active">
+                                    <div class="panel-body">
+
+                                        <fieldset class="form-horizontal">
+                                            <form id="form1" method="POST"  name="form1">
+                                           <div class="form-group"><label class="col-sm-2 control-label">模版消息标题:</label>
+                                                <div class="col-sm-10"><input type="text" value = "{$item['tpl_alert_title']}" class="form-control" readonly="" >
+                                                </div>
+                                            </div>                                           
+                                            <div class="form-group"><label class="col-sm-2 control-label">自定义标题:</label>
+                                                <div class="col-sm-10"><input type="text" name="tpl_title" placeholder="{$item['tpl_title']}" {if $_GPC['modify_def']>0}value="{$item['tpl_title']}"{/if}class="form-control" ></div>
+                                            </div>
+                                            {if $item['tpl_size']>0}
+                                                <div class="form-group"><label class="col-sm-2 control-label">关键字1:</label>
+                                                    <div class="col-sm-10"><input type="text" class="form-control" placeholder="{$item['tpl_kw1']}" {if $_GPC['modify_def']>0}value="{$item['tpl_kw1']}"{/if}name="tpl_kw1"></div>
+                                                </div>
+                                            {/if}
+                                             {if $item['tpl_size']>1}
+                                             <div class="form-group"><label class="col-sm-2 control-label">关键字2:</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" placeholder="{$item['tpl_kw2']}" {if $_GPC['modify_def']>0}value="{$item['tpl_kw2']}"{/if} name="tpl_kw2">
+                                                </div>
+                                            </div>
+                                                {/if}
+                                             {if $item['tpl_size']>2}
+                                            <div class="form-group"><label class="col-sm-2 control-label">关键字3:</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" placeholder="{$item['tpl_kw3']}"  {if $_GPC['modify_def']>0}value="{$item['tpl_kw3']}"{/if} name="tpl_kw3">
+                                                </div>
+                                            </div>
+                                                {/if}
+                                             {if $item['tpl_size']>3}
+                                            <div class="form-group"><label class="col-sm-2 control-label">关键字4:</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" placeholder="{$item['tpl_kw4']}"  {if $_GPC['modify_def']>0}value="{$item['tpl_kw4']}"{/if} name="tpl_kw4">
+                                                </div>
+                                            </div>
+                                                {/if}
+                                             {if $item['tpl_size']>4}
+                                            <div class="form-group"><label class="col-sm-2 control-label">关键字5:</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" placeholder="{$item['tpl_kw5']}"  {if $_GPC['modify_def']>0}value="{$item['tpl_kw5']}"{/if} name="tpl_kw5">
+                                                </div>
+                                            </div>
+                                            {/if}
+                                            <div class="form-group"><label class="col-sm-2 control-label">描述:</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" placeholder="{$item['tpl_remark']}"  {if $_GPC['modify_def']>0}value="{$item['tpl_remark']}"{/if} name="tpl_remark">
+                                                </div>
+                                            </div>
+                                          
+<!-- 
+                                            <div class="form-group"><label class="col-sm-2 control-label"> 模版消息状态:</label>
+                                                <div class="col-sm-10">
+                                                <div class="radio radio-info radio-inline">
+                                            <input type="radio" id="inlineRadio1" value="option1" name="radioInline" checked="">
+                                            <label for="inlineRadio1" class="label label-success pull-right">开启 &nbsp;</label>
+
+                                        </div>
+                                        <div class="radio radio-inline">
+                                            <input type="radio" id="inlineRadio2" value="option2" name="radioInline">
+                                            <label for="inlineRadio2" class="label label-danger pull-right">关闭 &nbsp;</label>
+                                        </div>
+
+                                                </div>
+                                            </div>
+ -->
+ 
+                    
+                                        <input type="hidden" name="tpl_id" value="{$item['tpl_id']}">
+                                        <div class="hr-line-dashed"></div>
+                                        <div class="col-lg-4 col-lg-offset-2">
+                                             <input name="tpl_save" type="submit" value="设为默认" class="btn btn-primary span3" />
+                                             <input type="hidden" name="token" value="{$_W['token']}" />
+                                         </div>
+                                     </form>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                           
+                             
+                            </div>
+                    </div>
+                </div>
+            </div>
+                                </div>
+                        
+                            </div>
+                           
+                        </div>
+
+
+                    </div>
+                </div>
+                
+            </div>
+                
+   
+
+
+        </div>
+        <div class="footer">
+            <div class="pull-right">
+                10GB of <strong>250GB</strong> Free.
+            </div>
+            <div>
+                <strong>Copyright</strong> Example Company &copy; 2014-2017
+            </div>
+        </div>
+
+        </div>
+        </div>
+
+
+
+    <!-- Mainly scripts -->
+    <script src="{MODULE_URL}/template/pc/js/jquery-3.1.1.min.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/bootstrap.min.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Peity -->
+    <script src="{MODULE_URL}/template/pc/js/plugins/peity/jquery.peity.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="{MODULE_URL}/template/pc/js/inspinia.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/plugins/pace/pace.min.js"></script>
+
+    <!-- iCheck -->
+    <script src="{MODULE_URL}/template/pc/js/plugins/iCheck/icheck.min.js"></script>
+
+    <!-- Peity -->
+    <script src="{MODULE_URL}/template/pc/js/demo/peity-demo.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+        });
+    </script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+       <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
+
+  <script>
+        {if $_GPC['set_def']>0 || $_GPC['modify_def']>0}
+         $('#myTab a:last').tab('show');//初始化显示哪个tab
+        {/if}
+</script>
+
+ 
+</body>
+
+</html>

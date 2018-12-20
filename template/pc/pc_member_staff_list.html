@@ -1,0 +1,129 @@
+ {template 'pc/pc_header'}
+
+<body>
+
+    <div id="wrapper">
+
+    {template 'pc/pc_main_left'}
+
+        <div id="page-wrapper" class="gray-bg">
+        {template 'pc/pc_main_top'}
+        {template 'pc/pc_page_nav'}
+           
+        <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            {loop $mlist $mlist}    
+                <div class="col-lg-3">
+                    <div class="contact-box center-version">
+
+                        <a >
+
+                            <img alt="image" class="img-circle" src="{$mlist['m_avatar']}">
+
+                            
+                            <h3 class="m-b-xs" ><strong>{$mlist['m_nickname']}</strong></h3>
+
+                             <div class="font-bold">{$mlist['shop_name']}</div>
+                            <address class="m-t-md text-left">
+                                <i class="fa fa-vcard">&nbsp;</i>{$mlist['m_realname']}<br>
+                                <i class="fa fa-phone-square">&nbsp;&nbsp;&nbsp;</i>{$mlist['m_tel']}<br> 
+                               <i class="fa fa-envelope-o">&nbsp;&nbsp;&nbsp;</i>{$mlist['sms_surplus']}条<br>
+                               <i class="fa fa-eye">&nbsp;&nbsp;&nbsp;</i>{php echo  date("Y-m-d H:i",$mlist['m_visit_lasttime'])}
+                              
+                            </address>
+
+                        </a>
+                        <div class="contact-box-footer">
+                            
+                                <a class="btn btn-xs btn-success" href="{php echo $this->createWebUrl('pc_member_edit',array('act' =>'edit','id' =>$mlist['m_uid']))}"><i class="fa fa-edit"></i> 编辑 </a>
+                                <a class="btn btn-xs btn-danger" href="{php echo $this->createWebUrl('pc_member_edit',array('act' =>'cancel','bind_shop_id' =>$mlist['bind_shop_id'],'b_uid' =>$mlist['bind_m_uid']))}" onclick="return confirm('确认取消用户授权吗？');return false;" ><i class="fa fa-user-times"></i>取消授权</a>
+                                
+                                </a>
+                            
+                        </div>
+
+                    </div>
+                </div>
+            {/loop}
+        </div>
+
+       <!--  <div class="row">
+            <div class="col-lg-3">
+                    <div class="contact-box center-version">
+
+                        <a href="profile.html">
+
+                            <img alt="image" class="img-circle" src="img/a4.jpg">
+
+
+                            <h3 class="m-b-xs"><strong>Michael Zimber</strong></h3>
+
+                            <div class="font-bold">Sales manager</div>
+                            <address class="m-t-md">
+                                <strong>Twitter, Inc.</strong><br>
+                                795 Folsom Ave, Suite 600<br>
+                                San Francisco, CA 94107<br>
+                                <abbr title="Phone">P:</abbr> (123) 456-7890
+                            </address>
+
+                        </a>
+                        <div class="contact-box-footer">
+                            <div class="m-t-xs btn-group">
+                                <a class="btn btn-xs btn-white"><i class="fa fa-phone"></i> Call </a>
+                                <a class="btn btn-xs btn-white"><i class="fa fa-envelope"></i> Email</a>
+                                <a class="btn btn-xs btn-white"><i class="fa fa-user-plus"></i> Follow</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+        </div> -->
+
+        </div>
+        <div class="footer">
+            <div class="pull-right">
+                10GB of <strong>250GB</strong> Free.
+            </div>
+            <div>
+                <strong>Copyright</strong> Example Company &copy; 2014-2017
+            </div>
+        </div>
+
+        </div>
+        </div>
+
+ 
+
+    <!-- Mainly scripts -->
+    <script src="{MODULE_URL}/template/pc/js/jquery-3.1.1.min.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/bootstrap.min.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Peity -->
+    <script src="{MODULE_URL}/template/pc/js/plugins/peity/jquery.peity.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="{MODULE_URL}/template/pc/js/inspinia.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/plugins/pace/pace.min.js"></script>
+
+    <!-- iCheck -->
+    <script src="{MODULE_URL}/template/pc/js/plugins/iCheck/icheck.min.js"></script>
+
+    <!-- Peity -->
+    <script src="{MODULE_URL}/template/pc/js/demo/peity-demo.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+        });
+    </script>
+
+   
+
+</body>
+
+</html>

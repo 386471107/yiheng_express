@@ -1,0 +1,151 @@
+{template 'common/header'}
+
+<ul class="nav nav-tabs">
+	<li {if $op == 'display'}class="active"{/if}><a href="{php echo $this->createWebUrl('express_list', array('op' => 'display'))}">快递列表</a></li>
+	<!-- <li {if $op == 'user_add'} class="active"{/if}><a href="{php echo $this->createWebUrl('staff_manage', array('op'=>'user_add'))}">用户添加</a></li> -->
+	
+	{if $op == 'user_modify'}<li class="active"><a href="{php echo $this->createWebUrl('staff_manage', array('op'=>'user_modify'))}">用户编辑</a></li>{/if}
+</ul>
+
+<!-- 列表 -->
+{if $op == 'display'}
+<div class="alert alert-info">
+	<strong>设置说明：</strong>
+	<ol>
+		<li>暂无</li>  
+		<a href="{php echo $this->createWebUrl('pc_index')}">111111111</a>
+	</ol>
+</div>
+<!-- <div class="main"> -->
+	<!-- <div class="panel panel-info"> -->
+	<!-- <div class="panel-heading">筛选</div> -->
+	<!-- <div class="panel-body"> -->
+		<!-- <form action="./index.php" method="get" class="form-horizontal" role="form" > -->
+		
+			<!-- <div class="form-group"> -->
+				<!-- <label class="col-sm-2 control-label">关键字</label> -->
+				<!-- <div class="col-sm-6"> -->
+					<!-- <input class="form-control" placeholder="昵称、真实姓名、openid、email" name="keyword" id="" type="text" value="{$_GPC['keyword']}"> -->
+				<!-- </div> -->
+				<!-- <div class=" col-sm-2"> -->
+					<!-- <button class="btn btn-default"><i class="fa fa-search"></i> 搜索</button> -->
+				<!-- </div> -->
+				
+			<!-- </div> -->
+
+			
+		<!-- </form> -->
+	<!-- </div> -->
+<!-- </div> -->
+
+<div class="panel panel-default">
+	<div class="panel-body table-responsive">
+		<table class="table table-hover">
+			<thead class="navbar-inner">
+				<tr>
+				
+					
+					<th style="width:160px;;">创建日期</th>
+					
+					<th style="width:160px;">发送时间</th>
+					<!-- <th style="width:50px;">发送次数</th> -->
+					<th style="" >绑定状态</th>
+					<th style="" >发送方式</th>
+					<th style="" >快递单号</th>
+					<th style="">取货码</th>
+					<th style="">取货状态</th>
+					
+				</tr>
+			</thead>
+			<tbody>
+				{loop $list $item}
+				<tr>
+					
+					<td>{php echo date("Y-m-d h:i:s",$item['recoder_create'])}</td>
+				
+					<td>{php echo date("Y-m-d h:i:s",$item['recoder_senttime'])}</td>
+					<!-- {if $item['recoder_tel_exsit']==1}
+						<td>{$item['recoder_wxsentcount']}</td>
+					{else}
+						<td>{$item['recoder_smssentcount']}</td>
+					{/if} -->
+					{if $item['recoder_tel_exsit']==1}
+						<td  class="text-left" style="white-space: normal;"><label class='label-success' style="padding:0 10px;color:#FFF" >微信绑定</label></td> 
+					{else}
+						<td  class="text-left" style="white-space: normal;"><label class='label-warning' style="padding:0 10px;color:#FFF" >微信未绑定</label></td> 
+					{/if}  
+					{if $item['recoder_tel_exsit']==1}
+						<td  class="text-left" style="white-space: normal;"><label class='label-success' style="padding:0 10px;color:#FFF" >微信</label></td> 
+					{else}
+						<td  class="text-left" style="white-space: normal;"><label class='label-info' style="padding:0 10px;color:#FFF" >短信</label></td> 
+					{/if}  
+				
+					<!-- <td>{$item['recoder_express_name']}</td>
+					
+					<td>{$item['recoder_goods_num']}</td>
+					 -->
+					 <td>{$item['recoder_barcode']}</td>
+					
+					
+					<td>{$item['recoder_code']}</td>
+					
+					
+					
+					{if $item['recoder_get_status']==1}
+						<td  class="text-left" style="white-space: normal;"><label class='label-success' style="padding:0 10px;color:#FFF" >已取件</label></td> 
+					{else}
+						<td  class="text-left" style="white-space: normal;"><label class='label-warning' style="padding:0 10px;color:#FFF" >未取件</label></td> 
+					{/if} 
+				
+					 			
+				</tr>
+				{/loop}
+			</tbody>
+			
+		</table>
+		
+		<table class="table table-hover">
+			<tr>
+
+				<td class="text-right">
+					{$pager}
+				</td>
+			</tr>
+
+		</table>
+	</div>
+	</div>
+
+
+{/if}
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+	function set_manage(id)
+	{
+	
+		 $.post("{php echo $this->createWebUrl('staff_manage')}", { "op":"set",'id':id},  
+			function(data){
+			
+			if (data.success==1)
+				{
+				 alert("修改成功！") 
+				}
+				
+			}, "json");
+		
+	}
+</script>
+
+
+
+
+
+

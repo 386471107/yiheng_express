@@ -1,0 +1,54 @@
+
+
+{if $_GPC['do']=='retention_list'}
+
+<body style="background: #EBEBEB">
+<div style="width:100%;height: 100%;">
+  <div >
+    <div ><img src="{MODULE_URL}/template/mobile/images/none_express.png" style="margin:25% 25% 0 25%;width: 50%" alt=""></div>
+    <h3 class="weui-msg__desc " style="text-align: center;font-size: 24px;">暂无快递信息</h3>
+  </div>
+</div>
+{/if}
+
+
+
+
+
+{if $_GPC['do']=='my_wait' || $_GPC['do']=='my_done' }
+
+<body style="background: #EBEBEB">
+<div style="width:100%;height: 100%;">
+  <div >
+    <div ><img src="{MODULE_URL}/template/mobile/images/icon_break_off.png" style="margin:25% 25% 0 25%;width: 50%" alt=""></div>
+    <h3 class="weui-msg__desc " style="text-align: center;font-size: 18px;">未绑定，无法查阅列表</h3>
+  </div>
+</div>
+{/if}
+
+
+{if $_GPC['do']=='my_staff_list'}
+
+<body style="background: #EBEBEB">
+<div style="width:100%;height: 100%;">
+  <div >
+    <div ><img src="{MODULE_URL}/template/mobile/images/none_apply.png" style="margin:25% 25% 0 25%;width: 50%" alt=""></div>
+    <h3 class="weui-msg__desc " style="text-align: center;font-size: 18px;">店铺暂无员工</h3>
+  </div>
+</div>
+{/if}
+
+
+
+{if $_GPC['do']=='manage'}
+
+<body style="background: #EBEBEB">
+<div style="width:100%;height: 100%;">
+  <div >
+    <div ><img src="{MODULE_URL}/template/mobile/images/none_apply.png" style="margin:25% 25% 0 25%;width: 50%" alt=""></div>
+    <h3 class="weui-msg__desc " style="text-align: center;font-size: 18px;">暂无申请记录！</h3>
+  </div>
+</div>
+{/if}
+
+

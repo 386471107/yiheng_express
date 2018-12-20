@@ -1,0 +1,171 @@
+{template 'header'}
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/jquery-weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/style.css">
+
+
+<link href="https://cdn.bootcss.com/Buttons/2.0.0/css/buttons.css" rel="stylesheet">
+<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
+<style type="text/css">
+
+
+</style>
+
+<div class="weui-cells weui-cells_form">
+<div class="weui-search-bar" >
+  <form class="weui-search-bar__form" action="" method="POST" id="form1">
+    <div class="weui-search-bar__box">
+      <i class="weui-icon-search"></i>
+      <input type="search" class="weui-search-bar__input" type="number" placeholder="请输入查询号码" id="search_text">
+      <a href="javascript:" class="weui-icon-clear"></a>
+    </div>
+    <label class="weui-search-bar__label" >
+      <i class="weui-icon-search"></i>
+      <span>搜索</span>
+    </label>
+  </form>
+  <a href="javascript:" class="weui-search-bar__cancel-btn"  onClick="search_info()">搜索</a>
+</div>
+
+
+<input type="hidden" name="st" id="st" value="0">
+</div>
+
+
+
+<div class="weui-cells">
+	<div id="list">
+		
+      </div>
+        </div>
+
+
+
+<div style="margin-bottom: 55px;display: block;"></div>
+{template 'footer'}
+       
+
+<script src="{MODULE_URL}/template/mobile/js/jquery.min.js"></script>
+<script src="{MODULE_URL}/template/mobile/js/jquery-weui.min.js"></script>
+  
+ 
+<div id="change_info" class='weui-popup__container popup-bottom'>
+      <div class="weui-popup__overlay"></div>
+      <div class="weui-popup__modal">
+        <div class="toolbar">
+          <div class="toolbar-inner">
+            <a href="javascript:;" class="picker-button close-popup">关闭</a>
+            <h1 class="title" id="title">用户信息管理</h1> 
+          </div>
+        </div>
+        <div class="modal-content" style="margin-bottom: 55px; ">
+			<div class="weui-cell">
+			<div class="weui-cell__hd"><label class="weui-label">姓名</label></div>
+			<div class="weui-cell__bd">
+			<input class="weui-input" type="text" id ="sname" placeholder="请输入姓名">
+			</div>
+			</div>
+			<div class="weui-cell">
+			<div class="weui-cell__hd"><label class="weui-label">小区</label></div>
+			<div class="weui-cell__bd">
+			<input class="weui-input" type="text" id ="sarea" placeholder="请输入小区名称">
+			</div>
+			</div>
+			<div class="weui-cell">
+			<div class="weui-cell__hd"><label class="weui-label">地址</label></div>
+			<div class="weui-cell__bd">
+			<input class="weui-input" type="text"  id ="saddr" placeholder="请输入地址">
+			</div>
+			</div>
+			<input class="weui-input" type="hidden"  id = "sid" vaiue="">
+			<a  onClick="save_info()" class="weui-btn weui-btn_primary">保存信息</a>
+
+        </div>
+      </div>
+
+
+<script type="text/javascript">
+  
+ function udata(sid,tel)
+ {
+ 	 $("#sid").val(sid);
+	 $("#title").html(tel);
+	 
+	 $.post("{php echo $this->createMobileUrl('tel_list')}", {"act":'dis',"sid":sid}, 
+	function(data) 
+	{
+		if (data.success==1 )
+		{
+		
+			$("#sname").val(data.tl_uname)
+			$("#sarea").val(data.tl_area)
+			$("#saddr").val(data.tl_addr)
+			
+		}
+		
+	}, "json");
+	  
+ 	 $("#change_info").popup();
+}
+
+ function save_info()
+ {
+
+	var sname =($("#sname").val())
+	var sarea =($("#sarea").val())
+	var saddr =($("#saddr").val())
+	var sid =($("#sid").val())
+
+	$.post("{php echo $this->createMobileUrl('tel_list')}", {"act":'save',"sname":sname,"sarea":sarea,"saddr":saddr,"sarea":sarea,"sid":sid}, 
+	function(data) 
+	{
+		if (data.success==1 )
+		{
+			$.toast("保存成功！", "success");
+
+			$("#sname").val()
+			$("#sarea").val()
+			$("#saddr").val()
+			$("#sid").val()
+			$.closePopup()
+		}
+		else
+		{
+			$.toast("保存不成功", "cancel");
+		}
+	}, "json");
+
+
+ }
+
+
+
+  function search_info()
+  {
+  	
+	$("#list").empty()
+    var search_text =($("#search_text").val())
+    var search_type =($("#st").val())
+    $.post("{php echo $this->createMobileUrl('tel_list')}", {"act":'search',"search_text":search_text,"search_type":search_type}, 
+                        function(data) 
+                        {
+                          if (data.success==1 )
+                          {
+                            $("#list").prepend(data.str);
+                            
+                          }
+                          
+                          else
+                          {
+                             $.toast("未搜到记录", "cancel");
+                          }
+                          
+                        }, "json");
+  } 
+
+
+
+
+</script>
+ 
+</html>

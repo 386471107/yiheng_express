@@ -1,0 +1,112 @@
+{template 'pc/pc_header'}
+<body>
+
+    <div id="wrapper">
+{template 'pc/pc_main_left'}
+        <div id="page-wrapper" class="gray-bg">
+{template 'pc/pc_main_top'}
+{template 'pc/pc_page_nav'}
+           
+        <div class="wrapper wrapper-content animated fadeInRight">
+          
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        
+                        <div class="ibox-content">
+                            
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>快递点编码</th>
+                                            <th>快递点名称 </th>
+                                            <th>快递点位置 </th>
+                                            <th>联系电话</th>
+                                            <th>联系人</th>
+                                            <th>可分配短信</th>
+                                            <th>快递点会员</th>
+                                            <th>微信绑定</th>
+                                            <th>是否默认</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {loop $shop_list $shop_list}
+                                            <tr>
+                                                <td><small>{$shop_list['area_code']}</small></td>
+                                                <td><small>{$shop_list['area_name']}</small></td>
+                                                <td><small>{$shop_list['area_location']}</small></td>
+                                                <td><small>{$shop_list['area_person']}</small></td>
+                                                <td><small>{$shop_list['area_tel']}</small></td>
+                                                 <td><small>{$shop_list['area_last_message']}</small></td>
+                                                <td><small>{$shop_list['area_member_total']}</small></td>
+                                                <td><small>{$shop_list['area_member_wx']}</small></td>
+                                                <td><small>
+                                                <small class="label label-success pull-left">{if $shop_list['web_default_shop']==1}默认{/if}</small>
+                                                </small></td>
+                                                <td>
+                                                    <a href="{php echo $this->createWebUrl('pc_shop_edit',array('act' =>'area_edit','id' =>$shop_list['area_id']))}"><button class=" btn btn-primary btn-xs ">编辑</button></a>
+                                                    <a href="{php echo $this->createWebUrl('pc_shop_edit',array('act' =>'area_del','id' =>$shop_list['area_id']))}" onclick="return confirm('确认删除此快递点吗？');return false;"  ><button class="btn-danger btn btn-xs">删除</button></a>
+                                                 </td>
+                                            </tr>
+                                        {/loop}
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+                            
+
+                        </div>
+                         {$pager}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="footer">
+            <div class="pull-right">
+                10GB of <strong>250GB</strong> Free.
+            </div>
+            <div>
+                <strong>Copyright</strong> Example Company &copy; 2014-2017
+            </div>
+        </div>
+
+        </div>
+        </div>
+
+
+
+    <!-- Mainly scripts -->
+    <script src="{MODULE_URL}/template/pc/js/jquery-3.1.1.min.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/bootstrap.min.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Peity -->
+    <script src="{MODULE_URL}/template/pc/js/plugins/peity/jquery.peity.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="{MODULE_URL}/template/pc/js/inspinia.js"></script>
+    <script src="{MODULE_URL}/template/pc/js/plugins/pace/pace.min.js"></script>
+
+    <!-- iCheck -->
+    <script src="{MODULE_URL}/template/pc/js/plugins/iCheck/icheck.min.js"></script>
+
+    <!-- Peity -->
+    <script src="{MODULE_URL}/template/pc/js/demo/peity-demo.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+        });
+    </script>
+
+</body>
+
+</html>

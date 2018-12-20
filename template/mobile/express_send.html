@@ -1,0 +1,355 @@
+{template 'header'}
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/jquery-weui.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/style.css">
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+<style type="text/css">
+	
+.often  {
+color: #1AAD19;
+border: 1px solid #1AAD19;
+font-size: 12px;
+margin-left: 10px;
+padding: 0 5px;
+font-weight: normal;
+}
+.site-operation .weui-cell {
+    background: #fff;
+    padding: 10px;
+    margin-bottom: 1px;
+}
+</style>
+<div class="weui-cells">
+	<div class="weui-panel__hd">快件基本信息</div>
+              <a class="weui-cell weui-cell_access" href="javascript:;" onclick="fill_info(1)">
+                
+
+	             <div class="weui-media-box__hd">
+	              <img class="weui-media-box__thumb" src="{MODULE_URL}/template/mobile/images/icon_pickup.png" alt="">
+	            </div>
+                <div class="weui-cell__bd weui-cell_primary" style="margin-left: 15px">
+                  <p class="weui-media-box__desc" id="r_name"></p>
+                  <p class="weui-media-box__desc"  id="r_addr">请填写收件人信息</p>
+                  <p class="weui-media-box__desc"  id="r_phone"></p>
+                </div>
+                <span class="weui-cell__ft"></span>
+              </a>
+
+              <a class="weui-cell weui-cell_access" href="javascript:;" onclick="fill_info(0)">
+	             <div class="weui-media-box__hd">
+	              <img class="weui-media-box__thumb" src="{MODULE_URL}/template/mobile/images/icon_pickup.png" alt="">
+	            </div>
+                <div class="weui-cell__bd weui-cell_primary" style="margin-left: 15px">
+                  <p class="weui-media-box__desc" id="s_name"></p>
+                  <p class="weui-media-box__desc"  id="s_addr">请填写寄件人信息</p>
+                  <p class="weui-media-box__desc"  id="s_phone"></p>
+                </div>
+                <span class="weui-cell__ft"></span>
+              </a>
+         	  <div class="weui-cell f16 weui-cell_access">
+			    	<div class="weui-cell__hd"><label class="weui-label">所在地区</label></div>
+				    <div class="weui-cell__bd">
+				      	 <input class="weui-input" type="text" id="city-picker" placeholder="请选择省市/城市/区县" value="" readonly="">
+				  	</div>
+				  	<div class="weui-cell__ft">
+				  	</div>
+			    </div>
+         	 <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd"><label class="weui-label">备注信息</label></div>
+			    <div class="weui-cell__bd">
+			      <input class="weui-input" type="number" pattern="[0-9]*" placeholder="请输入备注信息">
+			    </div>
+              </a>
+	      {if 0}
+			<div class="weui-panel__ft" style="text-align: center;">
+		    <a href="javascript:void(0);" class="weui-cell weui-cell_access weui-cell_link">
+		      <div class="weui-cell__bd"><span class="color-danger" style="margin-right: 10px;">根据要求快件需实名认证</span>点击认证</div>
+		      <span class="weui-cell__ft"></span>
+		    </a>    
+		  </div>
+		  {/if}
+		   <a class="weui-cell weui-cell_access" href="javascript:;">
+              
+              </a>
+	 
+ 			
+			
+</div>
+	<div class="weui-flex">
+		<div class="weui-flex__item"><a href="javascript:;" class="weui-btn weui-btn_primary">提交快递单</a></div>
+	</div>
+   
+
+
+
+	<div id="full_screen" class="weui-popup__container popup-bottom">
+	  <div class="weui-popup__overlay close-popup"></div>
+	  <div class="weui-popup__modal" style="height: 80%;">
+        <div class="toolbar">
+          <div class="toolbar-inner" >
+          	
+            <a href="javascript:;" class="picker-button close-popup">关闭</a>
+			 
+			
+            <h1 class="title" id ="half_title" >信息填写</h1>
+
+          </div>
+        </div>
+        <div class="modal-content" >
+         
+			 <div class="site-operation " id ="operation">
+		        	
+					{loop $list $list}
+		        	<div class="weui-cell b-top {if $list['addr_type']==1}in_express{else}out_express{/if} " id ="list{$list['id']}">
+					    <div class="weui-cell__bd close-popup" onclick="sel_aadr({$list['addr_type']},{$list['id']})" >
+					        <div> <span class="name" id ="name{$list['id']}">{$list['addr_name']}</span>{if $list['addr_use_often']==1}<span class="often">常用地址</span>{/if}</div>
+					        <div class="site"  id ="addr{$list['id']}">{$list['addr_addr']}</div>
+					        <div class="phone"  id ="phone{$list['id']}">{$list['addr_tel']}</div>
+					    </div>
+					    <div class="weui-cell__ft "  onclick="del({$list['id']})"><i class="fa fa-trash-o fa-lg"></i></div>
+				    </div>
+					{/loop}
+					
+		        </div>
+	 
+		<a onclick="add_new_addr()" id="add_distxt" style="position: absolute;bottom: 10px;width: 100%;z-index: 99" href="javascript:;" class="weui-btn weui-btn_primary">新增收信人信息1</a>
+	
+	</div>
+
+
+        </div>
+
+      </div>
+
+
+
+     <div id="full_screen_1" class="weui-popup__container popup-bottom">
+	  <div class="weui-popup__overlay close-popup"></div>
+	  <div class="weui-popup__modal" style="height: 80%;">
+        <div class="toolbar">
+          <div class="toolbar-inner" >
+          	
+            <a href="javascript:;" class="picker-button close-popup">关闭</a>
+			 
+			
+            <h1 class="title" id ="half_title_1" >新增收件人信息</h1>
+
+          </div> 
+        </div>
+        <div class="modal-content" >
+         
+			<div class="weui-cells mt10 add-site">
+	        	<div class="weui-cell f16">
+			    	<div class="weui-cell__hd"><label class="weui-label">收货人</label></div>
+				    <div class="weui-cell__bd">
+				      	<input class="weui-input" type="text" id="re_name" placeholder="请输入收货人">
+				  	</div>
+			    </div>
+			    <div class="weui-cell f16">
+			    	<div class="weui-cell__hd"><label class="weui-label">手机号码</label></div>
+				    <div class="weui-cell__bd">
+				      	<input class="weui-input" type="tel" id="re_tel" maxlength="11" placeholder="请输入手机号码">
+				  	</div>
+			    </div>
+			  <!-- <div class="weui-cell f16 weui-cell_access">
+			    	<div class="weui-cell__hd"><label class="weui-label">所在地区</label></div>
+				    <div class="weui-cell__bd">
+				      	 <input class="weui-input" type="text" id="city-picker" placeholder="请选择省市/城市/区县" value="" readonly="">
+				  	</div>
+				  	<div class="weui-cell__ft">
+				  	</div>
+			    </div>  -->
+			    
+	
+
+			    <div class="weui-cell f16">
+				    <div class="weui-cell__bd">
+				      	<input class="weui-input" type="text" id="re_addr" placeholder="请输入详情地址">
+				  	</div>
+			    </div>
+	        </div>
+
+	        <div class="weui-cells mt10 weui-cells_form">
+			  <div class="weui-cell weui-cell_switch">
+			    <div class="weui-cell__bd">设为默认地址</div>
+			    <div class="weui-cell__ft">
+			      <input class="weui-switch" type="checkbox">
+			    </div>
+			  </div>
+			</div>
+					
+	 <!-- <a href="javascript:;" class="weui-btn weui-btn_primary close-popup">关闭</a> -->
+		<a style="position: absolute;bottom: 10px;width: 100%" class="weui-btn weui-btn_primary close-popup" id ="add_addr" onclick="add_addr()" >新增收信人信息2</a>
+	
+	</div>
+
+
+        </div>
+
+      </div>
+
+	</div>
+
+
+	
+
+
+
+<script type="text/javascript">
+	function fill_info(flag)
+	{
+		if (flag ==1)
+		{
+			$("#half_title").html("请填写收件人信息");
+			$(".out_express").hide()
+			$(".in_express").show()
+			$("#add_distxt").html("新增收件人");
+			$("#add_distxt").data("type",flag);
+			$("#half_title_1").html("收件人信息");
+			$("#add_addr").html("新增收件人");
+		}
+		else
+		{
+			$("#half_title").html("请填寄件人信息");
+			$(".in_express").hide()
+			$(".out_express").show()
+			$("#add_distxt").html("新增寄件人");
+			$("#add_distxt").data("type",flag);
+			$("#half_title_1").html("寄件人信息");
+			$("#add_addr").html("新增寄件人");
+
+
+		}
+		$("#full_screen").popup();
+	}
+
+
+	function add_new_addr()
+	{
+		
+		 $("#full_screen_1").popup();
+	}
+
+	function del(id)
+	{
+		 $.confirm("您确定要删除该地址吗?", "确认删除?", function() {
+	         
+
+
+	           $.post("{php echo $this->createMobileUrl('express_send')}", {"act":"del_addr","id":id}, 
+												function(data) 
+												{
+												 if (data.success==1)
+												 {
+													 $.toast("地址已删除!");
+											     }
+												}, "json");
+
+
+	          $("div").remove("#list"+id);
+	        }, function() {
+	        	// $.toast("取消操作!");
+	          
+	        });
+	}
+
+	function sel_aadr(flag,id )
+	{
+		var name =$("#name"+id).html();
+		var addr =$("#addr"+id).html();
+		var phone =$("#phone"+id).html();
+		if (flag)
+		{
+			$("#r_name").html(name);
+			$("#r_addr").html(addr);
+			$("#r_phone").html(phone);
+			// $.toptip("收件人地址已选取",1000,"success");	
+		}
+		else
+		{
+			$("#s_name").html(name);
+			$("#s_addr").html(addr);
+			$("#s_phone").html(phone);
+			// $.toptip("寄件人地址已选取",1000,"success");	
+		}
+		
+
+	}
+
+	function add_addr()
+	{
+
+		 // 地区选择
+     var re_name  =$("#re_name").val();
+     var re_tel  =$("#re_tel").val();
+     // var city_picker =$("#city-picker").val();
+    var city_picker ="浙江省宁波市镇海区";
+
+     var re_addr  =$("#re_addr").val();
+     // var re_addr  =$("#re_addr").val();
+
+	 var type = $("#add_distxt").data("type")
+	
+     $.post("{php echo $this->createMobileUrl('express_send')}", {"act":"add_addr","name":re_name,"tel":re_tel,"city":city_picker,"addr":re_addr,"type":type}, 
+												function(data) 
+												{
+												
+												if (data.success==1)
+												{
+													if (type==1)
+												     {
+													 	$("#r_name").html(re_name);
+														$("#r_addr").html(city_picker+re_addr);
+														$("#r_phone").html(re_tel);
+
+
+														$("#operation").prepend(
+
+														"<div class='weui-cell b-top in_express' id ='list"+data.id+"'><div class='weui-cell__bd close-popup' onclick='sel_aadr("+data.type+","+data.id+")' ><div> <span class='name' id ='name"+data.id+"'>"+data.name+"</span></div><div class='site'  id ='addr"+data.id+"'>"+data.addr+"</div><div class='phone'  id ='phone"+data.id+"'>"+data.tel+"</div></div><div class='weui-cell__ft'  onclick='del("+data.id+")'><i class='fa fa-trash-o fa-lg'></i></div></div>"
+														); 
+														
+
+
+
+													 }
+													 else
+													 {
+													 	$("#s_name").html(re_name);
+														$("#s_addr").html(city_picker+re_addr);
+														$("#s_phone").html(re_tel);
+															$("#operation").prepend(
+
+														"<div class='weui-cell b-top out_express' id ='list"+data.id+"'><div class='weui-cell__bd close-popup' onclick='sel_aadr("+data.type+","+data.id+")' ><div> <span class='name' id ='name"+data.id+"'>"+data.name+"</span></div><div class='site'  id ='addr"+data.id+"'>"+data.addr+"</div><div class='phone'  id ='phone"+data.id+"'>"+data.tel+"</div></div><div class='weui-cell__ft'  onclick='del("+data.id+")'><i class='fa fa-trash-o fa-lg'></i></div></div>"
+														); 
+														
+													 }		
+
+												}
+												else
+												{
+													$.toast("数据不完整","forbidden");
+												}
+											     
+
+												}, "json");
+												
+ 
+     // alert(parseInt($("#add_distxt").data("type"))) 
+     // alert(re_name)
+     // $("#full_screen").popup();
+
+	}
+	
+</script>
+
+
+
+
+
+</body>
+<script src="{MODULE_URL}/template/mobile/js/city-picker.min.js"></script>
+<script src="{MODULE_URL}/template/mobile/js/jquery.min.js"></script>
+<script src="{MODULE_URL}/template/mobile/js/jquery-weui.min.js"></script>
+
+</html>

@@ -1,0 +1,529 @@
+{template 'common/header'}
+
+
+<ul class="nav nav-tabs">
+	<li {if $act == 'display' && $level ==0}class="active"{/if}><a href="{php echo $this->createWebUrl('staff_manage', array('act' => 'display','level' =>'0'))}">用户管理</a></li>
+	<li {if $act == 'display' && $level ==3}class="active"{/if}><a href="{php echo $this->createWebUrl('staff_manage', array('act' => 'display','level' =>'3'))}">快递点员工</a></li>
+	<li {if $act == 'display'  && $level ==2}class="active"{/if}><a href="{php echo $this->createWebUrl('staff_manage', array('act' => 'display','level' =>'2'))}">快递点负责人</a></li>
+
+	<li {if $act == 'display'  && $level ==1}class="active"{/if}><a href="{php echo $this->createWebUrl('staff_manage', array('act' => 'display','level' =>'1'))}">超级用户</a></li>
+	
+	{if $act == 'edit'}<li class="active"><a href="{php echo $this->createWebUrl('staff_manage', array('act'=>'edit'))}">用户编辑</a></li>{/if}
+	
+
+	<li {if $act == 'area'}class="active"{/if}><a href="{php echo $this->createWebUrl('staff_manage', array('act' => 'area'))}">快递点管理</a></li>
+
+	<li {if $act == 'area_add'}class="active"{/if}><a href="{php echo $this->createWebUrl('staff_manage', array('act' => 'area_add'))}">快递点新增</a></li>
+	<!-- <li {if $act == 'user_add'} class="active"{/if}><a href="{php echo $this->createWebUrl('staff_manage', array('act'=>'user_add'))}">用户添加</a></li> -->
+	
+	
+
+	{if $act == 'area_edit'}<li class="active"><a href="{php echo $this->createWebUrl('staff_manage', array('act'=>'area_edit'))}">快递点编辑</a></li>{/if}
+</ul>
+
+<!-- 列表 -->
+{if $act == 'display' || $act == 'displaya'}
+
+<div class="alert alert-info">
+	<strong>设置说明：</strong>
+	<ol>
+		<li>暂无说明</li>
+		
+	</ol>
+</div>
+<div class="main">
+<!-- 	<div class="panel panel-info">
+	<div class="panel-heading">筛选</div>
+	<div class="panel-body">
+		<form action="./index.php" method="get" class="form-horizontal" role="form" >
+		
+			<div class="form-group">
+				<label class="col-sm-2 control-label">关键字</label>
+				<div class="col-sm-6">
+					<input class="form-control" placeholder="昵称、真实姓名、openid、email" name="keyword" id="" type="text" value="{$_GPC['keyword']}">
+				</div>
+				<div class=" col-sm-2">
+					<button class="btn btn-default"><i class="fa fa-search"></i> 搜索</button>
+				</div>
+				
+			</div>
+
+			
+		</form>
+	</div>
+</div> -->
+
+<div class="panel panel-default">
+	<div class="panel-body table-responsive">
+		<table class="table table-hover">
+			<thead class="navbar-inner">
+				<tr>
+					<th style="width:60px;">头像</th>
+					<!-- <th >快递点名称</th>-->
+					<th >昵称</th>
+					<th >真实姓名</th>
+					<th >手机</th>
+					<th >操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				{loop $mlist $mlist}
+				<tr>
+					<td ><img src="{$mlist['m_avatar']}" style="width:45px;height:45px;"></td>
+					<!-- <td class="text-left">{$mlist['area_name']}</td> -->
+					<td class="text-left">{$mlist['m_nickname']}</td>
+					<td class="text-left">{$mlist['m_realname']}</td>
+					<td class="text-left">{$mlist['m_tel']}</td>
+									
+					
+					<!-- <td>{php echo date("Y-m-d h:i:s",$item['m_visit_lasttime'])}</td> -->
+					<td>
+						<a href="{php echo $this->createWebUrl('staff_manage',array('act' =>'edit','id' =>$mlist['bind_m_uid']))}" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="编辑"><i class="fa fa-edit"></i></a>
+						<a href="{php echo $this->createWebUrl('staff_manage',array('act' =>'cancel','b_uid' =>$mlist['bind_m_uid']))}" onclick="return confirm('确认取消权限吗？');return false;" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="取消"><i class="fa fa-times"></i></a>
+					</td>  
+				
+			
+
+				 
+					 			
+				</tr>
+				{/loop}
+			</tbody>
+			
+		</table>
+		<table class="table table-hover">
+			<tr>
+
+				<td class="text-right">
+					{$pager}
+				</td>
+			</tr>
+
+		</table>
+	</div>
+	</div>
+
+
+{/if}
+
+
+
+{if $act == 'area'}
+<div class="alert alert-info">
+	<strong>设置说明：</strong>
+	<ol>
+		<li>暂无说明</li>
+		
+	</ol>
+</div>
+<div class="main">
+	<div class="panel panel-info">
+	<div class="panel-heading">筛选</div>
+	<div class="panel-body">
+		<form action="./index.php" method="get" class="form-horizontal" role="form" >
+		
+			<div class="form-group">
+				<label class="col-sm-2 control-label">关键字</label>
+				<div class="col-sm-6">
+					<input class="form-control" placeholder="昵称、真实姓名、openid、email" name="keyword" id="" type="text" value="{$_GPC['keyword']}">
+				</div>
+				<div class=" col-sm-2">
+					<button class="btn btn-default"><i class="fa fa-search"></i> 搜索</button>
+				</div>
+				
+			</div>
+
+			
+		</form>
+	</div>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-body table-responsive">
+		<table class="table table-hover">
+			<thead class="navbar-inner">
+				<tr>
+					<th >快递点编码</th>
+					<th >快递点名称</th>
+					<th >快递点位置</th>
+					<th >联系电话</th>
+					<th >联系人</th>
+					<!-- <th >最后访问时间</th> -->
+					<th >操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				{loop $shop_list $shop_list}
+				<tr>
+					<td class="text-left">
+						{$shop_list['area_code']}
+					</td>
+					<td class="text-left">
+						{$shop_list['area_name']}
+					</td>
+					<td class="text-left">
+						{$shop_list['area_location']}
+					
+					</td>
+					<td class="text-left">
+						{$shop_list['area_tel']}
+					
+					</td>
+					<td class="text-left">
+						{$shop_list['area_person']}
+					
+					</td>
+				
+					<td>
+						<a href="{php echo $this->createWebUrl('staff_manage',array('act' =>'area_edit','id' =>$shop_list['area_id']))}" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="bottom" data-original-title="编辑"><i class="fa fa-edit"></i></a>
+						<a href="{php echo $this->createWebUrl('staff_manage',array('act' =>'area_del','id' =>$shop_list['area_id']))}" onclick="return confirm('确认删除此快递点吗？');return false;" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="bottom"  data-original-title="删除"><i class="fa fa-times"></i></a>
+					</td>  
+				
+				 
+					 			
+				</tr>
+				{/loop}
+			</tbody>
+			
+		</table>
+		<table class="table table-hover">
+			<tr>
+
+				<td class="text-right">
+					{$pager}
+				</td>
+			</tr>
+
+		</table>
+	</div>
+	</div>
+
+
+{/if}
+
+
+
+
+{if $act == 'edit' }
+
+<div class="main">
+    <div class="panel panel-info">
+       
+		<div class="alert alert-info">
+	<strong>修改说明：</strong>
+	<ol>
+		
+		<li>带 * 单元格修改无效</li>
+		<!--<li>2.反馈信息默认为未选取，如需通知请√选。请勿频繁使用，以免封号。</li>-->
+	</ol>
+</div>
+        <div class="panel-body">
+            <form  method="POST" class="form-horizontal" role="form" id="form1">
+               
+
+				<input type="hidden" name="bind_shop_id" value="{$item['m_defaut_area']}">
+				
+				<!--  <div class="form-group">
+					<label class="col-xs-12 col-sm-4 col-md-1 col-lg-1 control-label">所属快递点</label>
+				<div class="col-sm-11 col-md-11 col-xs-12">
+						<select name="area_code" id ="area_code" class='form-control' onchange="chagecode()">
+							<option value="0"> --全部快递点--</option>
+							{loop $area_list $area_list}
+							<option value="{$area_list['area_code']}" {if $item['m_defaut_area'] == $area_list['area_code']} selected{/if}>{$area_list['area_name']}</option>
+							{/loop}
+						</select>
+						<div class="help-block">快递点选择，确定快递点信息</div>
+					</div>
+				
+				</div> --> 
+			
+			<input type="hidden" name="uid" id= "uid" value="{$item['sms_uid']}">
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">店铺代码</label>
+                    <div class="col-sm-8 col-lg-9 col-xs-12">
+                        <input class="form-control"  value="{$item['bind_shop_id']}" id ="bind_shop_id" name="bind_shop_id" readonly="ture">
+                    </div>
+                </div>
+
+
+				 <input type="hidden" name="openid" value="{$list['user_openid']}">
+				 <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">联系人</label>
+                    <div class="col-sm-8 col-lg-9 col-xs-12">
+                        <input class="form-control"  value="{$item['m_realname']}" name="m_realname">
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">联系电话</label>
+                    <div class="col-sm-8 col-lg-9 col-xs-12">
+                        <input class="form-control"  value="{$item['m_tel']}" name="m_tel">
+                    </div>
+                </div>
+
+				
+
+
+					<div class="form-group" >
+				<label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">授权状态</label> 
+				<div class="col-sm-8 col-lg-9 col-xs-12">
+					<label class="radio-inline ">
+					<input type="radio" name="m_level" id="level1" value="0" checked > <span  class="label label-primary" style="margin:5px;">普通会员</span>
+					</label>
+					<label class="radio-inline">
+					<input type="radio" name="m_level" id="level2" value="3" {if $item['m_level']==3}checked{/if}> <span  class="label label-success" style="margin:5px;">店铺员工</span>
+					</label>
+					<label class="radio-inline">
+					<input type="radio" name="m_level" id="level3" value="2" {if $item['m_level']==2}checked{/if}> <span  class="label label-info" style="margin:5px;">店铺管理</span>
+					</label>
+					<label class="radio-inline">
+					<input type="radio" name="m_level" id="level3" value="1" {if $item['m_level']==1}checked{/if}> <span  class="label label-warning" style="margin:5px;">超级管理</span>
+					</label>
+				</div>  
+				</div> 
+
+
+				 <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">剩余短信</label>
+                    <div class="col-sm-8 col-lg-9 col-xs-12">
+                        <input class="form-control" type="number" id ="sms_surplus" value="{$item['sms_surplus']}" name="sms_surplus">
+                    </div>
+                </div>
+
+                	<div class="form-group" >
+				<label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">短信状态</label> 
+				<div class="col-sm-8 col-lg-9 col-xs-12">
+					<label class="radio-inline ">
+					<input type="radio" name="sms_status" value="1" {if $item['sms_status']==1}checked{/if} > <span  class="label label-primary" style="margin:5px;">短信开启</span>
+					</label>
+					
+					<label class="radio-inline">
+					<input type="radio" name="sms_status"  value="0" {if $item['sms_status']==0}checked{/if}> <span  class="label label-danger" style="margin:5px;">关闭短信</span>
+					</label>
+				</div>  
+				</div> 
+
+			
+
+
+				<div class="form-group">
+                <div class="col-sm-offset-2 col-md-offset-2 col-lg-offset-1 col-xs-12 col-sm-10 col-md-10 col-lg-11">
+                    <input name="m_save" type="submit" value="保存" class="btn btn-primary span3" />
+                    <input type="hidden" name="token" value="{$_W['token']}" />
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+  
+</div>
+
+{/if}
+
+
+
+
+{if $act == 'area_edit' || $act=='area_add'}
+
+<div class="main">
+    <div class="panel panel-info">
+       
+		<div class="alert alert-info">
+	<strong>修改说明：</strong>
+	<ol>
+		
+		<li>带 * 填写需注意</li>
+		<!--<li>2.反馈信息默认为未选取，如需通知请√选。请勿频繁使用，以免封号。</li>-->
+	</ol>
+</div>
+        <div class="panel-body">
+            <form  method="POST" class="form-horizontal" role="form" id="form1">
+               
+
+				<input type="hidden" name="area_id" value="{$item['area_id']}">
+
+				
+				<div class="form-group">
+	                <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">联系人</label>
+	                <div class="col-sm-8 col-lg-9 col-xs-12">
+	                    <input class="form-control" name="area_person" type="text" value="{$item['area_person']}" >
+	                </div>  
+				</div>
+
+                <div class="form-group">
+	                <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">联系电话</label>
+	                <div class="col-sm-8 col-lg-9 col-xs-12">
+	                    <input class="form-control" name="area_tel" type="text" value="{$item['area_tel']}" >
+	                </div>  
+				</div>
+				
+
+                <div class="form-group">
+	                <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">快递点编码*</label>
+	                <div class="col-sm-8 col-lg-9 col-xs-12">
+	                    <input class="form-control" name="area_code" type="number" value="{$item['area_code']}" >
+	                    <div class="help-block">快递点唯一编码（数字格式），不允许重复,不允许修改,</div>
+	                </div>  
+				</div>
+				
+				<div class="form-group">
+	                <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">场景码*</label>
+	                <div class="col-sm-8 col-lg-9 col-xs-12">
+	                    <input class="form-control" name="area_code_sence" type="text" value="{$item['area_code_sence']}" readonly="true">
+	                    <div class="help-block">快递点二维码场景值，不允许重复,不允许修改.创建二维码时请复制此值</div>
+	                </div>  
+				</div>
+				
+				
+
+
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">快递点名称</label>
+                    <div class="col-sm-8 col-lg-9 col-xs-12">
+                        <input class="form-control" id ="area_name" name="area_name" value="{$item['area_name']}">
+                    </div>
+                </div>
+
+
+                 <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">快递点描述</label>
+                    <div class="col-sm-8 col-lg-9 col-xs-12">
+                        <textarea class="col-sm-12 col-lg-12 col-xs-12"  rows="5" name="area_desc">{$item['area_desc']}</textarea> 
+                    </div>
+                </div>
+
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">快递点名称</label>
+						 <div class="col-sm-8 col-lg-9 col-xs-12">
+							{php echo tpl_form_field_image('area_image', $item['area_image'])}
+						</div>
+					</div>
+
+
+						<div class="form-group">
+						<label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">logo</label>
+						 <div class="col-sm-8 col-lg-9 col-xs-12">
+							{php echo tpl_form_field_image('area_logo', $item['area_logo'])}
+						</div>
+
+					</div>	
+
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">快递点坐标</label>
+                    <div class="col-sm-8 col-lg-9 col-xs-12">
+                      
+                         {php echo  tpl_form_field_coordinate('location', $location)}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">详情地址</label>
+                    <div class="col-sm-8 col-lg-9 col-xs-12">
+                        <input class="form-control" id ="area_location" name="area_location" value="{$item['area_location']}">
+                    </div>
+                </div>
+
+                 <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">微信总量</label>
+                    <div class="col-sm-8 col-lg-9 col-xs-12">
+                        <input class="form-control" id ="area_wx_notice_total" name="area_wx_notice_total" value="{$item['area_wx_notice_total']}">
+                    </div>
+                </div>
+
+
+				 <div class="form-group">
+				                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">微信已用</label>
+				                    <div class="col-sm-8 col-lg-9 col-xs-12">
+				                        <input class="form-control" id ="area_wx_notice_used" name="area_wx_notice_used" value="{$item['area_wx_notice_used']}">
+				                    </div>
+				                </div>
+
+ 
+				<div class="form-group" >
+				<label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">店铺默认</label> 
+				<div class="col-sm-8 col-lg-9 col-xs-12">
+					<label class="radio-inline ">
+					<input type="radio" name="shop_status" id="shop_def1" value="1" {if $item['status']==1}checked{/if} > <span  class="label label-success" style="margin:5px;">是</span>
+					</label>
+					<label class="radio-inline">
+					<input type="radio" name="shop_status" id="shop_def2" value="0" {if $item['status']==0}checked{/if}> <span  class="label label-danger" style="margin:5px;">否</span>
+					</label>
+					
+				</div>  
+				</div> 
+
+				
+                <div class="form-group">
+				<hr />
+                </div>
+				
+				<div class="form-group">
+                <div class="col-sm-offset-2 col-md-offset-2 col-lg-offset-1 col-xs-12 col-sm-10 col-md-10 col-lg-11">
+                	{if $item['area_id']>0}
+                    <input name="area_save" type="submit" value="保存" class="btn btn-primary span3" />
+                    {else}
+                     <input name="area_add" type="submit" value="新增" class="btn btn-primary span3" />
+					{/if}
+                    <input type="hidden" name="token" value="{$_W['token']}" />
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+  
+</div>
+
+{/if}
+
+
+<script type="text/javascript">
+	
+	function chagecode()
+	{
+		
+		var area_code = $('#area_code option:selected').val();
+		var uid = $('#uid').val();
+		$('#m_defaut_area').val(area_code);
+		$.post("{php echo $this->createWebUrl('staff_manage')}", { "act":"get_msg",'area_code':area_code,'id':uid},  
+			function(data){
+			
+			if (data.success==1)
+				{
+
+					$('#sms_surplus').val(data.sms_surplus);
+
+				}
+				else
+				{
+					$('#sms_surplus').val(0);
+					
+					// $("input[name='sms_status']:eq(1)").attr("checked",'checked');
+				}
+				
+			}, "json");
+		
+	}
+	
+</script>
+
+<!-- 
+<script type="text/javascript">
+	function set_manage(id)
+	{
+	
+		 $.post("{php echo $this->createWebUrl('staff_manage')}", { "act":"set",'id':id},  
+			function(data){
+			
+			if (data.success==1)
+				{
+				 alert("修改成功！") 
+				}
+				
+			}, "json");
+		
+	}
+</script>
+ -->
+
+
+
+
+
