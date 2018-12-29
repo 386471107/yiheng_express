@@ -78,20 +78,21 @@ global $_GPC, $_W;
 		
 
 	$page_index = max(1, intval($_GPC['page']));
-	if ($recive ==1 || $recive==0)
-		$all_info= $wopt->Get_web_collection_list($def_shop_id,$recive,$retention=0,$page_index,$psize=50);
-	else
-		$all_info= $wopt->Get_web_collection_list($def_shop_id,0,$retention=1,$page_index,$psize=50);
-	
-	$total=$all_info['total'];
-	$totaltd=$all_info['totaltd'];
-	$total_other =$total-$totaltd;
-	$total_tel = $all_info['total_tel'];
-	$total_weixin =$total-$total_tel;
 
-
-	$list=$all_info['lst'];
-	$pager=$all_info['pager'];
+	if ($recive !=-1)
+	{
+		if ($recive ==1 || $recive==0 )
+			$all_info= $wopt->Get_web_collection_list($def_shop_id,$recive,$retention=0,$page_index,$psize=50);
+		else
+			$all_info= $wopt->Get_web_collection_list($def_shop_id,0,$retention=1,$page_index,$psize=50);
+		$total=$all_info['total'];
+		$totaltd=$all_info['totaltd'];
+		$total_other =$total-$totaltd;
+		$total_tel = $all_info['total_tel'];
+		$total_weixin =$total-$total_tel;
+		$list=$all_info['lst'];
+		$pager=$all_info['pager'];
+	}
 	
 	
 	

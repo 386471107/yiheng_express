@@ -16,7 +16,6 @@
 	
 
 
-	
 	// print_r($_SESSION);
 	include_once MODULE_ROOT.'/inc/func/yh_kd_curl.php';
 	$kd_curl = new yh_kd_curl();
@@ -90,6 +89,7 @@
 					{	
 						$res['tel']=$tel_info['m_tel'];
 						$res['dname']=$tel_info['tl_uname'];
+						$res['m_flag']=$tel_info['m_flag'];
 						$res['darea']=$tel_info['tl_area'].$tel_info['tl_addr'];
 						result_back(1,$res);
 
@@ -403,6 +403,10 @@
 			if ($act=='addnew')
 			{
 					
+
+					/**
+					 * 快递员入库数据递减
+					 */
 					if ($myinfo['m_level']==4)
 					{
 					
@@ -423,6 +427,7 @@
 						}
 						
 					}
+
 								
 					
 					
@@ -474,11 +479,15 @@
 							
 							$member_shop_id = $member->Get_shop_id($openid);
 							
-							//电话号码检测，更方便输入数据，2018.11.5
+							
+							/**
+							 * 电话号码检测，更方便输入数据，2018.11.03
+							 * 电话号码检测，所有电话号码检测，包含已绑定微信号，2018.12.20
+							 */
 							if(1)
 							{
 
-								$item_a = pdo_fetch("SELECT count(*) as cnt  FROM ".tablename($express_tel_list). $where,$params);
+								$item_a = pdo_fetch("SELECT count(*) as cnt,m_flag  FROM ".tablename($express_tel_list). $where,$params);
 
 								if ($item_a['cnt']>0) 
 								{
@@ -501,14 +510,15 @@
 
 							}
 
-							
+							/**
+							 * 判定修改，可以自义哪些为必填的 TODO:2018.12.26
+							 */
 							if (!empty($barcode))
 								//快递公司不准确，手动设置，成熟之后采用些模块
 								//$kd_com=  $kd_curl->Get_express_company($barcode,$member_shop_id);
-							if (empty($kd_com))
+								//if (empty($kd_com))
 								//$kd_com="未知";
-							// for($i =0;$i <599;$i++)
-							// {
+							
 								$data = array(
 									'recoder_add_openid' =>$openid, 
 									'recoder_shop_id' =>$member_shop_id,
@@ -523,19 +533,18 @@
 									'recoder_status' =>empty($item)?1:$item['m_allow_notice'],
 									'recoder_openid' =>$item['m_openid'], 
 									'recoder_nickname' =>$item['m_nickname'], 
+									'recoder_flag' =>intval($item_a['m_flag'])==0?0:$item_a['m_flag'], 
 									'recoder_barcode' =>$barcode,
 									'recoder_create_year' =>date("Y",time()),
 									'recoder_create_month' =>date("m",time()),
 									'recoder_create_day' =>date("d",time()),
 									'recoder_create_hour' =>date("H",time()),
 									'recoder_in_level' =>$myinfo['m_level'],
-									
-									
 									'uniacid' => $_W['uniacid'],
 								);		
 								$result = pdo_insert($express_recode, $data);
 								$tempid = pdo_insertid();
-							// }
+							
 							//0微信，1短信
 							
 							$opt ->Stats_data_change($member->Get_shop_id($openid),1,!$tel_exsit);
@@ -549,7 +558,10 @@
 			 					// $res['id']=$result['id'];
 			 					$res['exsit']=empty($item)?0:1;
 		 					    $res['success']=1;
-								$res['voicets']=$voicets; 			
+								$res['voicets']=$voicets; 
+								$res['cur_total'] = $opt->Get_recoder_today_total($member_shop_id,$openid);
+
+								$res['cur_total_all'] = $opt->Get_recoder_today_total_all($myinfo['m_defaut_area']);
 								$re=json_encode($res);
 								exit($re); 
 			 				}
@@ -580,6 +592,8 @@
 		$express_list_str=json_encode($express_list_temp);
 
 
+		$cur_total = $opt->Get_recoder_today_total($myinfo['m_defaut_area'],$openid);
+		$cur_total_all = $opt->Get_recoder_today_total_all($myinfo['m_defaut_area']);
 		if ($myinfo['m_level']==4)
 		{
 		

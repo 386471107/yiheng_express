@@ -7,7 +7,15 @@
 <link href="https://cdn.bootcss.com/Buttons/2.0.0/css/buttons.css" rel="stylesheet">
 <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
 <style type="text/css">
+.placeh 
+{
+	padding: 0 5%;
+}
 
+.pd5
+{
+	padding: 0 6px;
+}
 
 </style>
 
@@ -77,8 +85,29 @@
 			<input class="weui-input" type="text"  id ="saddr" placeholder="请输入地址">
 			</div>
 			</div>
+
+			
+			<div class="weui-flex placeh" >
+				<div class="weui-flex__item">
+					<input type="radio"  name="radio1" id="x10" value="1"><label for="x10" class="pd5" >蓝色</label>
+				</div>	
+				<div class="weui-flex__item">
+					<input type="radio"  name="radio1" id="x11" value="2"><label for="x11" class="pd5">绿色</label>
+				</div>
+				<div class="weui-flex__item">
+				<input type="radio"  name="radio1" id="x12" value="3"><label for="x12" class="pd5">红色</label>
+				</div>
+				<div class="weui-flex__item">
+				<input type="radio"  name="radio1" id="x13" value="4"><label for="x13" class="pd5">黑色</label>
+				</div>
+			</div>
+			
+
+
+
+			<input class="weui-input" type="hidden"  id ="m_tel" vaiue="">
 			<input class="weui-input" type="hidden"  id = "sid" vaiue="">
-			<a  onClick="save_info()" class="weui-btn weui-btn_primary">保存信息</a>
+			<a  onClick="save_info()" class="weui-btn weui-btn_primary" style="margin-top: 12px;">保存信息</a>
 
         </div>
       </div>
@@ -96,11 +125,10 @@
 	{
 		if (data.success==1 )
 		{
-		
+			$("input[name='radio1'][value='"+data.m_flag+"']").attr("checked",true);
 			$("#sname").val(data.tl_uname)
 			$("#sarea").val(data.tl_area)
-			$("#saddr").val(data.tl_addr)
-			
+			$("#saddr").val(data.tl_addr) 
 		}
 		
 	}, "json");
@@ -115,8 +143,11 @@
 	var sarea =($("#sarea").val())
 	var saddr =($("#saddr").val())
 	var sid =($("#sid").val())
+	var m_tel =($("#m_tel").val())
 
-	$.post("{php echo $this->createMobileUrl('tel_list')}", {"act":'save',"sname":sname,"sarea":sarea,"saddr":saddr,"sarea":sarea,"sid":sid}, 
+	var member_f = $("input[name='radio1']:checked").val();
+
+	$.post("{php echo $this->createMobileUrl('tel_list')}", {"act":'save',"sname":sname,"sarea":sarea,"saddr":saddr,"sarea":sarea,"sid":sid,"member_f":member_f,"m_tel":m_tel}, 
 	function(data) 
 	{
 		if (data.success==1 )
@@ -152,7 +183,7 @@
                           if (data.success==1 )
                           {
                             $("#list").prepend(data.str);
-                            
+                            $("#m_tel").val(data.tel);
                           }
                           
                           else

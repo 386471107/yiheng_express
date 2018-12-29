@@ -16,6 +16,11 @@ $express_sms_setting='yiheng_express_sms_setting';
 $express_area='yiheng_express_area';
 $express_employee='yiheng_express_employee';
 $recode_attimg='yiheng_express_recode_attimg';
+$express_addr='yiheng_express_addr';
+$express_goods_list='yiheng_express_goods_list';
+
+ 
+
 //======================
 
 $member = new yh_member();

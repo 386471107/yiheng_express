@@ -6,7 +6,7 @@
 <div class="weui-tab">
       <div class="weui-navbar" style="z-index: 0">
 		    <a class="weui-navbar__item weui-bar__item--on" href="#tab1">
-	          新增记录
+	          新增记录<span style="margin-left: 15px;font-size: 10px;">(<span id="recode_cur">{$cur_total}</span>/<span id="recode_cur_all">{$cur_total_all}</span>)</span>
 	        </a>
 	        <a class="weui-navbar__item " href="#tab2" onclick="list_recode()" >
 	          待发列表
@@ -39,6 +39,7 @@
 			    </div>
 				
 				<div class="weui-cell weui-cell_vcode">
+
 				<div class="weui-cell__bd">
 					<div class="weui-cell__ft">
 				  	 <label for="weuiAgreea" class="weui-agree">
@@ -53,11 +54,11 @@
 				    </div>
 				</div>
 				
-				<div class="weui-cell">
+				<div class="weui-cell" id="user_notice"  >
 				<div class="weui-cell__bd">
 					<p id="dname">姓名</p>
 				</div>
-					<div class="weui-cell__ft" id="darea">小区</div>
+					<div class="weui-cell__ft" ><span id="darea">小区</span><span id="flag"></span></div>
 				</div>
 
 				<div class="weui-cell">
@@ -67,9 +68,6 @@
 					<div class="weui-cell__ft" id="express_name">点击选择</div>
 					<input type="hidden" name="express_name_v" id ="express_name_v" value="0">
 				</div>
-
- 
-
 			    <div class="weui-cell weui-cell_vcode">
 				    <div class="weui-cell__hd">
 				      <label class="weui-label">货架号</label>
@@ -234,6 +232,8 @@ btnRecord.on('touchstart', function(event) {
 							 $.post("{php echo $this->createMobileUrl('express_sendmsg')}", {"act":1,"voicets":result}, 
 												function(data) 
 												{
+
+
 													if (data.success==1 && data.exsit==1)
 													{
 													$("#vts").html('<span class="color-success">识别结果为'+data.voicets+'已入库</span>'); 
@@ -297,12 +297,24 @@ $("#phone").on('input',function(e){
 		 	 $("#dname").html(data.dname);
 		 	 $("#darea").html(data.darea);
 		 	 $("#goodno").val(whole_tel.substr(whole_tel.length-1) +"-"+whole_tel.substr(whole_tel.length-4));
+
+		 	if(data.m_flag==3 || data.m_flag ==4 )
+		 	{
+		 		$("#flag").html('<i class="weui-icon-warn"></i>')
+		 	}
+		 	else
+		 	{
+		 		$("#flag").html('')
+		 	}
+
+		 	
 		} 
 		else
 		{
 			 $("#dname").html("");
 		 	 $("#darea").html("");
 		 	 $("#goodno").val("");
+		 	 $("#flag").html('')
 		}
 	}, "json");
    } 
@@ -316,9 +328,18 @@ $("#phone").on('input',function(e){
 					 $("#dname").html(data.dname);
 					 $("#darea").html(data.darea);
 					 $("#goodno").val(whole_tel.substr(whole_tel.length-1) +"-"+whole_tel.substr(whole_tel.length-4));
+					 if(data.m_flag==3 || data.m_flag ==4 )
+					 	{
+					 		$("#flag").html('<i class="weui-icon-warn"></i>')
+					 	}
+					 	else
+					 	{
+					 		$("#flag").html('')
+					 	}
 				} 
 				else
 				{
+					$("#flag").html('')
 					 <!-- $("#dname").html(""); -->
 					 <!-- $("#darea").html(""); -->
 					 <!-- $("#goodno").val(""); -->
@@ -354,6 +375,32 @@ function del(value)
           },
           actions: [
             {
+              text: "删除",
+              className: 'bg-danger',
+              onClick: function() {
+			  $.confirm("确定删除此条目？", function() {
+					$.post("{php echo $this->createMobileUrl('express_sendmsg')}", {"act":"del","id":value}, 
+								function(data){
+								
+								if (data.success==1)
+								{
+								  $("div").remove("#list"+value);
+								}  
+								}, "json");
+				  }, function() {
+					$.toast('取消操作', 'cancel'); 
+				  }); 
+				
+              }
+            },
+            {
+              text: " ",
+              className: '',
+              onClick: function() {
+			 	$.toast('无动作', 'text'); 
+              }
+            },
+            {
               text: "修改信息",
               className: 'bg-success',
               onClick: function() {
@@ -370,33 +417,9 @@ function del(value)
 				
 				$("#change_info").popup();
               }
-            },
-			 
-			{
-              text: "删除",
-              className: 'bg-danger',
-              onClick: function() {
-			  
-			  
-			  $.confirm("确定删除此条目？", function() {
-					$.post("{php echo $this->createMobileUrl('express_sendmsg')}", {"act":"del","id":value}, 
-								function(data){
-								
-								if (data.success==1)
-								{
-								  $("div").remove("#list"+value);
-								}  
-								}, "json");
-				  }, function() {
-					$.toast('取消操作', 'cancel'); 
-				  });
-  
-  
-			
-				
-				
-              }
             }
+			 
+			
           ]
         });
 }
@@ -642,6 +665,9 @@ if(express_name_v==0)
 				$("#sarea").val(data.tl_area)
 				$("#saddr").val(data.tl_addr)
 				$("#sid").val(data.id)
+				
+
+				// 
 			} 
 		}, "json");
 
@@ -660,8 +686,22 @@ if(express_name_v==0)
 				$("#phone").val("");
 				return false;
 			}
+
+			var cur_total = data.cur_total
+			var cur_total_all = data.cur_total_all
+			var recode_cur=parseInt($("#recode_cur").html())
+			if (cur_total-recode_cur!=1)
+			{
+			 $.toast('重复录入不成功，请检查！','text');
+			 return false;
+			}
+			$("#recode_cur").html(cur_total)
+			$("#recode_cur_all").html(cur_total_all)
+		
+
 			if (data.success==1 && data.exsit==1)
 			{
+
 				$("#vts").html('<span class="color-success">识别结果为'+data.voicets+'已入库</span>'); 
 				$("#phonelist").prepend(
 					"<div class='weui-cell'   id ='list"+data.resultid+"'  onclick='del("+data.resultid+")' ><div class='weui-cell__hd' style='width:50% ;text-align:left'><label  class=''>"+data.voicets+"</label></div><div class='weui-cell__bd' style='width:25% ;text-align:left'><label for='date' class='weui-label'>"+data.shelves+data.goodno+"</label></div><div class='weui-cell__bd' style='width:25% ;text-align:center'><label for='date' class='weui-label'>已绑定</label></div></div>"
@@ -682,6 +722,10 @@ if(express_name_v==0)
 			{
 				$("#vts").html('<span class="color-danger">识别结果为'+data.voicets+'未入库</span>'); 
 			}
+			$("#flag").html('')
+			$("#dname").html("");
+			$("#darea").html(""); 
+			$("#goodno").val("");  
 			
 		<?php if ($myinfo['m_level']==4 && $m_item['e_f_loc']==1){ ?>	
 		wx.ready(function () { 

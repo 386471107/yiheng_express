@@ -35,7 +35,7 @@
                         <li {if $_GPC['do']=='pc_member_staff_list' && $_GPC['level']==1}class="active"  {/if}><a href="{php echo $this->createWebUrl('pc_member_staff_list',array('act'=>'display','level' =>1))}">超管列表</a></li>
                         <li {if $_GPC['do']=='pc_member_staff_list' && $_GPC['level']==2}class="active"  {/if}><a href="{php echo $this->createWebUrl('pc_member_staff_list',array('act'=>'display','level' =>2))}">店长列表</a></li>
                         <li {if $_GPC['do']=='pc_member_staff_list' && $_GPC['level']==3}class="active"  {/if}><a href="{php echo $this->createWebUrl('pc_member_staff_list',array('act'=>'display','level' =>3))}">店员列表</a></li>
-                        <li {if $_GPC['do']=='pc_member_staff_list' && $_GPC['level']==4}class="active"  {/if}><a href="{php echo $this->createWebUrl('pc_member_staff_list',array('act'=>'display','level' =>4))}">收送人员列表</a></li>
+                        <li {if $_GPC['do']=='pc_member_staff_list' && $_GPC['level']==4}class="active"  {/if}><a href="{php echo $this->createWebUrl('pc_member_staff_list',array('act'=>'display','level' =>4))}">收送人员</a></li>
                         {if $_GPC['do']=='pc_member_edit' }<li class="active"  ><a href="javascript:void(0)">会员编辑</a></li>{/if}
                         <li {if $_GPC['do']=='pc_member_ban_list' }class="active"  {/if}><a href="{php echo $this->createWebUrl('pc_member_ban_list')}">黑名单</a></li>
                         <li {if $_GPC['do']=='pc_member_login_log' }class="active"  {/if}><a href="{php echo $this->createWebUrl('pc_member_login_log')}">登录记录</a></li>

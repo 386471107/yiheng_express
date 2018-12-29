@@ -37,6 +37,10 @@
 					$barcode_info = pdo_fetch("SELECT *  FROM ".tablename($express_recode). $barcode_where,$barcode_params);
 					if (!empty($barcode_info))
 					{	
+
+						$user_flag = pdo_fetch("SELECT m_flag FROM ".tablename($express_tel_list)." where m_tel=".$barcode_info['recoder_tel']);
+
+						$b_info['m_flag']=$user_flag['m_flag'];
 						$b_info['recoder_code']=$barcode_info['recoder_code'];
 						$b_info['shelves']=$barcode_info['recoder_shelves'].'-'.$barcode_info['recoder_goods_num'];
 						$b_info['recoder_express_name']=$barcode_info['recoder_express_name'];

@@ -78,6 +78,7 @@
            
         </div>
 		
+         {if $recive==-1}
 		  <div class="mail-box-header">
 				 <form method="get" action="index.html" class="pull-right mail-search">
                     <div class="input-group">
@@ -116,7 +117,12 @@
 					<form method="POST" name="form2" id="form2" >
 						<div class="col-lg-3">
 						<div class="input-group date">     
-                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="date_added" name="sdate" type="text" class="form-control" value='{php echo date("m/d/Y",time())}'>
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                {if empty($sdate)}
+                                <input id="date_added" name="sdate" type="text" class="form-control" value='{php echo date("m/d/Y",time())}'>
+                                {else}
+                                 <input id="date_added" name="sdate" type="text" class="form-control" value='{$sdate}'>
+                                {/if}
                             </div>
 						</div>
 						<div class="col-lg-3" >
@@ -144,6 +150,8 @@
 
                 </div>
             </div> 
+            {/if}
+
             <div class="row">
                 <div class="col-lg-12">
                     <div class="ibox float-e-margins">

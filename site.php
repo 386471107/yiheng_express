@@ -246,6 +246,11 @@ public function doMobileStorage() {
 
 	}
 
+	public function doMobileSend_express() {  
+
+		$this->getLogic ( __FUNCTION__, 'mobile' );  
+
+	}
 
 	
 

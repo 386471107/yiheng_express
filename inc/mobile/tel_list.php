@@ -3,61 +3,46 @@
 	global $_GPC, $_W;
 	
 	$title = '手机号码编辑';
-  
 
-
-include_once MODULE_ROOT.'/inc/func/yh_member.func.php';
-include_once MODULE_ROOT.'/inc/func/yh_operation.func.php';
-
-
-$express_tel_list='yiheng_express_tel_list';
-
-$member = new yh_member();
-$opt  = new yh_opt();
-
-$url= $_W['siteroot'].$this->createMobileUrl('error',array('dis' =>'none_per'));
-
-$openid=$_W['openid']; 
-
-	if (empty($openid))
+ 	include_once MODULE_ROOT.'/inc/mobile/common.php';
+	if ($myinfo['m_level']==4)
 	{
-		$userinfo= json_decode($member->Get_Userinfo());
-		$openid = $userinfo->openid;
-		//判断用户是否存在于
-		$exsit = $member->Check_Member($userinfo->openid);
-		if (!$exsit) $member->Insert_memberinfo($userinfo->openid,$userinfo->nickname,$userinfo->headimgurl);
-		
+		$url=$this->createMobileUrl('employee');
+		header("Location: $url");exit();
 	}
-	else
+	
+	//走权限管理
+	$page="home";
+	$is_allow = $member->is_allow_to_view($page,$myinfo['m_level']);
+	if ($is_allow ==0)
 	{
-		$exsit = $member->Check_Member($openid);
-		if (!$exsit)
-		{
-			mc_oauth_userinfo();
-			$member->Insert_memberinfo($openid,$_W['fans']['nickname'],$_W['fans']['avatar']);
-		}
+		header("Location: $refuse_url");exit();
 	}
- 
+	//走权限管理
 // if (empty($openid)) die();
 
 
 	if ($_W['isajax'])
 		{
 			$act=trim($_GPC['act']);
-			
 			$keyword= trim($_GPC['search_text']);
-			
 			$sid =intval($_GPC['sid']);
+			$m_tel=trim($_GPC['m_tel']);
 			if ($act == 'save' && $sid )
 			{
 				$udata = array(
 						'tl_uname' => trim($_GPC['sname']),
 						'tl_area' =>  trim($_GPC['sarea']),
 						'tl_addr' =>  trim($_GPC['saddr']),
+						'm_flag' =>  intval($_GPC['member_f']),
 						'tl_modify_ex' =>  1,
 						); 
 				$result = pdo_update($express_tel_list, $udata,array('id' => $sid));
-
+				 if ($result)
+				 {
+				 	//同步更新绑定号码，暂不做更新检测 2018.12.24
+				 	$resultA = pdo_update($express_member, array('m_ban' =>intval($_GPC['member_f'])),array('m_tel' => $m_tel));
+				 }
 				if ($result)
 				{
 					result_back(1);
@@ -110,6 +95,7 @@ $openid=$_W['openid'];
 
 					if (!empty($tel_info))
 					{
+						$res['tel']=$keyword;
 						$res['str']='<div class="weui-cell" onclick="udata('.$tel_info["id"].')">'.
 						            '<div class="weui-cell__bd">'.
 						             '<p>'.$keyword.'</p></div>'.

@@ -20,6 +20,10 @@ defined('IN_IA') or die('Access Denied');
 		
 		protected $express_member_bind='yiheng_express_member_bind';
 		protected $express_area='yiheng_express_area';
+		protected $express_addr='yiheng_express_addr';
+		protected $express_goods_list='yiheng_express_goods_list';
+		
+		protected $express_couriers='yiheng_express_couriers';
 		
 		
 
@@ -1514,14 +1518,27 @@ defined('IN_IA') or die('Access Denied');
 
 
 
-		
+		/**
+		 * @Author      YIHENG.NET
+		 * @DateTime    2018-12-24
+		 * @微信发送记录。 
+		 * @return
+		 * @version
+		 * @param       [type]     $send_openid    [description]
+		 * @param       string     $send_to_openid [description]
+		 * @param       [type]     $shop_id        [description]
+		 * @param       integer    $send_type      [description]
+		 * @param       integer    $status         [description]
+		 * @param       string     $error_desc     [description]
+		 * @return      [type]                     [description]
+		 */
 		 public function send_wx_log($send_openid,$send_to_openid='',$shop_id,$send_type=0,$status=1,$error_desc='') 
 		 {
 		 	global $_W;
 
 		 	$logdata= array(
 					'send_openid' => $send_openid,
-				    'send_status' =>json_encode($status),
+				    'send_status' =>json_encode($status,JSON_UNESCAPED_UNICODE),
 					'send_to_openid' => $send_to_openid,
 					'send_time' => time(),
 					'send_ip' => $_W['clientip'],
@@ -1535,13 +1552,23 @@ defined('IN_IA') or die('Access Denied');
 
 
 
-
+		 /**
+		  * @Author   YIHENG.NET
+		  * @DateTime 2018-12-23
+		  * @param    [type]     $send_openid [description]
+		  * @param    [type]     $send_to_tel [description]
+		  * @param    [type]     $shop_id     [description]
+		  * @param    integer    $send_type   [description]
+		  * @param    string     $rsp         [description]
+		  * @param    string     $error_desc  [description]
+		  * @return   [type]                  [description]
+		  */
 		 public function send_sms_log($send_openid,$send_to_tel,$shop_id,$send_type=0,$rsp='',$error_desc='') 
 		 {
 		 	global $_W;
 		 	$logdata= array(
 					'send_openid' => $send_openid,
-					'send_to_tel' => $send_to_openid,
+					'send_to_tel' => $send_to_tel,
 					'send_shop_id' => $shop_id,
 					'send_time' => time(),
 					'send_type' => $send_type,
@@ -1924,7 +1951,7 @@ defined('IN_IA') or die('Access Denied');
 			 * @param lat1 $ ,lat2 纬度
 			 * @return float 距离，单位米
 			 */
-			function getdistance($lng1, $lat1, $lng2, $lat2) {
+			public function getdistance($lng1, $lat1, $lng2, $lat2) {
 				// 将角度转为狐度
 				$radLat1 = deg2rad($lat1); //deg2rad()函数将角度转换为弧度
 				$radLat2 = deg2rad($lat2);
@@ -1935,8 +1962,112 @@ defined('IN_IA') or die('Access Denied');
 				$distance = 2 * asin(sqrt(pow(sin($a / 2), 2) + cos($radLat1) * cos($radLat2) * pow(sin($b / 2), 2))) * 6378.137 * 1000;
 				return $distance;
 			} 
+
+
+			/**
+			 * @Author      YIHENG.NET
+			 * @DateTime    2018-12-20
+			 * @description
+			 * @return
+			 * @version
+			 * @param       [type]     $openid    [description]
+			 * @param       integer    $direction [0为收件人地址，1为发件人地址]
+			 */
+			public function Get_addr_by_openid($openid,$direction=0)
+			{
+				global $_W;
+				$orderby =" order by addr_default DESC , addr_id DESC";
+				$condition =" where addr_direction = :addr_direction and uniacid =:uniacid  and addr_openid =:addr_openid";
+				$params = array(
+					'uniacid' => $_W['uniacid'],
+					'addr_openid' => $openid,
+					'addr_direction' => $direction,
+
+				);
+				$sql = "SELECT * from ".tablename($this->express_addr).$condition .$orderby." LIMIT 0,25";
+				$addr_list = pdo_fetchall($sql,$params);
+
+				return $addr_list;
+
+			}
 					
 
+	
+		public function Get_express_goods_list()
+
+		{
+			global $_W;
+				$orderby =" order by g_order ASC ";
+				$condition =" where uniacid =:uniacid ";
+				$params = array(
+					'uniacid' => $_W['uniacid'],
+				);
+				$sql = "SELECT g_name as title from ".tablename($this->express_goods_list).$condition .$orderby." LIMIT 0,25";
+				$goods_list = pdo_fetchall($sql,$params);
+				return $goods_list;
+		}
+
+
+
+		public function Get_express_couriers_list()
+
+		{
+			global $_W;
+				$orderby =" order by c_order ASC ";
+				$condition =" where uniacid =:uniacid ";
+				$params = array(
+					'uniacid' => $_W['uniacid'],
+				);
+				$sql = "SELECT c_id ,c_name,c_tel,c_img,c_express_name,c_e_img,uniacid from ".tablename($this->express_couriers).$condition .$orderby." LIMIT 0,50";
+				$couriers_list = pdo_fetchall($sql,$params);
+				return $couriers_list;
+		}
+
+
+
+		public function Get_recoder_today_total($shop_id,$openid)
+
+		{
+			global $_W;
+
+			
+				$condition =" where recoder_shop_id =:recoder_shop_id and recoder_create_year =:recoder_create_year and  recoder_create_month =:recoder_create_month  and recoder_create_day =:recoder_create_day and recoder_add_openid like :recoder_add_openid and  uniacid =:uniacid ";
+				$params = array(
+					'recoder_shop_id' =>$shop_id,
+					'recoder_create_year' =>date("Y",time()),
+					'recoder_create_month' =>date("m",time()),
+					'recoder_create_day' =>date("d",time()),
+					'recoder_add_openid' =>$openid,
+					'uniacid' => $_W['uniacid'],
+				);
+
+			$sql ="select count(*) as cnt from ".tablename($this->express_recode).$condition;
+			$item = pdo_fetch($sql,$params);
+
+			return $item['cnt'];
+				
+		}
+
+
+		public function Get_recoder_today_total_all($shop_id)
+
+		{
+			global $_W;
+
+			$condition =" where recoder_shop_id =:recoder_shop_id and recoder_create_year =:recoder_create_year and  recoder_create_month =:recoder_create_month  and recoder_create_day =:recoder_create_day and  uniacid =:uniacid ";
+				$params = array(
+					'recoder_shop_id' =>$shop_id,
+					'recoder_create_year' =>date("Y",time()),
+					'recoder_create_month' =>date("m",time()),
+					'recoder_create_day' =>date("d",time()),
+					'uniacid' => $_W['uniacid'],
+				);
+
+			$sql ="select count(*) as cnt from ".tablename($this->express_recode).$condition;
+			$item = pdo_fetch($sql,$params);
+			return $item['cnt'];
+				
+		}
 		 	
 
 

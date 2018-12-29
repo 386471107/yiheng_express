@@ -27,7 +27,6 @@
 	}
 
 
-
 	$act = $_GPC['act'];
 		{
 			if($act=='rebind')

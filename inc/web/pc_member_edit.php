@@ -183,6 +183,7 @@
 				'm_realname'=>trim($_GPC['m_realname']),
 				'm_tel'=>trim($_GPC['m_tel']),
 				'm_remark'=>trim($_GPC['m_remark']),
+				'm_ban'=>intval($_GPC['m_ban']),
 			
 			);
 			
@@ -196,7 +197,7 @@
  			$smsinfo = $wopt->Get_web_sms_info($id,$bind_shop_id);
 
 			
-			
+			 
 			//当为空时，需要insert
 			
 			

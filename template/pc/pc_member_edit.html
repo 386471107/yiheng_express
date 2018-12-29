@@ -89,7 +89,7 @@
                                                 <div class="col-lg-10">
 													<div class="radio radio-inline col-lg-2">
 														<input type="radio" id="s1" value="0" name="m_level" {if $item['m_level']==0}checked=""{/if}>
-														<label for="s1" class="label label-primary pull-left">普通会员 &nbsp;</label>
+														<label for="s1" class="label label-primary pull-left " style="background:#999 " >普通会员 &nbsp;</label>
 													</div>
 													  <div class="radio radio-inline col-lg-2">
 														<input type="radio" id="s5" value="4" name="m_level" {if $item['m_level']==4}checked=""{/if}>
@@ -108,10 +108,14 @@
 														<input type="radio" id="s4" value="1" name="m_level" {if $item['m_level']==1}checked=""{/if}>
 														<label for="s4" class="label label-danger pull-left">超级管理 &nbsp;</label>
 													</div>
+
 													<!-- 仅供专业版 -->
 
                                                 </div>
                                             </div>
+
+
+
 
                                               <div class="form-group"><label class="col-lg-2 control-label">权限更改通知:</label>
                                                 <div class="col-lg-10">
@@ -128,24 +132,31 @@
                                                 </div>
                                             </div>
 
-
-                                               <div class="form-group"><label class="col-lg-2 control-label">黑名单:</label>
+                                        
+                                       <!--  <div class="form-group"><label class="col-lg-2 control-label">人员状态:</label>
                                                 <div class="col-lg-10">
-                                            
-                                        <div class="radio radio-inline col-lg-2">
-                                            <input type="radio" id="ban2" value="0" name="m_ban" {if $item['bind_m_ban']==0}checked=""{/if} >
-                                            <label for="ban2" class="label label-success pull-left">否 &nbsp;</label>
-                                        </div>
-
-                                            <div class="radio radio-info radio-inline col-lg-2">
-                                            <input type="radio" id="ban1" value="1" name="m_ban" {if $item['bind_m_ban']==1}checked=""{/if} >
-                                            <label for="ban1" class="label label-danger pull-left">是 &nbsp;</label>
-
-                                        </div>
+                                                    <div class="radio radio-inline col-lg-2">
+                                                        <input type="radio" id="pban1" value="0" name="m_ban" {if $item['m_ban']==0}checked=""{/if}>
+                                                        <label for="pban1" class="label label-success pull-left">普通 &nbsp;</label>
+                                                    </div>
+                                                      <div class="radio radio-inline col-lg-2">
+                                                        <input type="radio" id="pban2" value="1" name="m_ban" {if $item['m_ban']==1}checked=""{/if}>
+                                                        <label for="pban2" class="label label-primary pull-left">绿色 &nbsp;</label>
+                                                    </div>
+                                                     <div class="radio radio-inline col-lg-2">
+                                                        <input type="radio" id="pban3" value="2" name="m_ban" {if $item['m_ban']==2}checked=""{/if}>
+                                                        <label for="pban3" class="label label-danger pull-left">红色 &nbsp;</label>
+                                                    </div>
+                                                     <div class="radio radio-inline col-lg-2">
+                                                        <input type="radio" id="pban4" value="4" name="m_ban" {if $item['m_ban']==3}checked=""{/if}>
+                                                        <label for="pban4" class="label label-success pull-left" style="background: black">黑色 &nbsp;</label>
+                                                    </div>
 
                                                 </div>
-                                            </div>
+                                            </div> 
+ -->
 
+                                   
  
                                            
 
@@ -180,7 +191,7 @@
 											<div class="form-group"><label class="col-lg-2 control-label">单日入库:</label>
 												<div class="col-lg-10">
 													<input class="form-control"  name ="e_send_day_max" type="number" value="{$emp['e_send_day_max']}" >
-													<div class="help-block">单日最大入库量，超出则无法入库</div>
+													<div class="help-block">单日最大入库量，超出则无法入库，0则为无权限入库</div>
 
 												</div>
 											</div>
